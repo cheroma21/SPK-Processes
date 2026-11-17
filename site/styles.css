@@ -156,5 +156,10 @@ input[type=search]:focus,select:focus{outline:2px solid var(--blue);outline-offs
 .brand{display:block;text-decoration:none;padding:20px 20px 26px;margin-bottom:4px;border-radius:6px}
 .lockup{display:block;width:168px}
 .lockup img{display:block;width:100%;height:auto}
-.subbrand{display:flex;justify-content:space-between;margin:4px 0 0 47.9%;font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:13px;line-height:1;color:var(--green)}
-@media (max-width:860px){.brand{padding:10px 16px 14px;margin:0 12px 0 0}.lockup{width:144px}.subbrand{font-size:11px;margin-top:6px}}
+/* PROCESS rides on a green rule that starts at the left edge of the mark.
+   The rule sits where the "p" descender ends (129/131 of the logo height), so the stem lands on it;
+   PROCESS starts under the "h" (47.9% across) and ends under the "d". */
+.subrow{display:flex;align-items:center;height:13px;margin-top:-7px}
+.subrow .rule{flex:none;width:calc(47.9% - 8px);height:2px;margin-right:8px;background:var(--green)}
+.subbrand{flex:1;display:flex;justify-content:space-between;font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:13px;line-height:1;color:var(--green)}
+@media (max-width:860px){.brand{padding:10px 16px 14px;margin:0 12px 0 0}.lockup{width:144px}.subrow{height:11px;margin-top:-6px}.subbrand{font-size:11px}.subrow .rule{width:calc(47.9% - 7px);margin-right:7px}}
