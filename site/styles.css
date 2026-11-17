@@ -1,8 +1,8 @@
-:root{--navy:#003830;--navy2:#0b4a41;--navy3:#156b5e;--blue:#156b5e;--blue-d:#003830;--green:#81BE41;--ink:#171f27;--ink2:#384550;--muted:#4f5b64;--line:#dde3e1;--line2:#ebefee;--bg:#F6F6F6;--amber:#f0a24a}
+:root{--navy:#003830;--navy2:#0b4a41;--navy3:#156b5e;--blue:#156b5e;--blue-d:#003830;--green:#81BE41;--ink:#171f27;--ink2:#384550;--muted:#4f5b64;--line:#dde3e1;--line2:#ebefee;--bg:#F6F6F6;--amber:#f0a24a;--f-body:'Overpass',Arial,sans-serif;--f-mono:'Overpass Mono',ui-monospace,Consolas,monospace;--f-caps:'Barlow Condensed','Arial Narrow',Arial,sans-serif}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:'IBM Plex Sans',system-ui,sans-serif;color:var(--ink)}
+body{margin:0;background:var(--bg);font-family:var(--f-body);color:var(--ink)}
 a{color:var(--blue)}a:hover{color:var(--blue-d)}
-.mono{font-family:'IBM Plex Mono',monospace;font-size:13px}
+.mono{font-family:var(--f-mono);font-size:13px}
 .app{display:flex;min-height:100vh}
 .side{flex:0 0 232px;background:var(--navy);padding:16px 12px;position:sticky;top:0;height:100vh;overflow:auto}
 .nav{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;color:#d6e6e1;text-decoration:none;font-size:14px}
@@ -69,7 +69,7 @@ tr.hl{background:#f1f7ea}
 .node:focus-visible{outline:2px solid var(--blue);outline-offset:4px;border-radius:6px}
 .node.sel svg.shape *{stroke:var(--blue);stroke-width:2.5}
 .edges{position:absolute;inset:0;pointer-events:none;overflow:visible}
-.edges text{font-size:11px;fill:var(--ink2);font-family:'IBM Plex Sans',sans-serif;paint-order:stroke;stroke:#fff;stroke-width:4px}
+.edges text{font-size:11px;fill:var(--ink2);font-family:var(--f-body);paint-order:stroke;stroke:#fff;stroke-width:4px}
 .legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12px;color:var(--muted);padding:10px 14px;border-top:1px solid var(--line2)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .linkcard{display:flex;flex-direction:column;gap:2px;border:2px dashed #81BE41;border-radius:8px;padding:8px 12px;font-size:13px;text-decoration:none;color:var(--blue-d);background:#f1f7ea}
@@ -161,5 +161,13 @@ input[type=search]:focus,select:focus{outline:2px solid var(--blue);outline-offs
    PROCESS starts under the "h" (47.9% across) and ends under the "d". */
 .subrow{display:flex;align-items:center;height:13px;margin-top:-7px}
 .subrow .rule{flex:none;width:calc(47.9% - 8px);height:2px;margin-right:8px;background:var(--green)}
-.subbrand{flex:1;display:flex;justify-content:space-between;font-family:'IBM Plex Sans Condensed','Arial Narrow',sans-serif;font-weight:600;font-size:13px;line-height:1;color:var(--green)}
-@media (max-width:860px){.brand{padding:10px 16px 14px;margin:0 12px 0 0}.lockup{width:144px}.subrow{height:11px;margin-top:-6px}.subbrand{font-size:11px}.subrow .rule{width:calc(47.9% - 7px);margin-right:7px}}
+.subbrand{flex:1;display:flex;justify-content:space-between;font-family:var(--f-caps);font-weight:600;font-size:14.5px;line-height:1;color:var(--green);position:relative;top:-1px}
+@media (max-width:860px){.brand{padding:10px 16px 14px;margin:0 12px 0 0}.lockup{width:144px}.subrow{height:11px;margin-top:-6px}.subbrand{font-size:12.5px}.subrow .rule{width:calc(47.9% - 7px);margin-right:7px}}
+
+/* Sparkhound type: Overpass (Interstate stand-in), Barlow Condensed caps (Interstate Condensed Bold stand-in) */
+h1{font-weight:900;letter-spacing:-.02em;text-wrap:balance}
+h2{font-weight:700;letter-spacing:-.01em}
+.navlab,.linkcard small,.stepd .h{font-family:var(--f-caps);font-weight:600;letter-spacing:.1em}
+.navlab{font-size:12.5px}
+.linkcard small,.stepd .h{font-size:12px}
+.sep{display:inline-block;width:1.1em;text-align:center}

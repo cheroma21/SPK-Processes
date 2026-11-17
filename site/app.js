@@ -351,7 +351,7 @@
     if (flow) {
       html += '<section class="card" aria-label="Process flow">' +
         '<div class="sec" style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;justify-content:space-between;padding-bottom:10px">' +
-          '<div><h2 style="margin:0">Process flow <span class="muted" style="font-weight:400">· ' + esc(flow.span) + '</span></h2><p class="muted" style="margin:4px 0 0">' + esc(flow.summary) + ' Select a step for details.</p></div>' +
+          '<div><h2 style="margin:0">Process flow<span class="muted" style="font-weight:400"><span class="sep" aria-hidden="true">·</span>' + esc(flow.span) + '</span></h2><p class="muted" style="margin:4px 0 0">' + esc(flow.summary) + ' Select a step for details.</p></div>' +
           '<button class="btn" id="fitBtn" type="button">' + (S.fit ? 'Actual size' : 'Fit to width') + '</button>' +
         '</div>' +
         '<div class="legend" style="border-top:0;border-bottom:1px solid #eceff3;padding-top:0">' + legend() + '</div>' +
@@ -422,7 +422,7 @@
   function legend() {
     var item = function (type, label, ctl, as) { var s = SHAPE[type], k = type === 'decision' ? [30, 20] : [36, 20]; return '<span><svg width="' + k[0] + '" height="' + k[1] + '" viewBox="0 0 ' + s.w + ' ' + s.h + '" preserveAspectRatio="none" aria-hidden="true">' + shapeSvg(type, s.w, s.h, ctl, as) + '</svg>' + label + '</span>'; };
     return item('start', 'Start / end') + item('process', 'Process step') + item('decision', 'Decision') + item('document', 'Document') + item('process', 'Control point', 1) + item('process', 'Assumption to confirm', 0, 1) + '<span>' + FLAG + 'Flagged for owner review</span>' +
-      '<span>Each box: APQC ID · System · Control. Lanes show who owns each step.</span>';
+      '<span>Each box: APQC ID<span class="sep" aria-hidden="true">·</span>System<span class="sep" aria-hidden="true">·</span>Control. Lanes show who owns each step.</span>';
   }
 
   function drawFlow(flow) {
@@ -513,7 +513,7 @@
     var c = s.control && D.controls.filter(function (x) { return x.id === s.control; })[0];
     var types = { start: 'Start', end: 'End', process: 'Process step', decision: 'Decision', document: 'Document' };
     var row = function (k, v) { return v ? '<div><span class="muted">' + k + ':</span> ' + v + '</div>' : ''; };
-    el.innerHTML = '<div style="font-weight:600;font-size:15px;flex-basis:100%">' + idx + ' · ' + esc(s.title) + '</div>' +
+    el.innerHTML = '<div style="font-weight:600;font-size:15px;flex-basis:100%">' + idx + '<span class="sep" aria-hidden="true">·</span>' + esc(s.title) + '</div>' +
       (s.flag ? '<div class="flagrow" style="flex-basis:100%">' + FLAG + '<b>Flagged for review:</b> ' + esc(s.flag) + '</div>' : '') + (s.assumed ? '<div style="flex-basis:100%"><span class="pill st-Draft">Assumption to confirm</span></div>' : '') + row('Type', esc(types[s.type])) + row('Lane', esc(flow.lanes[s.lane].name)) + row('APQC', s.apqc ? '<span class="mono">' + esc(s.apqc) + '</span>' : '') +
       row('Responsible', esc(s.who || '')) + row('System', esc(s.system || '')) +
       (s.detail ? '<div style="line-height:1.5;flex-basis:100%">' + esc(s.detail) + '</div>' : '') +
@@ -587,10 +587,10 @@
     all.forEach(function (x) { (by[x.process] = by[x.process] || []).push(x); });
     var qs = Object.keys(D.flows).filter(function (k) { return (D.flows[k].questions || []).length; });
     view.innerHTML = '<div><h1 style="display:flex;gap:10px;align-items:center">Review</h1><p class="sub">What process owners need to confirm: decisions flagged in the design sessions, and open questions on draft flows.</p></div>' +
-      '<section class="card sec flagcard"><h2 style="display:flex;gap:8px;align-items:center">' + FLAG + 'Flagged for review <span class="muted" style="font-weight:400">· ' + all.length + '</span></h2>' +
+      '<section class="card sec flagcard"><h2 style="display:flex;gap:8px;align-items:center">' + FLAG + 'Flagged for review<span class="muted" style="font-weight:400"><span class="sep" aria-hidden="true">·</span>' + all.length + '</span></h2>' +
       (all.length ? Object.keys(by).map(function (k) {
         var p = D.byId[k];
-        return '<div style="margin:12px 0 0"><a href="' + hashFor(k) + '" style="font-weight:600">' + esc(k + ' ' + p.name) + '</a><span class="muted"> · owner: ' + esc(p.owner || 'not assigned') + '</span><ul>' + by[k].map(function (x) { return '<li><b>' + esc(x.where) + '.</b> ' + esc(x.text) + '</li>'; }).join('') + '</ul></div>';
+        return '<div style="margin:12px 0 0"><a href="' + hashFor(k) + '" style="font-weight:600">' + esc(k + ' ' + p.name) + '</a><span class="muted"><span class="sep" aria-hidden="true">·</span>owner: ' + esc(p.owner || 'not assigned') + '</span><ul>' + by[k].map(function (x) { return '<li><b>' + esc(x.where) + '.</b> ' + esc(x.text) + '</li>'; }).join('') + '</ul></div>';
       }).join('') : '<p class="muted">Nothing flagged.</p>') + '</section>' +
       '<section class="card sec qs"><h2>Open questions on draft flows</h2>' + qs.map(function (k) {
         return '<div style="margin:12px 0 0"><a href="' + hashFor(k) + '" style="font-weight:600">' + esc(k + ' ' + D.byId[k].name) + '</a><ol>' + D.flows[k].questions.map(function (q) { return '<li>' + esc(q) + '</li>'; }).join('') + '</ol></div>';
