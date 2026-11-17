@@ -3,7 +3,7 @@
 
   var D = { procs: [], byId: {}, kids: {}, systems: [], flows: {}, controls: [] };
   var S = { q: '', level: '1-3', fn: '', system: '', status: '', rel: '', scope: true, flowOnly: false, limit: 250,
-            tq: '', tScope: true, open: {}, sel: null, fit: false };
+            tq: '', tScope: true, open: {}, sel: null, zoom: null, sc: 1, role: '' };
   var view = document.getElementById('view');
   var qInput = document.getElementById('q');
 
@@ -41,6 +41,8 @@
       ['ctl', 'Compliance mapping', 'The framework a process helps satisfy, such as SOC 2, GAAP or CMMC.'],
       ['bu', 'Business unit', 'Where the process applies: Corporate, Managed Services, Professional Services, or All BUs.'],
       ['pri', 'Priority', 'The order processes get documented in: 1 - Now, 2 - Next, 3 - Later.'],
+      ['soc2', 'SOC 2 control', "A control from Sparkhound's SOC 2 control matrix, with an ID like CM-CC6.2-01, mapped to the processes it supports. The code after CM- is the Trust Services Criterion it addresses."],
+      ['tsc', 'Trust Services Criteria', 'The AICPA criteria SOC 2 is audited against: Security (CC1 to CC9), plus Availability (A1), Processing Integrity (PI1), Confidentiality (C1) and Privacy (P1 to P8).'],
       ['links', 'Linked processes', 'What feeds a process (upstream) and what it hands off to (downstream), so work can be followed from lead to cash.']
     ]],
     ['The framework', [
@@ -85,19 +87,76 @@
   function controlsFor(id) { return D.controls.filter(function (c) { return c.process === id || c.process.indexOf(id + '.') === 0; }); }
   function flowsUnder(id) { return Object.keys(D.flows).filter(function (k) { return k === id || k.indexOf(id + '.') === 0; }); }
 
+  /* ---------- Roles: who takes part in a process ---------- */
+  var ROLES = [
+    ['partner', 'Partner (deal owner)', /(?<!Managing )\bPartner\b/],
+    ['sm', 'Sales & Marketing (Marketing, BDR, SDR)', /Marketing|\bBDR\b|\bSDR\b/],
+    ['xo', 'Experience Owner (XO) / Project Controller', /\bXO\b|Experience Owner|Project Controller/],
+    ['eo', 'Executive Owner (EO)', /\bEO\b|Executive Owner/],
+    ['slo', 'Service line owner', /Service line owner/i],
+    ['pl', 'Practice lead / delivery resources', /Practice lead|\bdelivery\b/i],
+    ['mt', 'Managed Technology', /Managed Technology/],
+    ['sd', 'Service Desk practice', /Service Desk/],
+    ['ar', 'AR Clerk / Billing', /\bAR\b|AR Clerk|Billing/],
+    ['fin', 'Finance / Controller (Next Level Now)', /Next Level Now|(?<!Project )Controller|^Finance\b/],
+    ['mpo', 'Managing Partner, Operations', /Managing Partner/],
+    ['ceo', 'CEO', /\bCEO\b/]
+  ];
+  var SOC_ROLES = { 'Exec Mgmt': 'Executive management', 'Board': 'Board of directors', 'HR': 'HR', 'Compliance': 'Compliance', 'Security': 'Security', 'CISO': 'Security',
+    'SOC': 'Security operations (SOC / incident response)', 'IR Team': 'Security operations (SOC / incident response)', 'IT Ops': 'IT operations', 'IT Mgmt': 'IT management',
+    'Change Mgmt': 'IT management', 'Internal Audit': 'Internal audit', 'Network Eng': 'Network and cloud engineering', 'Cloud Eng': 'Network and cloud engineering',
+    'Facilities': 'Facilities', 'Physical Security': 'Facilities', 'DevOps': 'Development', 'Dev': 'Development', 'QA': 'Development', 'Product Mgmt': 'Development',
+    'Procurement': 'Procurement', 'Service Delivery': 'Service delivery', 'Operations': 'Service delivery', 'Data Governance': 'Data governance', 'Legal': 'Legal', 'Privacy': 'Privacy' };
+  function buildRoles() {
+    D.roleIdx = {}; D.roleOpts = [];
+    var add = function (key, id) { (D.roleIdx[key] = D.roleIdx[key] || {})[id] = 1; };
+    var texts = {};
+    var put = function (id, t) { if (t) (texts[id] = texts[id] || []).push(t); };
+    D.procs.forEach(function (p) { put(p.id, p.owner); put(p.id, p.acct); });
+    Object.keys(D.flows).forEach(function (k) {
+      var fl = D.flows[k];
+      fl.lanes.forEach(function (l, i) { if (fl.steps.some(function (st) { return st.lane === i; })) { put(k, l.name); put(k, l.sub); } });
+      fl.steps.forEach(function (st) { put(k, st.who); });
+    });
+    D.controls.forEach(function (c) { put(c.process, c.owner); });
+    Object.keys(texts).forEach(function (id) {
+      texts[id].forEach(function (t) { ROLES.forEach(function (r) { if (r[2].test(t)) add(r[0], id); }); });
+    });
+    ROLES.forEach(function (r) { if (D.roleIdx[r[0]]) D.roleOpts.push(['role:' + r[0], r[1], 'Process roles']); D.roleIdx['role:' + r[0]] = D.roleIdx[r[0]]; });
+    var socLabels = {};
+    D.soc.controls.forEach(function (c) {
+      c.owner.split('/').forEach(function (o) {
+        var lab = SOC_ROLES[o.trim()]; if (!lab) return;
+        socLabels[lab] = 1; c.processes.forEach(function (k) { add('soc:' + lab, k); });
+      });
+    });
+    Object.keys(socLabels).sort().forEach(function (lab) { D.roleOpts.push(['soc:' + lab, lab, 'SOC 2 control owners']); });
+  }
+  function roleLabel(key) { var o = D.roleOpts.filter(function (x) { return x[0] === key; })[0]; return o ? o[1] : ''; }
+  function socFor(id) { return D.socBy[id] || []; }
+  function socUnder(id) {
+    var out = [], seen = {};
+    Object.keys(D.socBy).forEach(function (k) { if (k.indexOf(id + '.') === 0) D.socBy[k].forEach(function (c) { if (!seen[c.id]) { seen[c.id] = 1; out.push(c); } }); });
+    return out;
+  }
+  function socDomain(code) { return D.soc.domains.filter(function (d) { return d.code === code; })[0]; }
+
   function load() {
-    Promise.all(['data/processes.json', 'data/systems.json', 'data/flows.json'].map(function (u) {
+    Promise.all(['data/processes.json', 'data/systems.json', 'data/flows.json', 'data/soc2.json'].map(function (u) {
       return fetch(u).then(function (r) { if (!r.ok) throw new Error(u); return r.json(); });
     })).then(function (res) {
-      D.procs = res[0]; D.systems = res[1]; D.flows = res[2].flows; D.controls = res[2].controls;
+      D.procs = res[0]; D.systems = res[1]; D.flows = res[2].flows; D.controls = res[2].controls; D.soc = res[3];
+      D.socBy = {}; D.soc.controls.forEach(function (c) { c.processes.forEach(function (k) { (D.socBy[k] = D.socBy[k] || []).push(c); }); });
       D.procs.forEach(function (p) {
         D.byId[p.id] = p;
         var par = parentId(p);
         p.parent = par;
         if (par) (D.kids[par] = D.kids[par] || []).push(p.id);
         var kc = controlsFor(p.id).map(function (c) { return c.id + ' ' + c.name; }).join(' ');
-        p.hay = [p.id, p.name, p.owner, p.acct, p.sor, p.sup, p.fn, p.bu, p.ctl, p.kpi, p.notes, kc].join(' ').toLowerCase();
+        var sc2 = (D.socBy[p.id] || []).map(function (c) { return c.id + ' ' + c.tsc + ' ' + c.objective; }).join(' ');
+        p.hay = [p.id, p.name, p.owner, p.acct, p.sor, p.sup, p.fn, p.bu, p.ctl, p.kpi, p.notes, kc, sc2].join(' ').toLowerCase();
       });
+      buildRoles();
       document.getElementById('flowCount').textContent = Object.keys(D.flows).length;
       var nf = 0; Object.keys(D.flows).forEach(function (k) { nf += flagsFor(k).length; }); document.getElementById('flagCount').textContent = nf || '';
       route();
@@ -118,7 +177,7 @@
     if (h === 'taxonomy') { setNav('taxonomy'); return renderTree(); }
     if (h === 'flows') { setNav('flows'); return renderFlows(); }
     if (h === 'systems') { setNav('systems'); return renderSystems(); }
-    if (h === 'controls') { setNav('controls'); return renderControls(); }
+    if (h === 'controls' || h.indexOf('controls/') === 0) { setNav('controls'); return renderControls(h.split('/')[1]); }
     if (h === 'review') { setNav('review'); return renderReview(); }
     if (h === 'glossary' || h.indexOf('glossary/') === 0) { setNav('glossary'); return renderGlossary(h.split('/')[1]); }
     if (h === 'library') { setNav('library'); return renderLibrary(); }
@@ -169,8 +228,8 @@
       '<p class="state">This is a working prototype. ' + nFlows + ' processes have full flows and are being reviewed with their owners now. The other ' + (inScope - nFlows).toLocaleString() + ' in-scope processes are listed with their suggested systems, but aren\'t written up yet.</p></header>' +
 
       '<section><h2>How to use it</h2>' +
-        row('Find a process', 'Type in the search box at the top of any page. It matches process names, owners, systems and controls. To browse instead, use the ' + link('library', 'Library') + ', a filterable table, or the ' + link('taxonomy', 'Taxonomy') + ', the full tree of processes.') +
-        row('Read a flow', link('flows', 'Process flows') + ' lists the processes documented so far. Each flow has one row per role, and the work runs left to right. Select any step to see who does it, in which system, and under which control.') +
+        row('Find a process', 'Type in the search box at the top of any page. It matches process names, owners, systems and controls. To browse instead, use the ' + link('library', 'Library') + ', a filterable table, or the ' + link('taxonomy', 'Taxonomy') + ', the full tree of processes. To see every process your job takes part in, pick your role in the Library\'s Role filter.') +
+        row('Read a flow', link('flows', 'Process flows') + ' lists the processes documented so far. Each flow has one row per role, and the work runs left to right. Select any step to see who does it, in which system, and under which control. Flows open fitted to your screen; use + and − (or Ctrl and the mouse wheel) to zoom in.') +
         row('See what\'s still open', link('review', 'Review') + ' collects the ' + nFlags + ' decisions waiting for a process owner to confirm. Each flow also lists its open questions at the bottom of the page.') +
         row('Check systems and controls', link('systems', 'Systems') + ' shows which system is the record for what from 1/1/2027. ' + link('controls', 'Controls') + ' lists the key controls and the step each one sits on.') +
         row('Look up a term', 'The ' + link('glossary', 'Glossary') + ' explains roles like XO and EO and terms like PCF ID. Words with a dotted underline anywhere on the site show their definition when you point at them.') +
@@ -182,6 +241,7 @@
         row('Accountable leader', 'The leader ultimately answerable for the process. Decisions the process owner can\'t make, and disagreements between teams, go to them.') +
         row('System of record', 'The one system that holds the authoritative data for the process from 1/1/2027. If two systems disagree, the system of record wins. <b>Supporting systems</b> feed it or work alongside it: invoices live in HaloPSA, for example, while Avalara calculates the tax on them.') +
         row('Key controls', 'Checks built into the process so mistakes are prevented or caught. <b>Preventive</b> controls stop a problem before it happens, such as the XO approving an invoice before it is sent. <b>Detective</b> controls find one afterwards, such as reconciling applied payments to bank deposits. Each control has an ID like KC-AR-01, an owner, the system it runs in, and the evidence that proves it ran. They are all listed on ' + link('controls', 'Controls') + '.') +
+        row('SOC 2 controls', 'The controls from Sparkhound\'s SOC 2 control matrix, with IDs like CM-CC6.2-01. Each one is mapped to the processes it supports, so a process page shows the SOC 2 controls that depend on it, and ' + link('controls', 'Controls') + ' lists every control with its owner, frequency and how it is tested.') +
         row('Compliance mapping', 'The framework the process helps satisfy, such as SOC 2, GAAP or CMMC. Auditors and the compliance team use it to find every process behind a requirement.') +
         row('Status', 'How far the documentation has got. ' + pill('Not Started') + ' nothing written yet. ' + pill('Draft') + ' written but not checked. ' + pill('In Review') + ' waiting for the process owner to confirm. ' + pill('Published') + ' confirmed and current. ' + pill('Needs Update') + ' out of date with how the work is really done.') +
         row('Open questions and flags', '<b>Open questions</b> are things still unknown, listed at the bottom of a flow. <b>Flags</b> are decisions already made in a design session that the owner still has to confirm. Both are cleared in review.') +
@@ -218,6 +278,7 @@
       if (S.status && p.status !== S.status) return false;
       if (S.rel && p.rel !== S.rel) return false;
       if (S.flowOnly && !flowsUnder(p.id).length) return false;
+      if (S.role && !(D.roleIdx[S.role] || {})[p.id]) return false;
       if (sys && (p.sor + ' ' + p.sup).toLowerCase().indexOf(sys) < 0) return false;
       if (q && p.hay.indexOf(q) < 0) return false;
       return true;
@@ -241,6 +302,9 @@
         '<label><span>' + term('sor', 'System') + '</span><select id="fSys">' + opts(D.systems.filter(function (s) { return s.status !== 'Retired'; }).map(function (s) { return [sysKey(s.name), s.name]; }), S.system, 'All systems') + '</select></label>' +
         '<label><span>' + term('status', 'Status') + '</span><select id="fSt">' + opts(['Not Started', 'Draft', 'In Review', 'Published', 'Needs Update'], S.status, 'All statuses') + '</select></label>' +
         '<label><span>' + term('relevance', 'Relevance') + '</span><select id="fRel">' + opts(['Core', 'Supporting', 'Not Applicable'], S.rel, 'All') + '</select></label>' +
+        '<label><span>Role</span><select id="fRole"><option value="">All roles</option>' + ['Process roles', 'SOC 2 control owners'].map(function (g) {
+          return '<optgroup label="' + g + '">' + D.roleOpts.filter(function (o) { return o[2] === g; }).map(function (o) { return '<option value="' + esc(o[0]) + '"' + (o[0] === S.role ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</optgroup>';
+        }).join('') + '</select></label>' +
         '<label class="chk"><input type="checkbox" id="fScope"' + (S.scope ? ' checked' : '') + '> In scope only</label>' +
         '<label class="chk"><input type="checkbox" id="fFlow"' + (S.flowOnly ? ' checked' : '') + '> Has a process flow</label>' +
       '</div>' +
@@ -248,6 +312,7 @@
     var bind = function (id, key, prop) {
       document.getElementById(id).addEventListener('change', function (e) { S[key] = prop ? e.target.checked : e.target.value; S.limit = 250; renderLibraryBody(); });
     };
+    document.getElementById('fRole').addEventListener('change', function (e) { S.role = e.target.value; S.limit = 250; if (S.role && S.level === '1-3') S.level = ''; renderLibrary(); document.getElementById('fRole').focus(); });
     bind('fLevel', 'level'); bind('fFn', 'fn'); bind('fSys', 'system'); bind('fSt', 'status'); bind('fRel', 'rel'); bind('fScope', 'scope', 1); bind('fFlow', 'flowOnly', 1);
     renderLibraryBody();
   }
@@ -258,21 +323,21 @@
     if (!rows.length) {
       el.innerHTML = '<div class="card empty"><p style="margin:0 0 12px">No processes match ' + (S.q ? '“' + esc(S.q) + '” with these filters' : 'these filters') + '.</p><button class="btn" id="clearAll">Clear search and filters</button></div>';
       document.getElementById('clearAll').addEventListener('click', function () {
-        S.q = ''; qInput.value = ''; S.level = '1-3'; S.fn = ''; S.system = ''; S.status = ''; S.rel = ''; S.scope = true; S.flowOnly = false; S.limit = 250;
+        S.q = ''; qInput.value = ''; S.level = '1-3'; S.fn = ''; S.system = ''; S.status = ''; S.rel = ''; S.role = ''; S.scope = true; S.flowOnly = false; S.limit = 250;
         renderLibrary(); qInput.focus();
       });
       return;
     }
-    el.innerHTML = '<div class="card tablewrap"><table><thead><tr><th>' + term('pcf', 'PCF ID') + '</th><th>Process</th><th>' + term('level', 'Level') + '</th><th>Process owner</th><th>' + term('fn', 'Function') + '</th><th>' + term('sor', 'System of record') + '</th><th>' + term('kc', 'Controls') + '</th><th>Flow</th><th>' + term('status', 'Status') + '</th></tr></thead><tbody>' +
+    el.innerHTML = '<div class="card tablewrap"><table><thead><tr><th>' + term('pcf', 'PCF ID') + '</th><th>Process</th><th>' + term('level', 'Level') + '</th><th>Process owner</th><th>' + term('fn', 'Function') + '</th><th>' + term('sor', 'System of record') + '</th><th>' + term('kc', 'Controls') + '</th><th>' + term('soc2', 'SOC 2') + '</th><th>Flow</th><th>' + term('status', 'Status') + '</th></tr></thead><tbody>' +
       shown.map(function (p) {
-        var kc = controlsFor(p.id).length, fl = D.flows[p.id];
+        var kc = controlsFor(p.id).length, s2 = socFor(p.id).length, fl = D.flows[p.id];
         return '<tr' + (fl ? ' class="hl"' : '') + '><td class="mono" style="color:var(--muted)">' + esc(p.id) + '</td>' +
           '<td style="padding-left:' + (12 + (p.lvl - 1) * 20) + 'px;' + (p.lvl === 1 ? 'font-weight:600' : '') + '"><a href="' + hashFor(p.id) + '">' + esc(p.name) + '</a></td>' +
           '<td><span class="lvl">L' + p.lvl + '</span></td><td>' + esc(p.owner) + '</td><td style="color:var(--ink2)">' + esc(p.fn) + '</td>' +
-          '<td style="color:var(--ink2)">' + esc(p.sor) + '</td><td style="text-align:center">' + (kc || '') + '</td>' +
+          '<td style="color:var(--ink2)">' + esc(p.sor) + '</td><td style="text-align:center">' + (kc || '') + '</td><td style="text-align:center">' + (s2 || '') + '</td>' +
           '<td>' + (fl ? '<a href="' + hashFor(p.id) + '">View</a>' : '') + '</td><td>' + pill(p.status) + '</td></tr>';
       }).join('') + '</tbody></table></div>' +
-      '<div style="display:flex;gap:12px;align-items:center;margin-top:10px"><span class="muted">Showing ' + shown.length + ' of ' + rows.length + ' matching processes</span>' +
+      '<div style="display:flex;gap:12px;align-items:center;margin-top:10px"><span class="muted">Showing ' + shown.length + ' of ' + rows.length + ' matching processes' + (S.role ? ' that include ' + esc(roleLabel(S.role)) : '') + '</span>' +
       (rows.length > shown.length ? '<button class="btn" id="more">Show more</button>' : '') + '</div>';
     var m = document.getElementById('more');
     if (m) m.addEventListener('click', function () { S.limit += 500; renderLibraryBody(); });
@@ -353,7 +418,7 @@
       html += '<section class="card" aria-label="Process flow">' +
         '<div class="sec" style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;justify-content:space-between;padding-bottom:6px">' +
           '<div><h2 style="margin:0">Process flow<span class="muted" style="font-weight:400"><span class="sep" aria-hidden="true">·</span>' + esc(flow.span) + '</span></h2><p class="muted" style="margin:4px 0 0">' + esc(flow.summary) + ' Select a step for details.</p></div>' +
-          '<button class="btn" id="fitBtn" type="button">' + (S.fit ? 'Actual size' : 'Fit to width') + '</button>' +
+          '<div class="zoom" role="group" aria-label="Zoom"><button class="btn zbtn" id="zOut" type="button" aria-label="Zoom out">−</button><button class="btn" id="zFit" type="button">Fit to width</button><span class="zlvl" id="zLvl" aria-live="polite"></span><button class="btn zbtn" id="zIn" type="button" aria-label="Zoom in">+</button></div>' +
         '</div>' +
         '<details class="legendbox"' + (window.innerWidth > 860 ? ' open' : '') + '><summary>How to read this flow</summary><div class="legend">' + legend() + '</div></details>' +
         '<div class="flowbody"><div class="lanewrap" id="laneWrap"></div>' +
@@ -400,12 +465,30 @@
     html += '<section class="card sec"><h2>Controls</h2>' + (kcs.length ? kcs.map(function (c) {
       return '<div style="margin-bottom:10px"><span class="chip kc">' + esc(c.id) + '</span> <strong style="font-size:14px">' + esc(c.name) + '</strong><div class="muted" style="margin-top:2px">' + esc(c.description) + '</div></div>'; }).join('') : '<p class="muted" style="margin:0">No key controls documented yet.</p>') +
       (p.ctl ? '<div class="fl" style="margin-top:6px">Compliance mapping</div><div class="fv">' + sys(p.ctl) + '</div>' : '') + '</section>';
+    var s2 = socFor(id), s2u = socUnder(id).filter(function (c) { return s2.indexOf(c) < 0; });
+    if (s2.length || s2u.length) {
+      html += '<section class="card sec"><h2>' + term('soc2', 'SOC 2 controls') + '</h2>' + s2.map(function (c) {
+        return '<div class="soc-item"><a class="chip soc" href="#controls/' + esc(c.id) + '">' + esc(c.id) + '</a> <strong>' + esc(c.objective) + '</strong><div class="muted">' + esc(c.tsc) + '<span class="sep" aria-hidden="true">·</span>' + esc(c.owner) + '<span class="sep" aria-hidden="true">·</span>' + esc(c.freq) + '</div></div>';
+      }).join('') + (s2u.length ? '<p class="muted" style="margin:' + (s2.length ? '10px' : '0') + ' 0 0">' + (s2.length ? 'Plus ' : '') + s2u.length + ' SOC 2 control' + (s2u.length === 1 ? '' : 's') + ' on its sub-processes: ' + s2u.map(function (c) { return '<a href="#controls/' + esc(c.id) + '">' + esc(c.id) + '</a>'; }).join(', ') + '.</p>' : '') + '</section>';
+    }
     html += '</div></div>';
     view.innerHTML = html;
     if (flow) {
-      S.step = null;
+      S.step = null; S.zoom = null;
       drawFlow(flow);
-      document.getElementById('fitBtn').addEventListener('click', function (e) { S.fit = !S.fit; e.target.textContent = S.fit ? 'Actual size' : 'Fit to width'; drawFlow(flow); });
+      var zoomTo = function (z) {
+        var w = document.getElementById('laneWrap'), old = S.sc;
+        var cx = (w.scrollLeft + w.clientWidth / 2) / old, cy = (w.scrollTop + w.clientHeight / 2) / old;
+        S.zoom = z; drawFlow(flow);
+        w.scrollLeft = cx * S.sc - w.clientWidth / 2; w.scrollTop = cy * S.sc - w.clientHeight / 2;
+      };
+      document.getElementById('zIn').addEventListener('click', function () { zoomTo(Math.min(2, Math.round(S.sc * 1.25 * 20) / 20)); });
+      document.getElementById('zOut').addEventListener('click', function () { zoomTo(Math.max(0.3, Math.round(S.sc / 1.25 * 20) / 20)); });
+      document.getElementById('zFit').addEventListener('click', function () { zoomTo(null); });
+      document.getElementById('laneWrap').addEventListener('wheel', function (e) {
+        if (!e.ctrlKey) return; e.preventDefault();
+        zoomTo(e.deltaY < 0 ? Math.min(2, Math.round(S.sc * 1.1 * 20) / 20) : Math.max(0.3, Math.round(S.sc / 1.1 * 20) / 20));
+      }, { passive: false });
     }
   }
   function f(label, val, raw) { return '<div><div class="fl">' + label + '</div><div class="fv">' + (raw ? (val || '—') : esc(val || '—')) + '</div></div>'; }
@@ -494,13 +577,17 @@
     html += '</div>';
     wrap.innerHTML = '<div id="scaleBox">' + html + '</div>';
     var box = document.getElementById('scaleBox'), inner = document.getElementById('lanesInner');
-    if (S.fit) {
-      var sc = Math.min(1, (wrap.clientWidth - 2) / W);
-      inner.style.transform = 'scale(' + sc + ')'; inner.style.transformOrigin = '0 0';
-      box.style.width = (W * sc) + 'px'; box.style.height = (H * sc) + 'px';
-    }
+    var fitSc = Math.min(1, (wrap.clientWidth - 2) / W);
+    var sc = S.zoom == null ? fitSc : S.zoom;
+    S.sc = sc;
+    inner.style.transform = 'scale(' + sc + ')'; inner.style.transformOrigin = '0 0';
+    box.style.width = (W * sc) + 'px'; box.style.height = (H * sc) + 'px';
+    var zl = document.getElementById('zLvl'), zf = document.getElementById('zFit');
+    if (zl) zl.textContent = Math.round(sc * 100) + '%';
+    if (zf) zf.setAttribute('aria-pressed', S.zoom == null ? 'true' : 'false');
     var labs = wrap.querySelectorAll('.lanelab');
-    wrap.onscroll = function () { var x = S.fit ? 0 : wrap.scrollLeft; Array.prototype.forEach.call(labs, function (l) { l.style.left = x + 'px'; }); };
+    wrap.onscroll = function () { var x = wrap.scrollLeft / sc; Array.prototype.forEach.call(labs, function (l) { l.style.left = x + 'px'; }); };
+    wrap.onscroll();
     Array.prototype.forEach.call(wrap.querySelectorAll('.node'), function (b) {
       b.addEventListener('click', function () { selectStep(flow, b.getAttribute('data-step')); });
       if (b.getAttribute('data-step') === S.step) b.classList.add('sel');
@@ -514,13 +601,13 @@
     var wasHidden = panel.hidden;
     S.step = id; panel.hidden = false;
     showStep(flow, s);
-    if (wasHidden && S.fit) drawFlow(flow);
+    if (wasHidden && S.zoom == null) drawFlow(flow);
     var node = null;
     Array.prototype.forEach.call(wrap.querySelectorAll('.node'), function (x) { x.classList.toggle('sel', x.getAttribute('data-step') === id); if (x.getAttribute('data-step') === id) node = x; });
-    if (node && !S.fit) {
-      var nl = node.offsetLeft, nr = nl + node.offsetWidth, vl = wrap.scrollLeft + 180, vr = wrap.scrollLeft + wrap.clientWidth - 16;
+    if (node) {
+      var k = S.sc, nl = node.offsetLeft * k, nr = nl + node.offsetWidth * k, vl = wrap.scrollLeft + 180 * k, vr = wrap.scrollLeft + wrap.clientWidth - 16;
       if (nr > vr) wrap.scrollLeft += nr - vr; else if (nl < vl) wrap.scrollLeft -= vl - nl;
-      var nt = node.offsetTop, nb = nt + node.offsetHeight;
+      var nt = node.offsetTop * k, nb = nt + node.offsetHeight * k;
       if (nb > wrap.scrollTop + wrap.clientHeight) wrap.scrollTop = nb - wrap.clientHeight + 16; else if (nt < wrap.scrollTop) wrap.scrollTop = nt - 16;
     }
     var h = document.getElementById('stepTitle');
@@ -530,7 +617,7 @@
   function closeStep(flow) {
     var panel = document.getElementById('stepPanel'); if (!panel || panel.hidden) return;
     var id = S.step; S.step = null; panel.hidden = true;
-    if (S.fit) drawFlow(flow);
+    if (S.zoom == null) drawFlow(flow);
     var wrap = document.getElementById('laneWrap'), back = null;
     Array.prototype.forEach.call(wrap.querySelectorAll('.node'), function (x) { x.classList.remove('sel'); if (x.getAttribute('data-step') === id) back = x; });
     if (back) back.focus();
@@ -559,13 +646,13 @@
   /* ---------- Flows, systems, controls ---------- */
   function renderFlows() {
     var keys = Object.keys(D.flows);
-    var groups = [['Sell work', ['3.5.1', '3.5.3', '3.5.4']], ['Do work', ['5.4', '6.2.2']], ['Bill work', ['9.2.2', '9.2.3', '9.2.4']]];
+    var groups = [['Sales', ['3.5.1', '3.5.3', '3.5.4']], ['Operations', ['5.4', '6.2.2']], ['Finance', ['9.2.2', '9.2.3', '9.2.4']]];
     var card = function (k) {
         var fl = D.flows[k], p = D.byId[k], kc = controlsFor(k).length;
         return '<a class="card flowcard" href="' + hashFor(k) + '"><span class="mono" style="color:var(--muted)">' + esc(k) + '</span><strong style="font-size:16px">' + esc(p.name) + '</strong><span class="muted">' + esc(fl.summary) + '</span>' +
           '<span style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><span class="chip">' + plural(fl.steps.length, 'step', 'steps') + '</span><span class="chip">' + plural(fl.lanes.length, 'lane', 'lanes') + '</span>' + (kc ? '<span class="chip kc">' + plural(kc, 'control', 'controls') + '</span>' : '') + (flagsFor(k).length ? '<span class="chip flagchip">' + FLAG + ' ' + flagsFor(k).length + ' to review</span>' : '') + pill(p.status) + '</span></a>';
     };
-    view.innerHTML = '<div><h1>Process flows</h1><p class="sub">Swimlane flows with owners, systems and controls on every step: how Sparkhound sells, delivers and bills work. ' + keys.length + ' documented.</p></div>' +
+    view.innerHTML = '<div><h1>Process flows</h1><p class="sub">Swimlane flows with owners, systems and controls on every step, across Sales, Operations and Finance. ' + keys.length + ' documented.</p></div>' +
       groups.map(function (g) { var ks = g[1].filter(function (k) { return D.flows[k]; }); return ks.length ? '<h2 style="margin:6px 0 0">' + g[0] + '</h2><div class="flowcards">' + ks.map(card).join('') + '</div>' : ''; }).join('') +
       (function () { var rest = keys.filter(function (k) { return !groups.some(function (g) { return g[1].indexOf(k) >= 0; }); }); return rest.length ? '<h2 style="margin:6px 0 0">Other</h2><div class="flowcards">' + rest.map(card).join('') + '</div>' : ''; })();
   }
@@ -587,20 +674,43 @@
     });
   }
 
-  function renderControls() {
+  function renderControls(sel) {
     var maps = {};
     D.procs.forEach(function (p) { if (p.scope === 'Yes' && p.ctl) maps[p.ctl] = (maps[p.ctl] || 0) + 1; });
     var mk = Object.keys(maps).sort(function (a, b) { return maps[b] - maps[a]; });
-    view.innerHTML = '<div><h1>Controls</h1><p class="sub">Key controls documented in process flows, and the compliance frameworks mapped across the library.</p></div>' +
+    view.innerHTML = '<div><h1>Controls</h1><p class="sub">Key controls built into the process flows, Sparkhound\'s SOC 2 controls and the processes they support, and the compliance frameworks mapped across the library.</p></div>' +
       '<section class="card tablewrap"><div class="sec" style="padding-bottom:6px"><h2 style="margin:0">Key controls</h2><p class="muted" style="margin:4px 0 0">Control IDs are proposed.</p></div><table><thead><tr><th>ID</th><th>Control</th><th>Process</th><th>Type</th><th>Owner</th><th>System</th><th>Evidence</th></tr></thead><tbody>' +
       D.controls.map(function (c) {
         return '<tr><td><span class="chip kc">' + esc(c.id) + '</span></td><td><strong>' + esc(c.name) + '</strong><div class="muted" style="margin-top:2px;max-width:420px">' + esc(c.description) + '</div></td><td><a href="' + hashFor(c.process) + '">' + esc(c.process + ' ' + D.byId[c.process].name) + '</a><div class="muted">Step ' + esc(c.step) + '</div></td><td>' + esc(c.type) + '</td><td>' + esc(c.owner) + '</td><td>' + esc(c.system) + '</td><td class="muted">' + esc(c.evidence) + '</td></tr>';
       }).join('') + '</tbody></table></section>' +
+      socSection() +
       '<section class="card tablewrap"><div class="sec" style="padding-bottom:6px"><h2 style="margin:0">Compliance mapping</h2></div><table><thead><tr><th>Framework / area</th><th style="text-align:right">In-scope processes</th></tr></thead><tbody>' +
       mk.map(function (k) { return '<tr><td><a href="#library" data-q="' + esc(k) + '">' + esc(k) + '</a></td><td style="text-align:right">' + maps[k] + '</td></tr>'; }).join('') + '</tbody></table></section>';
     Array.prototype.forEach.call(view.querySelectorAll('[data-q]'), function (a) {
       a.addEventListener('click', function () { S.q = a.getAttribute('data-q'); qInput.value = S.q; S.level = ''; S.system = ''; });
     });
+    var hit = sel && document.getElementById('soc-' + sel);
+    if (hit) { hit.closest('details').open = true; hit.classList.add('hit'); hit.scrollIntoView({ block: 'center' }); hit.setAttribute('tabindex', '-1'); hit.focus({ preventScroll: true }); }
+  }
+  function socSection() {
+    var procLink = function (k) { var p = D.byId[k]; return p ? '<a href="' + hashFor(k) + '">' + esc(k + ' ' + p.name) + '</a>' : esc(k); };
+    return '<section class="card"><div class="sec" style="padding-bottom:4px"><h2 style="margin:0">' + term('soc2', 'SOC 2 controls') + '</h2>' +
+      '<p class="muted" style="margin:4px 0 0;max-width:80ch">' + D.soc.controls.length + ' controls from the SOC 2 Master Control Matrix, grouped by ' + term('tsc', 'Trust Services Criteria') + ' domain, each mapped to the library processes it supports. Readiness status is not shown here while it is being worked.</p></div>' +
+      D.soc.domains.map(function (d) {
+        var cs = D.soc.controls.filter(function (c) { return c.domain === d.code; }); if (!cs.length) return '';
+        return '<details class="socdom"><summary><span class="mono">' + esc(d.code) + '</span> ' + esc(d.name) + '<span class="sep" aria-hidden="true">·</span><span class="muted">' + plural(cs.length, 'control', 'controls') + '</span>' +
+          (d.inScope ? '<span class="pill st-InReview" style="margin-left:10px">In audit scope</span>' : '<span class="pill st-NotStarted" style="margin-left:10px">Not in current audit scope</span>') + '</summary>' +
+          '<div class="tablewrap"><table class="soctable"><thead><tr><th>ID</th><th>Control</th><th>Type and frequency</th><th>Owner</th><th>Supports processes</th></tr></thead><tbody>' +
+          cs.map(function (c) {
+            return '<tr id="soc-' + esc(c.id) + '"><td><span class="chip soc">' + esc(c.id) + '</span><div class="muted" style="margin-top:4px">' + esc(c.tsc) + '</div></td>' +
+              '<td><strong>' + esc(c.objective) + '</strong><div class="soc-act">' + esc(c.activity) + '</div>' +
+              '<details class="soctest"><summary>Evidence and testing</summary><dl>' +
+                '<dt>Design test (Type 1)</dt><dd>' + esc(c.design) + '</dd><dt>Operating test (Type 2)</dt><dd>' + esc(c.operating) + '</dd>' +
+                '<dt>References</dt><dd class="mono" style="font-size:12px">' + esc(c.evidence.concat(c.interview, c.test).join(', ')) + '</dd></dl></details></td>' +
+              '<td>' + esc(c.type) + '<div class="muted">' + esc(c.freq) + '</div></td><td>' + esc(c.owner) + '</td>' +
+              '<td class="soc-procs">' + c.processes.map(procLink).join('') + '</td></tr>';
+          }).join('') + '</tbody></table></div></details>';
+      }).join('') + '</section>';
   }
 
   function renderGlossary(key) {

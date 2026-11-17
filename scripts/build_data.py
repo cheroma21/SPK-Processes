@@ -35,7 +35,7 @@ for name in wb.sheetnames:
             "metrics": metrics.get(h, 0),
         })
 
-# Decisions from the 3.5 sell-work walkthrough (11/17/2026)
+# Decisions from the 3.5 Sales walkthrough (11/17/2026)
 DH, CH = "Derrick Helms (Sales & Marketing)", "Curtis Heroman (Managing Partner, Operations)"
 over = {
     "3.5":   dict(owner="Derrick Helms", acct=DH, status="In Review"),

@@ -52,7 +52,7 @@
    "type": "Preventive",
    "owner": "Experience Owner (XO)",
    "system": "HaloPSA",
-   "description": "The XO confirms the auto-created project and sales order match the executed SOW and records acceptance in Halo. Sell work ends and delivery starts only after acceptance.",
+   "description": "The XO confirms the auto-created project and sales order match the executed SOW and records acceptance in Halo. Sales hands the work to Operations only after acceptance.",
    "evidence": "Halo acceptance field / action on the project"
   },
   {
@@ -644,7 +644,7 @@
   "3.5.4": {
    "title": "Manage sales orders",
    "span": "Closed Won → XO acceptance",
-   "summary": "Halo builds the records; the XO runs the handoff and accepts it, which ends sell work.",
+   "summary": "Halo builds the records; the XO runs the handoff and accepts it, which hands the work from Sales to Operations.",
    "lanes": [
     {
      "name": "Systems",
@@ -833,7 +833,8 @@
      "type": "end",
      "lane": 2,
      "col": 7,
-     "title": "End: sell work ends, do work begins"
+     "title": "End: handed to Operations (5.4 Deliver service)",
+     "link": "5.4"
     }
    ]
   },

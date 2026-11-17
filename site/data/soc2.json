@@ -1,0 +1,2226 @@
+{
+ "source": "SOC 2 Master Control Matrix (Mock Audit Program, Deliverable #3)",
+ "domains": [
+  {
+   "code": "CC1",
+   "name": "Control Environment",
+   "inScope": true
+  },
+  {
+   "code": "CC2",
+   "name": "Communication and Information",
+   "inScope": true
+  },
+  {
+   "code": "CC3",
+   "name": "Risk Assessment",
+   "inScope": true
+  },
+  {
+   "code": "CC4",
+   "name": "Monitoring Activities",
+   "inScope": true
+  },
+  {
+   "code": "CC5",
+   "name": "Control Activities",
+   "inScope": true
+  },
+  {
+   "code": "CC6",
+   "name": "Logical and Physical Access",
+   "inScope": true
+  },
+  {
+   "code": "CC7",
+   "name": "System Operations",
+   "inScope": true
+  },
+  {
+   "code": "CC8",
+   "name": "Change Management",
+   "inScope": true
+  },
+  {
+   "code": "CC9",
+   "name": "Risk Mitigation",
+   "inScope": true
+  },
+  {
+   "code": "A1",
+   "name": "Availability",
+   "inScope": false
+  },
+  {
+   "code": "PI1",
+   "name": "Processing Integrity",
+   "inScope": false
+  },
+  {
+   "code": "C1",
+   "name": "Confidentiality",
+   "inScope": false
+  },
+  {
+   "code": "P",
+   "name": "Privacy",
+   "inScope": false
+  }
+ ],
+ "controls": [
+  {
+   "id": "CM-CC1.1-01",
+   "tsc": "CC1.1",
+   "domain": "CC1",
+   "objective": "Establish and communicate commitment to integrity and ethical values",
+   "activity": "Maintain a Code of Conduct / Ethics Policy that is reviewed annually by management, distributed to all personnel, and requires signed acknowledgment upon hire and annually thereafter.",
+   "type": "Preventive",
+   "freq": "Annual",
+   "owner": "Exec Mgmt / HR",
+   "evidence": [
+    "EVD-041",
+    "EVD-049"
+   ],
+   "interview": [
+    "INT-001"
+   ],
+   "test": [
+    "TP-CC1.1a"
+   ],
+   "design": "Inspect policy; verify approval date and distribution mechanism",
+   "operating": "Sample employee acknowledgments over review period; verify annual refresh",
+   "processes": [
+    "12.4.1",
+    "7.3.1"
+   ]
+  },
+  {
+   "id": "CM-CC1.1-02",
+   "tsc": "CC1.1",
+   "domain": "CC1",
+   "objective": "Enforce ethical standards and accountability",
+   "activity": "Implement a whistleblower / ethics hotline or reporting mechanism that allows anonymous reporting of policy violations. Investigate all reports and document resolution.",
+   "type": "Detective",
+   "freq": "Ongoing",
+   "owner": "Exec Mgmt / Compliance",
+   "evidence": [
+    "EVD-050"
+   ],
+   "interview": [
+    "INT-001"
+   ],
+   "test": [
+    "TP-CC1.1b"
+   ],
+   "design": "Verify reporting mechanism exists and is communicated",
+   "operating": "Inspect investigation logs; verify timely resolution of reports",
+   "processes": [
+    "12.4.1",
+    "7.4.4"
+   ]
+  },
+  {
+   "id": "CM-CC1.2-01",
+   "tsc": "CC1.2",
+   "domain": "CC1",
+   "objective": "Ensure board/management oversight of internal controls",
+   "activity": "Board of Directors or equivalent governing body meets at least quarterly to review the entity's risk profile, security posture, compliance status, and internal control effectiveness. Minutes document key decisions.",
+   "type": "Preventive",
+   "freq": "Quarterly",
+   "owner": "Board / Exec Mgmt",
+   "evidence": [
+    "EVD-045"
+   ],
+   "interview": [
+    "INT-001"
+   ],
+   "test": [
+    "TP-CC1.2a"
+   ],
+   "design": "Inspect charter/bylaws defining oversight responsibilities; review most recent minutes",
+   "operating": "Inspect meeting minutes for all quarters in review period; verify security/compliance agenda items",
+   "processes": [
+    "12.3",
+    "12.3.2"
+   ]
+  },
+  {
+   "id": "CM-CC1.3-01",
+   "tsc": "CC1.3",
+   "domain": "CC1",
+   "objective": "Define organizational structure with clear authority and accountability",
+   "activity": "Maintain and publish a current organizational chart that clearly defines reporting lines, segregation of duties, and security/IT/compliance roles and responsibilities.",
+   "type": "Preventive",
+   "freq": "Annual",
+   "owner": "HR / Exec Mgmt",
+   "evidence": [
+    "EVD-018",
+    "EVD-019"
+   ],
+   "interview": [
+    "INT-001",
+    "INT-002"
+   ],
+   "test": [
+    "TP-CC1.3a"
+   ],
+   "design": "Inspect org chart; verify key roles documented with clear reporting lines",
+   "operating": "Compare org chart to actual staffing; verify updates reflect personnel changes during period",
+   "processes": [
+    "1.2.5"
+   ]
+  },
+  {
+   "id": "CM-CC1.3-02",
+   "tsc": "CC1.3",
+   "domain": "CC1",
+   "objective": "Document security roles and responsibilities",
+   "activity": "Maintain written job descriptions for all security, IT, and compliance roles that include specific control responsibilities. Review and update upon role changes.",
+   "type": "Preventive",
+   "freq": "Annual",
+   "owner": "HR",
+   "evidence": [
+    "EVD-019",
+    "EVD-051"
+   ],
+   "interview": [
+    "INT-005"
+   ],
+   "test": [
+    "TP-CC1.3b"
+   ],
+   "design": "Inspect job descriptions for key security/IT roles",
+   "operating": "Verify job descriptions updated when roles changed during review period",
+   "processes": [
+    "7.1.4",
+    "7.2.1"
+   ]
+  },
+  {
+   "id": "CM-CC1.4-01",
+   "tsc": "CC1.4",
+   "domain": "CC1",
+   "objective": "Attract and retain competent security personnel",
+   "activity": "Perform background checks (criminal, employment verification, education verification) on all new hires and contractors with access to production systems or sensitive data, prior to granting access.",
+   "type": "Preventive",
+   "freq": "Per event",
+   "owner": "HR",
+   "evidence": [
+    "EVD-022"
+   ],
+   "interview": [
+    "INT-005"
+   ],
+   "test": [
+    "TP-CC1.4a"
+   ],
+   "design": "Verify background check policy and procedures exist",
+   "operating": "Sample new hires during period; verify background check completed before access granted",
+   "processes": [
+    "7.2.3"
+   ]
+  },
+  {
+   "id": "CM-CC1.4-02",
+   "tsc": "CC1.4",
+   "domain": "CC1",
+   "objective": "Develop security competencies across the organization",
+   "activity": "Deliver security awareness training to all personnel upon hire and at least annually. Training covers phishing, social engineering, acceptable use, data handling, and incident reporting. Completion is tracked and verified.",
+   "type": "Preventive",
+   "freq": "Annual",
+   "owner": "Security / HR",
+   "evidence": [
+    "EVD-021"
+   ],
+   "interview": [
+    "INT-005",
+    "INT-015"
+   ],
+   "test": [
+    "TP-CC1.4b"
+   ],
+   "design": "Inspect training program content and delivery mechanism",
+   "operating": "Verify completion records for all active employees during review period; check for gaps",
+   "processes": [
+    "7.3.4"
+   ]
+  },
+  {
+   "id": "CM-CC1.4-03",
+   "tsc": "CC1.4",
+   "domain": "CC1",
+   "objective": "Provide role-based technical training",
+   "activity": "Provide specialized technical training to IT and security personnel based on job function (e.g., secure coding, incident response, cloud security, SOC operations). Track certifications and continuing education.",
+   "type": "Preventive",
+   "freq": "Annual",
+   "owner": "Security / IT Mgmt",
+   "evidence": [
+    "EVD-052"
+   ],
+   "interview": [
+    "INT-003",
+    "INT-005"
+   ],
+   "test": [
+    "TP-CC1.4c"
+   ],
+   "design": "Verify training plans exist for technical roles",
+   "operating": "Sample technical staff; verify training completion and certification currency during period",
+   "processes": [
+    "7.3.4",
+    "7.3.3"
+   ]
+  },
+  {
+   "id": "CM-CC1.5-01",
+   "tsc": "CC1.5",
+   "domain": "CC1",
+   "objective": "Hold individuals accountable for control responsibilities",
+   "activity": "Include information security responsibilities in employee performance evaluations. Document consequences for policy violations in the employee handbook and enforce consistently.",
+   "type": "Preventive",
+   "freq": "Annual",
+   "owner": "HR / Exec Mgmt",
+   "evidence": [
+    "EVD-041",
+    "EVD-053"
+   ],
+   "interview": [
+    "INT-001",
+    "INT-005"
+   ],
+   "test": [
+    "TP-CC1.5a"
+   ],
+   "design": "Inspect performance evaluation template for security criteria; verify disciplinary policy",
+   "operating": "Sample performance reviews; verify security responsibilities evaluated",
+   "processes": [
+    "7.3.2"
+   ]
+  },
+  {
+   "id": "CM-CC2.1-01",
+   "tsc": "CC2.1",
+   "domain": "CC2",
+   "objective": "Generate relevant security information for decision-making",
+   "activity": "Produce and distribute regular security reports (dashboard metrics, vulnerability status, incident summary, compliance status) to management at least monthly. Reports include KPIs/KRIs with trend analysis.",
+   "type": "Detective",
+   "freq": "Monthly",
+   "owner": "Security / CISO",
+   "evidence": [
+    "EVD-017",
+    "EVD-054"
+   ],
+   "interview": [
+    "INT-003"
+   ],
+   "test": [
+    "TP-CC2.1a"
+   ],
+   "design": "Inspect report template and distribution list",
+   "operating": "Inspect monthly reports for all months in review period; verify management review/acknowledgment",
+   "processes": [
+    "8.3.3",
+    "13.7.3"
+   ]
+  },
+  {
+   "id": "CM-CC2.1-02",
+   "tsc": "CC2.1",
+   "domain": "CC2",
+   "objective": "Maintain quality information for internal controls",
+   "activity": "Maintain a centralized document management system (DMS) or knowledge base for all security policies, procedures, standards, and guidelines. Implement version control with review/approval workflows.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Security / Compliance",
+   "evidence": [
+    "EVD-023",
+    "EVD-024"
+   ],
+   "interview": [
+    "INT-003",
+    "INT-004"
+   ],
+   "test": [
+    "TP-CC2.1b"
+   ],
+   "design": "Inspect DMS structure and version control mechanism",
+   "operating": "Verify policy updates followed version control process during period",
+   "processes": [
+    "13.6.5",
+    "13.5.3"
+   ]
+  },
+  {
+   "id": "CM-CC2.2-01",
+   "tsc": "CC2.2",
+   "domain": "CC2",
+   "objective": "Communicate security objectives and responsibilities internally",
+   "activity": "Distribute security policies and updates to all personnel through established channels (email, intranet, team meetings). Maintain acknowledgment records for critical policy updates.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Security / HR",
+   "evidence": [
+    "EVD-023",
+    "EVD-041"
+   ],
+   "interview": [
+    "INT-001",
+    "INT-003"
+   ],
+   "test": [
+    "TP-CC2.2a"
+   ],
+   "design": "Inspect communication channels and recent policy distributions",
+   "operating": "Verify policy updates communicated timely during period; sample acknowledgments",
+   "processes": [
+    "7.8.3",
+    "11.2.1"
+   ]
+  },
+  {
+   "id": "CM-CC2.2-02",
+   "tsc": "CC2.2",
+   "domain": "CC2",
+   "objective": "Report security events and control deficiencies upward",
+   "activity": "Implement escalation procedures that require timely reporting of security events, control failures, and compliance gaps to management. Define escalation tiers, timelines, and responsible parties.",
+   "type": "Detective",
+   "freq": "Per event",
+   "owner": "Security / IT Ops",
+   "evidence": [
+    "EVD-025",
+    "EVD-055"
+   ],
+   "interview": [
+    "INT-003",
+    "INT-010"
+   ],
+   "test": [
+    "TP-CC2.2b"
+   ],
+   "design": "Inspect escalation procedures and notification matrices",
+   "operating": "Sample security events during period; verify escalation followed defined procedures",
+   "processes": [
+    "8.3.3"
+   ]
+  },
+  {
+   "id": "CM-CC2.3-01",
+   "tsc": "CC2.3",
+   "domain": "CC2",
+   "objective": "Communicate with external parties on security matters",
+   "activity": "Implement escalation procedures that require timely reporting of security events, control failures, and compliance gaps to management. Define escalation tiers, timelines, and responsible parties.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Exec Mgmt / Security",
+   "evidence": [
+    "EVD-036",
+    "EVD-046"
+   ],
+   "interview": [
+    "INT-006",
+    "INT-014"
+   ],
+   "test": [
+    "TP-CC2.3a"
+   ],
+   "design": "Inspect external communication policies, SLA documentation, and customer notification procedures",
+   "operating": "Verify external communications occurred as required during period (incident notifications, status reports)",
+   "processes": [
+    "8.3.3",
+    "12.3.2"
+   ]
+  },
+  {
+   "id": "CM-CC2.3-02",
+   "tsc": "CC2.3",
+   "domain": "CC2",
+   "objective": "Document and communicate CUECs",
+   "activity": "Document Complementary User Entity Controls (CUECs) and communicate them to customers through service agreements, onboarding materials, or system description documentation.",
+   "type": "Preventive",
+   "freq": "Annual",
+   "owner": "Compliance / Legal",
+   "evidence": [
+    "EVD-036",
+    "EVD-046"
+   ],
+   "interview": [
+    "INT-006",
+    "INT-014"
+   ],
+   "test": [
+    "TP-CC2.3b"
+   ],
+   "design": "Inspect CUEC documentation and communication method",
+   "operating": "Verify CUECs reviewed and updated during period; confirm customer distribution",
+   "processes": [
+    "3.5.3",
+    "12.4.9"
+   ]
+  },
+  {
+   "id": "CM-CC3.1-01",
+   "tsc": "CC3.1",
+   "domain": "CC3",
+   "objective": "Define clear security and operational objectives",
+   "activity": "Document organizational security objectives aligned with business strategy. Objectives should be specific, measurable, and reviewed annually by management. Map objectives to applicable TSC categories.",
+   "type": "Preventive",
+   "freq": "Annual",
+   "owner": "Exec Mgmt / CISO",
+   "evidence": [
+    "EVD-039",
+    "EVD-056"
+   ],
+   "interview": [
+    "INT-001",
+    "INT-004"
+   ],
+   "test": [
+    "TP-CC3.1a"
+   ],
+   "design": "Inspect documented security objectives and alignment to TSC",
+   "operating": "Verify objectives reviewed and updated annually; trace to risk assessment outputs",
+   "processes": [
+    "1.2.6",
+    "8.3.1"
+   ]
+  },
+  {
+   "id": "CM-CC3.2-01",
+   "tsc": "CC3.2",
+   "domain": "CC3",
+   "objective": "Perform comprehensive risk assessments",
+   "activity": "Conduct a formal risk assessment at least annually that identifies threats and vulnerabilities to the in-scope system, evaluates likelihood and impact, and produces a prioritized risk register. Use a consistent methodology (e.g., NIST 800-30, ISO 27005, FAIR).",
+   "type": "Detective",
+   "freq": "Annual",
+   "owner": "Security / Compliance",
+   "evidence": [
+    "EVD-039"
+   ],
+   "interview": [
+    "INT-004"
+   ],
+   "test": [
+    "TP-CC3.2a"
+   ],
+   "design": "Inspect risk assessment methodology and most recent completed assessment",
+   "operating": "Verify risk assessment performed during period; inspect risk register updates",
+   "processes": [
+    "11.1.2",
+    "8.3.3"
+   ]
+  },
+  {
+   "id": "CM-CC3.2-02",
+   "tsc": "CC3.2",
+   "domain": "CC3",
+   "objective": "Assess risks from internal and external sources",
+   "activity": "Include threat intelligence feeds, industry-specific threat landscape analysis, and internal vulnerability data as inputs to the risk assessment process. Document both internal threats (insider risk, process failures) and external threats (cyber attacks, natural disasters).",
+   "type": "Detective",
+   "freq": "Ongoing",
+   "owner": "Security",
+   "evidence": [
+    "EVD-039",
+    "EVD-042"
+   ],
+   "interview": [
+    "INT-003",
+    "INT-004"
+   ],
+   "test": [
+    "TP-CC3.2b"
+   ],
+   "design": "Verify threat intelligence sources integrated into risk process",
+   "operating": "Inspect threat intelligence updates during period; verify incorporation into risk register",
+   "processes": [
+    "8.3.3"
+   ]
+  },
+  {
+   "id": "CM-CC3.3-01",
+   "tsc": "CC3.3",
+   "domain": "CC3",
+   "objective": "Assess fraud risks",
+   "activity": "Include fraud risk factors in the annual risk assessment, covering: fraudulent financial reporting, misappropriation of assets, unauthorized data access/exfiltration, social engineering, and management override of controls.",
+   "type": "Detective",
+   "freq": "Annual",
+   "owner": "Compliance / Internal Audit",
+   "evidence": [
+    "EVD-039"
+   ],
+   "interview": [
+    "INT-004",
+    "INT-001"
+   ],
+   "test": [
+    "TP-CC3.3a"
+   ],
+   "design": "Verify fraud risk factors documented in risk assessment",
+   "operating": "Inspect fraud risk section of risk assessment performed during period",
+   "processes": [
+    "11.1.3"
+   ]
+  },
+  {
+   "id": "CM-CC3.4-01",
+   "tsc": "CC3.4",
+   "domain": "CC3",
+   "objective": "Identify and assess changes impacting controls",
+   "activity": "Implement a process to identify significant changes to the business environment, technology infrastructure, regulatory landscape, or operations that could impact the internal control system. Trigger reassessment when material changes occur.",
+   "type": "Detective",
+   "freq": "Ongoing",
+   "owner": "Security / Compliance",
+   "evidence": [
+    "EVD-039",
+    "EVD-057"
+   ],
+   "interview": [
+    "INT-004"
+   ],
+   "test": [
+    "TP-CC3.4a"
+   ],
+   "design": "Inspect change identification process and triggers",
+   "operating": "Verify material changes during period were identified and assessed; inspect updated risk register entries",
+   "processes": [
+    "11.1.2",
+    "8.3.1"
+   ]
+  },
+  {
+   "id": "CM-CC4.1-01",
+   "tsc": "CC4.1",
+   "domain": "CC4",
+   "objective": "Perform ongoing monitoring of controls",
+   "activity": "Implement continuous monitoring through automated tools (SIEM, vulnerability scanners, configuration management) and manual reviews (access reviews, policy compliance checks). Define monitoring scope, frequency, and responsible parties for each control.",
+   "type": "Detective",
+   "freq": "Ongoing",
+   "owner": "Security / IT Ops",
+   "evidence": [
+    "EVD-017",
+    "EVD-042"
+   ],
+   "interview": [
+    "INT-003",
+    "INT-015"
+   ],
+   "test": [
+    "TP-CC4.1a"
+   ],
+   "design": "Inspect monitoring tools, configuration, and coverage mapping to controls",
+   "operating": "Verify monitoring operated continuously during period; inspect alert/finding logs",
+   "processes": [
+    "8.3.3"
+   ]
+  },
+  {
+   "id": "CM-CC4.1-02",
+   "tsc": "CC4.1",
+   "domain": "CC4",
+   "objective": "Perform periodic separate evaluations",
+   "activity": "Conduct periodic assessments of internal control effectiveness including: internal audits, penetration tests (at least annually), vulnerability assessments (at least quarterly), and compliance self-assessments. Document scope, findings, and remediation.",
+   "type": "Detective",
+   "freq": "Quarterly / Annual",
+   "owner": "Security / Internal Audit",
+   "evidence": [
+    "EVD-042",
+    "EVD-058"
+   ],
+   "interview": [
+    "INT-003",
+    "INT-015"
+   ],
+   "test": [
+    "TP-CC4.1b"
+   ],
+   "design": "Inspect assessment schedule and most recent results",
+   "operating": "Verify all scheduled assessments completed during period; inspect findings and remediation",
+   "processes": [
+    "8.3.6"
+   ]
+  },
+  {
+   "id": "CM-CC4.2-01",
+   "tsc": "CC4.2",
+   "domain": "CC4",
+   "objective": "Communicate deficiencies and take corrective action",
+   "activity": "Establish a formal deficiency tracking process where identified control gaps are documented, severity-rated, assigned to owners, and tracked to remediation. Report deficiency status to management at least quarterly.",
+   "type": "Corrective",
+   "freq": "Ongoing",
+   "owner": "Security / Compliance",
+   "evidence": [
+    "EVD-042",
+    "EVD-059"
+   ],
+   "interview": [
+    "INT-003",
+    "INT-015"
+   ],
+   "test": [
+    "TP-CC4.2a"
+   ],
+   "design": "Inspect deficiency tracking mechanism and reporting process",
+   "operating": "Review all deficiencies identified during period; verify timely communication and remediation progress",
+   "processes": [
+    "11.3.1",
+    "8.3.6"
+   ]
+  },
+  {
+   "id": "CM-CC5.1-01",
+   "tsc": "CC5.1",
+   "domain": "CC5",
+   "objective": "Select controls that mitigate identified risks",
+   "activity": "For each risk identified in the risk register, document one or more mitigating controls with a clear linkage between the risk and the control. Maintain a risk-control mapping matrix that demonstrates coverage of all significant risks.",
+   "type": "Preventive",
+   "freq": "Annual",
+   "owner": "Security / Compliance",
+   "evidence": [
+    "EVD-039",
+    "EVD-060"
+   ],
+   "interview": [
+    "INT-003",
+    "INT-004"
+   ],
+   "test": [
+    "TP-CC5.1a"
+   ],
+   "design": "Inspect risk-control mapping; verify all significant risks have mapped controls",
+   "operating": "Verify mapping updated when new risks identified during period",
+   "processes": [
+    "11.1.2"
+   ]
+  },
+  {
+   "id": "CM-CC5.2-01",
+   "tsc": "CC5.2",
+   "domain": "CC5",
+   "objective": "Implement general IT controls",
+   "activity": "Implement and maintain general IT controls including: access management, change management, IT operations, and system development lifecycle controls. Document control procedures and assign ownership for each.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "IT Mgmt",
+   "evidence": [
+    "EVD-014",
+    "EVD-037",
+    "EVD-026"
+   ],
+   "interview": [
+    "INT-002",
+    "INT-003"
+   ],
+   "test": [
+    "TP-CC5.2a"
+   ],
+   "design": "Inspect GITC framework documentation and control procedures",
+   "operating": "Test sample of GITC operations during period (access provisioning, change tickets, etc.)",
+   "processes": [
+    "8.3.3"
+   ]
+  },
+  {
+   "id": "CM-CC5.3-01",
+   "tsc": "CC5.3",
+   "domain": "CC5",
+   "objective": "Deploy controls through policies and procedures",
+   "activity": "Maintain a comprehensive policy and procedure framework covering all TSC-relevant domains. Each policy must include: purpose, scope, roles and responsibilities, requirements, exceptions process, and enforcement provisions. Review and approve policies at least annually.",
+   "type": "Preventive",
+   "freq": "Annual",
+   "owner": "Security / Compliance",
+   "evidence": [
+    "EVD-023",
+    "EVD-024"
+   ],
+   "interview": [
+    "INT-003"
+   ],
+   "test": [
+    "TP-CC5.3a"
+   ],
+   "design": "Inspect policy inventory; verify completeness against TSC requirements; check approval dates",
+   "operating": "Verify policies reviewed during period; sample procedures for operational compliance",
+   "processes": [
+    "11.2.1",
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-CC6.1-01",
+   "tsc": "CC6.1",
+   "domain": "CC6",
+   "objective": "Implement logical access security architecture",
+   "activity": "Implement a defense-in-depth logical access architecture including: network segmentation, firewalls, IDS/IPS, endpoint protection, and encryption. Document the security architecture and maintain current network and data flow diagrams.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Security / Network Eng",
+   "evidence": [
+    "EVD-008",
+    "EVD-014",
+    "EVD-030",
+    "EVD-040"
+   ],
+   "interview": [
+    "INT-007"
+   ],
+   "test": [
+    "TP-CC6.1a"
+   ],
+   "design": "Inspect security architecture documentation; compare to actual implementation",
+   "operating": "Verify architecture maintained during period; review change logs for security infrastructure",
+   "processes": [
+    "8.2.3",
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-CC6.1-02",
+   "tsc": "CC6.1",
+   "domain": "CC6",
+   "objective": "Enforce authentication controls",
+   "activity": "Enforce multi-factor authentication (MFA) for all access to production systems, cloud management consoles, VPN, and remote access. Implement password complexity requirements (minimum 12 characters, complexity, rotation or passwordless) aligned with current NIST guidance.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Security / IT Ops",
+   "evidence": [
+    "EVD-038",
+    "EVD-061"
+   ],
+   "interview": [
+    "INT-006"
+   ],
+   "test": [
+    "TP-CC6.1b"
+   ],
+   "design": "Inspect MFA configuration and password policy settings",
+   "operating": "Verify MFA enforced throughout period; sample authentication logs; verify no policy bypasses",
+   "processes": [
+    "8.3.8"
+   ]
+  },
+  {
+   "id": "CM-CC6.1-03",
+   "tsc": "CC6.1",
+   "domain": "CC6",
+   "objective": "Maintain asset inventory",
+   "activity": "Maintain a comprehensive inventory of all in-scope hardware, software, and information assets (CMDB). Include: asset owner, classification, location, and security controls applied. Reconcile inventory at least quarterly.",
+   "type": "Preventive",
+   "freq": "Quarterly",
+   "owner": "IT Ops",
+   "evidence": [
+    "EVD-047"
+   ],
+   "interview": [
+    "INT-006"
+   ],
+   "test": [
+    "TP-CC6.1c"
+   ],
+   "design": "Inspect asset inventory; verify completeness and classification scheme",
+   "operating": "Verify quarterly reconciliation performed; compare inventory to actual assets discovered via scanning",
+   "processes": [
+    "10.3",
+    "8.7.7"
+   ]
+  },
+  {
+   "id": "CM-CC6.2-01",
+   "tsc": "CC6.2",
+   "domain": "CC6",
+   "objective": "Control user registration and access provisioning",
+   "activity": "Implement a formal access request and approval process requiring: documented business justification, manager approval, role-based access assignment, and identity verification before granting system credentials. Maintain access provisioning records.",
+   "type": "Preventive",
+   "freq": "Per event",
+   "owner": "IT Ops / HR",
+   "evidence": [
+    "EVD-037",
+    "EVD-062"
+   ],
+   "interview": [
+    "INT-005",
+    "INT-006"
+   ],
+   "test": [
+    "TP-CC6.2a"
+   ],
+   "design": "Inspect provisioning process documentation and approval workflows",
+   "operating": "Sample new access grants during period; verify approval, justification, and role assignment documented",
+   "processes": [
+    "8.3.8",
+    "7.3.1"
+   ]
+  },
+  {
+   "id": "CM-CC6.3-01",
+   "tsc": "CC6.3",
+   "domain": "CC6",
+   "objective": "Manage access modifications and terminations",
+   "activity": "Modify user access promptly upon role changes and revoke all access within 24 hours of termination. Conduct user access reviews at least quarterly for privileged accounts and semi-annually for standard accounts. Document review results and remediation.",
+   "type": "Preventive / Detective",
+   "freq": "Quarterly",
+   "owner": "IT Ops / HR / Security",
+   "evidence": [
+    "EVD-037",
+    "EVD-063"
+   ],
+   "interview": [
+    "INT-005",
+    "INT-006"
+   ],
+   "test": [
+    "TP-CC6.3a"
+   ],
+   "design": "Inspect termination procedures and most recent access review",
+   "operating": "Sample terminations during period (verify 24-hr revocation); inspect all quarterly access reviews",
+   "processes": [
+    "7.6.2",
+    "7.6.1",
+    "8.3.8"
+   ]
+  },
+  {
+   "id": "CM-CC6.4-01",
+   "tsc": "CC6.4",
+   "domain": "CC6",
+   "objective": "Restrict physical access to facilities",
+   "activity": "Implement physical access controls for all facilities housing in-scope infrastructure: badge/key card access, visitor management (sign-in, escort, sign-out), surveillance cameras, and environmental controls. Restrict data center/server room access to authorized personnel only.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Facilities / Physical Security",
+   "evidence": [
+    "EVD-048",
+    "EVD-064"
+   ],
+   "interview": [
+    "INT-011"
+   ],
+   "test": [
+    "TP-CC6.4a"
+   ],
+   "design": "Inspect physical security controls; tour facilities; review access lists",
+   "operating": "Review physical access logs during period; sample visitor logs; verify camera footage retention",
+   "processes": [
+    "10.1.4"
+   ]
+  },
+  {
+   "id": "CM-CC6.5-01",
+   "tsc": "CC6.5",
+   "domain": "CC6",
+   "objective": "Secure asset disposal",
+   "activity": "Implement media sanitization and asset disposal procedures ensuring data cannot be recovered from decommissioned equipment. Use NIST 800-88 compliant methods (clear, purge, destroy). Maintain certificates of destruction and disposal logs.",
+   "type": "Preventive",
+   "freq": "Per event",
+   "owner": "IT Ops",
+   "evidence": [
+    "EVD-028",
+    "EVD-065"
+   ],
+   "interview": [
+    "INT-009"
+   ],
+   "test": [
+    "TP-CC6.5a"
+   ],
+   "design": "Inspect disposal policy and procedures; verify NIST 800-88 alignment",
+   "operating": "Sample disposed assets during period; verify certificates of destruction and log entries",
+   "processes": [
+    "10.4.2"
+   ]
+  },
+  {
+   "id": "CM-CC6.6-01",
+   "tsc": "CC6.6",
+   "domain": "CC6",
+   "objective": "Protect against external threats",
+   "activity": "Implement and maintain perimeter and internal security controls: next-gen firewalls with IPS, web application firewall (WAF) for public-facing services, DNS filtering, email security gateway (anti-spam, anti-phishing, sandboxing), and network traffic analysis.",
+   "type": "Preventive / Detective",
+   "freq": "Ongoing",
+   "owner": "Security / Network Eng",
+   "evidence": [
+    "EVD-008",
+    "EVD-014"
+   ],
+   "interview": [
+    "INT-007"
+   ],
+   "test": [
+    "TP-CC6.6a"
+   ],
+   "design": "Inspect firewall/WAF/email security configurations and rulesets",
+   "operating": "Review configuration change logs during period; verify rules reviewed and updated; inspect blocked threat logs",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-CC6.7-01",
+   "tsc": "CC6.7",
+   "domain": "CC6",
+   "objective": "Protect data in transmission",
+   "activity": "Encrypt all data in transit using TLS 1.2+ for external communications and internal sensitive data flows. Implement certificate management procedures. Prohibit use of deprecated protocols (SSL, TLS 1.0/1.1).",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Security / IT Ops",
+   "evidence": [
+    "EVD-031",
+    "EVD-066"
+   ],
+   "interview": [
+    "INT-007",
+    "INT-009"
+   ],
+   "test": [
+    "TP-CC6.7a"
+   ],
+   "design": "Inspect encryption configurations; verify TLS versions; scan for deprecated protocols",
+   "operating": "Verify encryption maintained during period; inspect certificate renewals; review scan results",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-CC6.8-01",
+   "tsc": "CC6.8",
+   "domain": "CC6",
+   "objective": "Prevent malicious software",
+   "activity": "Deploy endpoint detection and response (EDR/XDR) on all endpoints and servers. Maintain current signature definitions with automated updates. Configure real-time scanning, behavioral analysis, and automated quarantine. Monitor EDR alerts through SOC/SIEM integration.",
+   "type": "Preventive / Detective",
+   "freq": "Ongoing",
+   "owner": "Security / IT Ops",
+   "evidence": [
+    "EVD-014",
+    "EVD-067"
+   ],
+   "interview": [
+    "INT-007",
+    "INT-003"
+   ],
+   "test": [
+    "TP-CC6.8a"
+   ],
+   "design": "Inspect EDR deployment coverage and configuration; verify integration with SIEM",
+   "operating": "Verify EDR active on all assets during period; review detection/quarantine logs; verify signature currency",
+   "processes": [
+    "8.3.5",
+    "8.7.7"
+   ]
+  },
+  {
+   "id": "CM-CC7.1-01",
+   "tsc": "CC7.1",
+   "domain": "CC7",
+   "objective": "Identify and remediate vulnerabilities",
+   "activity": "Conduct automated vulnerability scans of all in-scope infrastructure and applications at least monthly (external) and quarterly (internal). Perform annual penetration testing by qualified personnel. Remediate critical/high findings within 30/90 days respectively.",
+   "type": "Detective",
+   "freq": "Monthly",
+   "owner": "Security",
+   "evidence": [
+    "EVD-042",
+    "EVD-068"
+   ],
+   "interview": [
+    "INT-003",
+    "INT-007"
+   ],
+   "test": [
+    "TP-CC7.1a"
+   ],
+   "design": "Inspect scan tools, scope, and most recent results; review pentest report",
+   "operating": "Verify all scheduled scans completed during period; inspect remediation timelines for findings",
+   "processes": [
+    "8.3.3",
+    "8.3.6"
+   ]
+  },
+  {
+   "id": "CM-CC7.1-02",
+   "tsc": "CC7.1",
+   "domain": "CC7",
+   "objective": "Manage system configurations securely",
+   "activity": "Establish and maintain security configuration baselines (hardening standards) for all system types (servers, endpoints, network devices, databases, cloud services). Use CIS Benchmarks or equivalent. Monitor for configuration drift and remediate deviations.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "IT Ops / Security",
+   "evidence": [
+    "EVD-069"
+   ],
+   "interview": [
+    "INT-006"
+   ],
+   "test": [
+    "TP-CC7.1b"
+   ],
+   "design": "Inspect configuration baselines and hardening standards",
+   "operating": "Compare current configurations to baselines during period; inspect drift detection/remediation logs",
+   "processes": [
+    "8.7.7"
+   ]
+  },
+  {
+   "id": "CM-CC7.2-01",
+   "tsc": "CC7.2",
+   "domain": "CC7",
+   "objective": "Monitor systems for anomalous activity",
+   "activity": "Aggregate logs from all in-scope systems (servers, network devices, applications, cloud services, security tools) into a centralized SIEM. Implement correlation rules, alerting thresholds, and dashboards. Retain logs per policy (minimum 12 months online, archive per retention schedule).",
+   "type": "Detective",
+   "freq": "Ongoing",
+   "owner": "Security / SOC",
+   "evidence": [
+    "EVD-017",
+    "EVD-070"
+   ],
+   "interview": [
+    "INT-003",
+    "INT-013"
+   ],
+   "test": [
+    "TP-CC7.2a"
+   ],
+   "design": "Inspect SIEM configuration, log sources, correlation rules, and retention settings",
+   "operating": "Verify log collection continuous during period; review alert volumes and response times; verify retention compliance",
+   "processes": [
+    "8.3.3"
+   ]
+  },
+  {
+   "id": "CM-CC7.2-02",
+   "tsc": "CC7.2",
+   "domain": "CC7",
+   "objective": "Perform security event triage and analysis",
+   "activity": "Establish SOC procedures for alert triage, investigation, and escalation. Define severity levels, response timelines, and escalation paths. Staff or contract 24/7 monitoring coverage for critical systems. Document all investigation activities.",
+   "type": "Detective",
+   "freq": "Ongoing",
+   "owner": "SOC / Security",
+   "evidence": [
+    "EVD-017",
+    "EVD-071"
+   ],
+   "interview": [
+    "INT-003",
+    "INT-010"
+   ],
+   "test": [
+    "TP-CC7.2b"
+   ],
+   "design": "Inspect SOC procedures, staffing model, and triage workflows",
+   "operating": "Sample alerts during period; verify triage timelines met; inspect investigation documentation",
+   "processes": [
+    "6.2.2",
+    "8.7.5.9"
+   ]
+  },
+  {
+   "id": "CM-CC7.3-01",
+   "tsc": "CC7.3",
+   "domain": "CC7",
+   "objective": "Evaluate security events as potential incidents",
+   "activity": "Define incident classification criteria distinguishing events from incidents. Implement a formal triage process that evaluates events against defined criteria (data impact, system compromise, regulatory notification triggers). Document classification decisions.",
+   "type": "Detective",
+   "freq": "Per event",
+   "owner": "Security / SOC",
+   "evidence": [
+    "EVD-025",
+    "EVD-072"
+   ],
+   "interview": [
+    "INT-010",
+    "INT-017"
+   ],
+   "test": [
+    "TP-CC7.3a"
+   ],
+   "design": "Inspect incident classification criteria and triage procedures",
+   "operating": "Sample security events during period; verify correct classification against criteria",
+   "processes": [
+    "8.7.5.9",
+    "6.2.2"
+   ]
+  },
+  {
+   "id": "CM-CC7.4-01",
+   "tsc": "CC7.4",
+   "domain": "CC7",
+   "objective": "Execute incident response procedures",
+   "activity": "Maintain and execute a formal Incident Response Plan (IRP) covering: detection, containment, eradication, recovery, post-incident review, and notification. Define roles (IR team), communication plans (internal/external), and evidence preservation procedures.",
+   "type": "Corrective",
+   "freq": "Per event",
+   "owner": "Security / IR Team",
+   "evidence": [
+    "EVD-025"
+   ],
+   "interview": [
+    "INT-010",
+    "INT-017"
+   ],
+   "test": [
+    "TP-CC7.4a"
+   ],
+   "design": "Inspect IRP; verify completeness and role assignments; review most recent tabletop exercise",
+   "operating": "Review all incidents during period; verify IRP followed; inspect post-incident reports",
+   "processes": [
+    "11.3",
+    "8.3.3"
+   ]
+  },
+  {
+   "id": "CM-CC7.4-02",
+   "tsc": "CC7.4",
+   "domain": "CC7",
+   "objective": "Test incident response capabilities",
+   "activity": "Conduct incident response testing at least annually through tabletop exercises, simulations, or red team engagements. Document lessons learned and update the IRP based on test results.",
+   "type": "Detective",
+   "freq": "Annual",
+   "owner": "Security",
+   "evidence": [
+    "EVD-025",
+    "EVD-073"
+   ],
+   "interview": [
+    "INT-017"
+   ],
+   "test": [
+    "TP-CC7.4b"
+   ],
+   "design": "Inspect most recent IR test documentation and lessons learned",
+   "operating": "Verify IR testing conducted during period; inspect lessons learned and IRP updates",
+   "processes": [
+    "11.4.3"
+   ]
+  },
+  {
+   "id": "CM-CC7.5-01",
+   "tsc": "CC7.5",
+   "domain": "CC7",
+   "objective": "Recover from security incidents",
+   "activity": "Define recovery procedures for various incident scenarios (ransomware, data breach, DDoS, insider threat). Include system restoration priorities, backup verification, communication requirements, and return-to-normal criteria. Test recovery procedures annually.",
+   "type": "Corrective",
+   "freq": "Per event",
+   "owner": "IT Ops / Security",
+   "evidence": [
+    "EVD-010",
+    "EVD-025"
+   ],
+   "interview": [
+    "INT-009",
+    "INT-010"
+   ],
+   "test": [
+    "TP-CC7.5a"
+   ],
+   "design": "Inspect recovery procedures and prioritization documentation",
+   "operating": "Review incident recoveries during period; verify procedures followed and RTO/RPO met",
+   "processes": [
+    "8.3.7",
+    "11.3"
+   ]
+  },
+  {
+   "id": "CM-CC8.1-01",
+   "tsc": "CC8.1",
+   "domain": "CC8",
+   "objective": "Control changes to infrastructure and software",
+   "activity": "Implement a formal change management process requiring: change request documentation, risk/impact assessment, testing in non-production environment, approval by authorized personnel (CAB or equivalent), implementation plan with rollback procedures, and post-implementation verification.",
+   "type": "Preventive",
+   "freq": "Per event",
+   "owner": "IT Mgmt / Change Mgmt",
+   "evidence": [
+    "EVD-026",
+    "EVD-074"
+   ],
+   "interview": [
+    "INT-008",
+    "INT-018"
+   ],
+   "test": [
+    "TP-CC8.1a"
+   ],
+   "design": "Inspect change management policy and procedures; review recent change tickets",
+   "operating": "Sample changes during period; verify all steps followed (request, approval, testing, implementation, verification)",
+   "processes": [
+    "8.6.3"
+   ]
+  },
+  {
+   "id": "CM-CC8.1-02",
+   "tsc": "CC8.1",
+   "domain": "CC8",
+   "objective": "Segregate development and production environments",
+   "activity": "Maintain separate development, testing/staging, and production environments. Restrict developer access to production. Implement automated deployment pipelines with approval gates. Prohibit direct production changes except through emergency change procedures.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "DevOps / IT Mgmt",
+   "evidence": [
+    "EVD-015",
+    "EVD-075"
+   ],
+   "interview": [
+    "INT-008",
+    "INT-012"
+   ],
+   "test": [
+    "TP-CC8.1b"
+   ],
+   "design": "Inspect environment architecture; verify access restrictions between environments",
+   "operating": "Verify environment segregation maintained during period; review deployment logs; investigate any direct production changes",
+   "processes": [
+    "8.5.4"
+   ]
+  },
+  {
+   "id": "CM-CC8.1-03",
+   "tsc": "CC8.1",
+   "domain": "CC8",
+   "objective": "Manage emergency changes",
+   "activity": "Define emergency change procedures that allow rapid deployment when necessary while maintaining controls: verbal approval from authorized personnel, retrospective documentation within 24 hours, post-change review. Track and report emergency change frequency.",
+   "type": "Preventive",
+   "freq": "Per event",
+   "owner": "IT Mgmt",
+   "evidence": [
+    "EVD-026",
+    "EVD-076"
+   ],
+   "interview": [
+    "INT-018"
+   ],
+   "test": [
+    "TP-CC8.1c"
+   ],
+   "design": "Inspect emergency change procedures and approval requirements",
+   "operating": "Review all emergency changes during period; verify retrospective documentation and approval",
+   "processes": [
+    "8.6.3"
+   ]
+  },
+  {
+   "id": "CM-CC9.1-01",
+   "tsc": "CC9.1",
+   "domain": "CC9",
+   "objective": "Mitigate risks from business disruptions",
+   "activity": "Maintain and test a Business Continuity Plan (BCP) that addresses critical business functions, recovery priorities, alternate processing capabilities, and communication plans. Define RTO and RPO for all critical systems. Test BCP at least annually.",
+   "type": "Preventive / Corrective",
+   "freq": "Annual",
+   "owner": "Exec Mgmt / IT Ops",
+   "evidence": [
+    "EVD-010"
+   ],
+   "interview": [
+    "INT-009"
+   ],
+   "test": [
+    "TP-CC9.1a"
+   ],
+   "design": "Inspect BCP; verify RTO/RPO definitions and recovery priorities",
+   "operating": "Verify BCP tested during period; inspect test results and remediation of identified gaps",
+   "processes": [
+    "11.4.2",
+    "8.3.4"
+   ]
+  },
+  {
+   "id": "CM-CC9.1-02",
+   "tsc": "CC9.1",
+   "domain": "CC9",
+   "objective": "Implement backup and recovery controls",
+   "activity": "Implement automated backup procedures for all critical systems and data. Define backup schedules (RPO-aligned), retention periods, and storage locations (including offsite/cloud). Test backup restoration at least quarterly for critical systems.",
+   "type": "Preventive",
+   "freq": "Daily",
+   "owner": "IT Ops",
+   "evidence": [
+    "EVD-016",
+    "EVD-077"
+   ],
+   "interview": [
+    "INT-009"
+   ],
+   "test": [
+    "TP-CC9.1b"
+   ],
+   "design": "Inspect backup configuration, schedules, and retention settings",
+   "operating": "Verify backups completed successfully during period; inspect quarterly restoration test results",
+   "processes": [
+    "8.3.7"
+   ]
+  },
+  {
+   "id": "CM-CC9.2-01",
+   "tsc": "CC9.2",
+   "domain": "CC9",
+   "objective": "Assess and manage vendor risks",
+   "activity": "Implement a formal vendor risk management program: maintain vendor inventory, perform risk assessments (initial and ongoing), review SOC reports or equivalent assurance, include security requirements in contracts, and monitor vendor performance and compliance.",
+   "type": "Preventive / Detective",
+   "freq": "Annual",
+   "owner": "Compliance / Procurement",
+   "evidence": [
+    "EVD-020",
+    "EVD-027",
+    "EVD-032 to EVD-035"
+   ],
+   "interview": [
+    "INT-012",
+    "INT-019"
+   ],
+   "test": [
+    "TP-CC9.2a"
+   ],
+   "design": "Inspect vendor management program; review vendor inventory and risk assessment methodology",
+   "operating": "Sample critical vendors; verify risk assessments, SOC report reviews, and contract terms during period",
+   "processes": [
+    "4.2.3.2",
+    "4.2.5"
+   ]
+  },
+  {
+   "id": "CM-CC9.2-02",
+   "tsc": "CC9.2",
+   "domain": "CC9",
+   "objective": "Monitor subservice organization controls",
+   "activity": "For all subservice organizations identified in the system boundary, obtain and review their SOC reports (or equivalent) at least annually. Evaluate complementary subservice organization controls (CSOCs). Document review findings and any identified gaps.",
+   "type": "Detective",
+   "freq": "Annual",
+   "owner": "Compliance / Security",
+   "evidence": [
+    "EVD-033",
+    "EVD-078"
+   ],
+   "interview": [
+    "INT-014",
+    "INT-019"
+   ],
+   "test": [
+    "TP-CC9.2b"
+   ],
+   "design": "Inspect most recent subservice organization SOC report reviews",
+   "operating": "Verify all subservice SOC reports reviewed during period; inspect gap analysis for each",
+   "processes": [
+    "4.2.5.1",
+    "4.2.3.2"
+   ]
+  },
+  {
+   "id": "CM-A1.1-01",
+   "tsc": "A1.1",
+   "domain": "A1",
+   "objective": "Monitor and manage system capacity",
+   "activity": "Implement capacity monitoring for all critical system components (CPU, memory, storage, network bandwidth, license utilization). Set alerting thresholds at 70% and 85% utilization. Conduct capacity planning reviews quarterly. Implement auto-scaling where available.",
+   "type": "Preventive / Detective",
+   "freq": "Ongoing",
+   "owner": "IT Ops / Cloud Eng",
+   "evidence": [
+    "EVD-017",
+    "EVD-079"
+   ],
+   "interview": [
+    "INT-006",
+    "INT-014"
+   ],
+   "test": [
+    "TP-A1.1a"
+   ],
+   "design": "Inspect capacity monitoring tools, thresholds, and most recent planning review",
+   "operating": "Verify monitoring continuous during period; review threshold alerts and capacity planning actions taken",
+   "processes": [
+    "8.7.4"
+   ]
+  },
+  {
+   "id": "CM-A1.1-02",
+   "tsc": "A1.1",
+   "domain": "A1",
+   "objective": "Maintain system availability per commitments",
+   "activity": "Monitor system uptime against SLA commitments. Implement availability dashboards, status pages, and customer notification procedures for planned and unplanned downtime. Track and report availability metrics monthly.",
+   "type": "Detective",
+   "freq": "Ongoing",
+   "owner": "IT Ops / Service Delivery",
+   "evidence": [
+    "EVD-046",
+    "EVD-080"
+   ],
+   "interview": [
+    "INT-014"
+   ],
+   "test": [
+    "TP-A1.1b"
+   ],
+   "design": "Inspect SLA definitions, monitoring tools, and status page",
+   "operating": "Review monthly availability reports during period; verify SLA metrics met; inspect customer notifications for outages",
+   "processes": [
+    "8.1.5",
+    "6.2.2"
+   ]
+  },
+  {
+   "id": "CM-A1.2-01",
+   "tsc": "A1.2",
+   "domain": "A1",
+   "objective": "Implement disaster recovery infrastructure",
+   "activity": "Maintain disaster recovery infrastructure (secondary site, cloud DR, failover mechanisms) aligned with defined RTO/RPO objectives. Implement automated failover for critical services where feasible. Document DR architecture and procedures.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "IT Ops / Cloud Eng",
+   "evidence": [
+    "EVD-010",
+    "EVD-016"
+   ],
+   "interview": [
+    "INT-009"
+   ],
+   "test": [
+    "TP-A1.2a"
+   ],
+   "design": "Inspect DR architecture, failover mechanisms, and RTO/RPO alignment",
+   "operating": "Verify DR infrastructure maintained during period; review failover events and response times",
+   "processes": [
+    "8.3.7"
+   ]
+  },
+  {
+   "id": "CM-A1.2-02",
+   "tsc": "A1.2",
+   "domain": "A1",
+   "objective": "Maintain environmental protections",
+   "activity": "Implement and maintain environmental controls for all facilities housing in-scope infrastructure: fire suppression, climate control (HVAC), water detection, UPS/generator backup power. Monitor environmental conditions continuously and alert on threshold deviations.",
+   "type": "Preventive / Detective",
+   "freq": "Ongoing",
+   "owner": "Facilities",
+   "evidence": [
+    "EVD-048",
+    "EVD-081"
+   ],
+   "interview": [
+    "INT-011"
+   ],
+   "test": [
+    "TP-A1.2b"
+   ],
+   "design": "Inspect environmental controls and monitoring systems",
+   "operating": "Verify environmental monitoring continuous during period; review alerts and maintenance records",
+   "processes": [
+    "10.1.4"
+   ]
+  },
+  {
+   "id": "CM-A1.3-01",
+   "tsc": "A1.3",
+   "domain": "A1",
+   "objective": "Test recovery plans",
+   "activity": "Test disaster recovery and business continuity plans at least annually through full failover tests, tabletop exercises, or simulation exercises. Document test scope, results, issues identified, and remediation actions. Update plans based on test outcomes.",
+   "type": "Detective",
+   "freq": "Annual",
+   "owner": "IT Ops / Security",
+   "evidence": [
+    "EVD-010",
+    "EVD-082"
+   ],
+   "interview": [
+    "INT-009"
+   ],
+   "test": [
+    "TP-A1.3a"
+   ],
+   "design": "Inspect most recent DR test documentation and results",
+   "operating": "Verify DR testing conducted during period; inspect test results and plan updates",
+   "processes": [
+    "11.4.3",
+    "8.3.7"
+   ]
+  },
+  {
+   "id": "CM-PI1.1-01",
+   "tsc": "PI1.1",
+   "domain": "PI1",
+   "objective": "Define processing specifications",
+   "activity": "Document system processing specifications including: data input requirements, processing rules and logic, output formats and delivery requirements, error handling procedures, and data quality standards. Maintain current system documentation.",
+   "type": "Preventive",
+   "freq": "Per change",
+   "owner": "Dev / Product Mgmt",
+   "evidence": [
+    "EVD-024",
+    "EVD-083"
+   ],
+   "interview": [
+    "INT-008",
+    "INT-014"
+   ],
+   "test": [
+    "TP-PI1.1a"
+   ],
+   "design": "Inspect processing specifications and system documentation",
+   "operating": "Verify documentation updated with system changes during period",
+   "processes": [
+    "8.5.4"
+   ]
+  },
+  {
+   "id": "CM-PI1.2-01",
+   "tsc": "PI1.2",
+   "domain": "PI1",
+   "objective": "Validate system inputs",
+   "activity": "Implement input validation controls: data type checking, range validation, format verification, completeness checks, duplicate detection, and authorization verification. Reject invalid inputs with meaningful error messages. Log all rejected inputs.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Dev / QA",
+   "evidence": [
+    "EVD-024",
+    "EVD-084"
+   ],
+   "interview": [
+    "INT-008"
+   ],
+   "test": [
+    "TP-PI1.2a"
+   ],
+   "design": "Inspect input validation rules and error handling logic",
+   "operating": "Test input validations; review rejection logs during period; verify no unvalidated data processed",
+   "processes": [
+    "8.5.4"
+   ]
+  },
+  {
+   "id": "CM-PI1.3-01",
+   "tsc": "PI1.3",
+   "domain": "PI1",
+   "objective": "Ensure processing completeness and accuracy",
+   "activity": "Implement processing controls including: batch/transaction reconciliation, checksums, audit trails, processing status tracking, and exception reporting. Verify output matches expected results through automated testing and manual spot-checks.",
+   "type": "Detective",
+   "freq": "Ongoing",
+   "owner": "Operations / Dev",
+   "evidence": [
+    "EVD-024",
+    "EVD-085"
+   ],
+   "interview": [
+    "INT-008",
+    "INT-014"
+   ],
+   "test": [
+    "TP-PI1.3a"
+   ],
+   "design": "Inspect processing controls and reconciliation procedures",
+   "operating": "Review reconciliation results during period; inspect exceptions and resolution",
+   "processes": [
+    "8.7.6",
+    "9.2.2"
+   ]
+  },
+  {
+   "id": "CM-PI1.4-01",
+   "tsc": "PI1.4",
+   "domain": "PI1",
+   "objective": "Ensure output completeness and accuracy",
+   "activity": "Implement output controls: delivery verification, output reconciliation to inputs, format validation, distribution authorization, and confirmation receipts. Track output delivery against SLA commitments.",
+   "type": "Detective",
+   "freq": "Ongoing",
+   "owner": "Operations / Service Delivery",
+   "evidence": [
+    "EVD-024",
+    "EVD-046"
+   ],
+   "interview": [
+    "INT-014"
+   ],
+   "test": [
+    "TP-PI1.4a"
+   ],
+   "design": "Inspect output control procedures and delivery tracking",
+   "operating": "Sample outputs during period; verify completeness, accuracy, and timely delivery",
+   "processes": [
+    "8.7.6"
+   ]
+  },
+  {
+   "id": "CM-PI1.5-01",
+   "tsc": "PI1.5",
+   "domain": "PI1",
+   "objective": "Handle processing errors appropriately",
+   "activity": "Implement error handling procedures: error detection and logging, automated alerts for critical errors, error investigation and root cause analysis, correction procedures, and re-processing controls. Track error rates and trends.",
+   "type": "Corrective",
+   "freq": "Per event",
+   "owner": "Operations / Dev",
+   "evidence": [
+    "EVD-024",
+    "EVD-025"
+   ],
+   "interview": [
+    "INT-008",
+    "INT-010"
+   ],
+   "test": [
+    "TP-PI1.5a"
+   ],
+   "design": "Inspect error handling procedures and logging mechanisms",
+   "operating": "Review error logs during period; verify timely investigation and correction; analyze trends",
+   "processes": [
+    "8.7.5.9",
+    "8.7.6"
+   ]
+  },
+  {
+   "id": "CM-C1.1-01",
+   "tsc": "C1.1",
+   "domain": "C1",
+   "objective": "Identify and classify confidential information",
+   "activity": "Implement a data classification scheme (e.g., Public, Internal, Confidential, Restricted) with clear definitions and handling requirements for each level. Label/tag data according to classification. Train all personnel on classification procedures.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Security / Data Governance",
+   "evidence": [
+    "EVD-029",
+    "EVD-086"
+   ],
+   "interview": [
+    "INT-009",
+    "INT-020"
+   ],
+   "test": [
+    "TP-C1.1a"
+   ],
+   "design": "Inspect classification policy, definitions, and labeling mechanisms",
+   "operating": "Sample data assets; verify correct classification and labeling; review training completion",
+   "processes": [
+    "8.4.3",
+    "13.6.3"
+   ]
+  },
+  {
+   "id": "CM-C1.1-02",
+   "tsc": "C1.1",
+   "domain": "C1",
+   "objective": "Protect confidential information",
+   "activity": "Implement controls to protect confidential data including: encryption at rest (AES-256) and in transit (TLS 1.2+), access restrictions based on need-to-know, DLP controls, secure storage, and access logging. Apply controls consistent with classification level.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Security / IT Ops",
+   "evidence": [
+    "EVD-031",
+    "EVD-037",
+    "EVD-087"
+   ],
+   "interview": [
+    "INT-009",
+    "INT-021"
+   ],
+   "test": [
+    "TP-C1.1b"
+   ],
+   "design": "Inspect encryption configurations, DLP rules, and access restrictions for confidential data",
+   "operating": "Verify protections maintained during period; review DLP alerts; test encryption coverage",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-C1.2-01",
+   "tsc": "C1.2",
+   "domain": "C1",
+   "objective": "Dispose of confidential information securely",
+   "activity": "Implement confidential data disposal procedures aligned with retention policy: secure deletion (cryptographic erasure or multi-pass overwrite), physical destruction (shredding, degaussing), and documented chain of custody. Maintain disposal certificates and logs.",
+   "type": "Preventive",
+   "freq": "Per event",
+   "owner": "IT Ops / Security",
+   "evidence": [
+    "EVD-028",
+    "EVD-065"
+   ],
+   "interview": [
+    "INT-009"
+   ],
+   "test": [
+    "TP-C1.2a"
+   ],
+   "design": "Inspect disposal procedures and alignment with retention policy",
+   "operating": "Sample disposal events during period; verify procedures followed and certificates maintained",
+   "processes": [
+    "8.4.3",
+    "10.4.2"
+   ]
+  },
+  {
+   "id": "CM-P1.1-01",
+   "tsc": "P1.1",
+   "domain": "P",
+   "objective": "Provide privacy notice to data subjects",
+   "activity": "Maintain a clear, accessible privacy notice/policy that describes: types of PII collected, purposes of collection, use and sharing practices, retention periods, data subject rights, and contact information. Publish on website and provide at point of collection.",
+   "type": "Preventive",
+   "freq": "Annual",
+   "owner": "Legal / Privacy",
+   "evidence": [
+    "EVD-043"
+   ],
+   "interview": [
+    "INT-013"
+   ],
+   "test": [
+    "TP-P1.1a"
+   ],
+   "design": "Inspect privacy notice; verify completeness against GAPP requirements",
+   "operating": "Verify privacy notice reviewed/updated during period; confirm accessibility at all collection points",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-P1.2-01",
+   "tsc": "P1.2",
+   "domain": "P",
+   "objective": "Obtain consent for data collection and use",
+   "activity": "Implement consent mechanisms appropriate to the type of PII and applicable regulations (opt-in, opt-out, affirmative consent). Record consent with timestamp and version of notice. Provide mechanism to withdraw consent.",
+   "type": "Preventive",
+   "freq": "Per event",
+   "owner": "Legal / Dev",
+   "evidence": [
+    "EVD-043",
+    "EVD-088"
+   ],
+   "interview": [
+    "INT-013"
+   ],
+   "test": [
+    "TP-P1.2a"
+   ],
+   "design": "Inspect consent mechanisms and recording procedures",
+   "operating": "Sample consent records during period; verify proper consent obtained; test withdrawal mechanism",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-P2.1-01",
+   "tsc": "P2.1",
+   "domain": "P",
+   "objective": "Limit data collection to stated purposes",
+   "activity": "Implement data minimization controls ensuring only PII necessary for stated purposes is collected. Review data collection forms and APIs to verify alignment with privacy notice. Prohibit collection of PII not specified in the notice.",
+   "type": "Preventive",
+   "freq": "Per change",
+   "owner": "Privacy / Dev",
+   "evidence": [
+    "EVD-043",
+    "EVD-044"
+   ],
+   "interview": [
+    "INT-013",
+    "INT-009"
+   ],
+   "test": [
+    "TP-P2.1a"
+   ],
+   "design": "Review data collection points against privacy notice; verify minimization",
+   "operating": "Sample data collection events; verify only authorized PII collected during period",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-P3.1-01",
+   "tsc": "P3.1",
+   "domain": "P",
+   "objective": "Limit use of PII to stated purposes",
+   "activity": "Implement access controls and process restrictions ensuring PII is used only for purposes disclosed in the privacy notice. Log and monitor access to PII. Prohibit secondary use without additional consent.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Privacy / Security",
+   "evidence": [
+    "EVD-043",
+    "EVD-037"
+   ],
+   "interview": [
+    "INT-013"
+   ],
+   "test": [
+    "TP-P3.1a"
+   ],
+   "design": "Inspect access controls and use restrictions for PII",
+   "operating": "Review PII access logs during period; verify no unauthorized secondary use",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-P3.2-01",
+   "tsc": "P3.2",
+   "domain": "P",
+   "objective": "Retain PII only as long as necessary",
+   "activity": "Define retention periods for each category of PII aligned with business needs and legal requirements. Implement automated retention management with scheduled purge jobs. Document exceptions and legal holds.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Privacy / IT Ops",
+   "evidence": [
+    "EVD-028",
+    "EVD-043"
+   ],
+   "interview": [
+    "INT-009",
+    "INT-013"
+   ],
+   "test": [
+    "TP-P3.2a"
+   ],
+   "design": "Inspect retention schedule and purge procedures",
+   "operating": "Verify scheduled purges executed during period; sample aged PII to confirm deletion",
+   "processes": [
+    "8.4.3"
+   ]
+  },
+  {
+   "id": "CM-P4.1-01",
+   "tsc": "P4.1",
+   "domain": "P",
+   "objective": "Control third-party disclosures of PII",
+   "activity": "Document all third parties receiving PII with business justification. Obtain data subject consent for disclosures not covered by the privacy notice. Maintain a third-party data sharing inventory.",
+   "type": "Preventive",
+   "freq": "Ongoing",
+   "owner": "Privacy / Legal",
+   "evidence": [
+    "EVD-032",
+    "EVD-044"
+   ],
+   "interview": [
+    "INT-012",
+    "INT-013"
+   ],
+   "test": [
+    "TP-P4.1a"
+   ],
+   "design": "Inspect third-party data sharing inventory and consent documentation",
+   "operating": "Verify inventory current during period; sample disclosures for consent compliance",
+   "processes": [
+    "8.3.5",
+    "4.2.5"
+   ]
+  },
+  {
+   "id": "CM-P4.2-01",
+   "tsc": "P4.2",
+   "domain": "P",
+   "objective": "Ensure third parties protect PII",
+   "activity": "Execute Data Processing Agreements (DPAs) with all third parties receiving PII. DPAs must include: security requirements, use limitations, breach notification obligations, audit rights, and data return/destruction provisions.",
+   "type": "Preventive",
+   "freq": "Per relationship",
+   "owner": "Legal / Privacy",
+   "evidence": [
+    "EVD-034",
+    "EVD-044"
+   ],
+   "interview": [
+    "INT-012",
+    "INT-013"
+   ],
+   "test": [
+    "TP-P4.2a"
+   ],
+   "design": "Inspect DPA template and executed agreements for key third parties",
+   "operating": "Verify all third parties with PII access have current DPAs; sample for compliance",
+   "processes": [
+    "12.4.9",
+    "4.2.3.3"
+   ]
+  },
+  {
+   "id": "CM-P4.3-01",
+   "tsc": "P4.3",
+   "domain": "P",
+   "objective": "Require third-party breach notification",
+   "activity": "Include breach notification requirements in all third-party agreements: notification within 24-72 hours, cooperation with investigation, preservation of evidence, and remediation obligations. Monitor vendor compliance.",
+   "type": "Preventive",
+   "freq": "Per relationship",
+   "owner": "Legal / Privacy",
+   "evidence": [
+    "EVD-034",
+    "EVD-035"
+   ],
+   "interview": [
+    "INT-012"
+   ],
+   "test": [
+    "TP-P4.3a"
+   ],
+   "design": "Verify breach notification clauses in third-party agreements",
+   "operating": "Sample agreements executed during period; verify notification provisions present",
+   "processes": [
+    "12.4.9"
+   ]
+  },
+  {
+   "id": "CM-P5.1-01",
+   "tsc": "P5.1",
+   "domain": "P",
+   "objective": "Maintain PII accuracy",
+   "activity": "Implement data quality controls for PII: validation at point of collection, periodic accuracy reviews, mechanisms for data subjects to report inaccuracies, and correction procedures. Log correction activities.",
+   "type": "Preventive / Detective",
+   "freq": "Ongoing",
+   "owner": "Privacy / Operations",
+   "evidence": [
+    "EVD-043",
+    "EVD-089"
+   ],
+   "interview": [
+    "INT-009",
+    "INT-013"
+   ],
+   "test": [
+    "TP-P5.1a"
+   ],
+   "design": "Inspect data quality controls and correction mechanisms",
+   "operating": "Sample correction requests during period; verify timely and accurate updates",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-P5.2-01",
+   "tsc": "P5.2",
+   "domain": "P",
+   "objective": "Respond to data subject requests",
+   "activity": "Implement a data subject access request (DSAR) process: intake mechanism, identity verification, search procedures, response timelines (aligned with applicable regulations), and fulfillment tracking. Respond within regulatory timeframes (e.g., 30 days CCPA, 1 month GDPR).",
+   "type": "Corrective",
+   "freq": "Per event",
+   "owner": "Privacy",
+   "evidence": [
+    "EVD-043",
+    "EVD-090"
+   ],
+   "interview": [
+    "INT-013"
+   ],
+   "test": [
+    "TP-P5.2a"
+   ],
+   "design": "Inspect DSAR process documentation and intake mechanisms",
+   "operating": "Sample DSARs during period; verify timely response and proper fulfillment",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-P6.1-01",
+   "tsc": "P6.1",
+   "domain": "P",
+   "objective": "Monitor privacy compliance",
+   "activity": "Perform periodic privacy compliance assessments against the privacy notice and applicable regulations. Monitor for unauthorized data collection, use, or disclosure. Include privacy metrics in management reporting.",
+   "type": "Detective",
+   "freq": "Quarterly",
+   "owner": "Privacy / Compliance",
+   "evidence": [
+    "EVD-043",
+    "EVD-091"
+   ],
+   "interview": [
+    "INT-013",
+    "INT-015"
+   ],
+   "test": [
+    "TP-P6.1a"
+   ],
+   "design": "Inspect privacy monitoring procedures and most recent assessment",
+   "operating": "Verify quarterly assessments completed during period; review findings and remediation",
+   "processes": [
+    "8.3.6"
+   ]
+  },
+  {
+   "id": "CM-P6.2-01",
+   "tsc": "P6.2",
+   "domain": "P",
+   "objective": "Track privacy incidents",
+   "activity": "Maintain a privacy incident register that records: incident description, PII affected, root cause, containment actions, notification decisions, and remediation steps. Integrate privacy incidents into the overall incident management process.",
+   "type": "Detective",
+   "freq": "Per event",
+   "owner": "Privacy / Security",
+   "evidence": [
+    "EVD-025",
+    "EVD-092"
+   ],
+   "interview": [
+    "INT-010",
+    "INT-013"
+   ],
+   "test": [
+    "TP-P6.2a"
+   ],
+   "design": "Inspect privacy incident register and integration with IR process",
+   "operating": "Review privacy incidents during period; verify documentation and resolution",
+   "processes": [
+    "8.3.5",
+    "11.3"
+   ]
+  },
+  {
+   "id": "CM-P6.3-01",
+   "tsc": "P6.3",
+   "domain": "P",
+   "objective": "Notify stakeholders of privacy breaches",
+   "activity": "Define privacy breach notification procedures aligned with all applicable regulations (CCPA, GDPR, state breach notification laws, contractual obligations). Include: notification triggers, timing requirements, content requirements, and communication channels for affected individuals, regulators, and business partners.",
+   "type": "Corrective",
+   "freq": "Per event",
+   "owner": "Legal / Privacy",
+   "evidence": [
+    "EVD-025",
+    "EVD-093"
+   ],
+   "interview": [
+    "INT-010",
+    "INT-013"
+   ],
+   "test": [
+    "TP-P6.3a"
+   ],
+   "design": "Inspect breach notification procedures and regulatory alignment",
+   "operating": "Review any breaches during period; verify notification procedures followed",
+   "processes": [
+    "6.2.5",
+    "11.2.2"
+   ]
+  },
+  {
+   "id": "CM-P6.4-01",
+   "tsc": "P6.4",
+   "domain": "P",
+   "objective": "Handle privacy complaints",
+   "activity": "Maintain a privacy complaint intake process (email, web form, phone) that is communicated to data subjects via the privacy notice. Track complaints, investigate, respond within defined timelines, and report trends to management.",
+   "type": "Corrective",
+   "freq": "Per event",
+   "owner": "Privacy",
+   "evidence": [
+    "EVD-043",
+    "EVD-094"
+   ],
+   "interview": [
+    "INT-013"
+   ],
+   "test": [
+    "TP-P6.4a"
+   ],
+   "design": "Inspect complaint intake mechanism and processing procedures",
+   "operating": "Sample complaints during period; verify investigation and timely response",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-P6.5-01",
+   "tsc": "P6.5",
+   "domain": "P",
+   "objective": "Perform privacy impact assessments",
+   "activity": "Conduct Privacy Impact Assessments (PIAs) for new systems, processes, or material changes that involve PII. PIAs evaluate data flows, risks, mitigating controls, and compliance with the privacy notice and regulations. Document results and remediation.",
+   "type": "Detective",
+   "freq": "Per change",
+   "owner": "Privacy / Security",
+   "evidence": [
+    "EVD-039",
+    "EVD-095"
+   ],
+   "interview": [
+    "INT-004",
+    "INT-013"
+   ],
+   "test": [
+    "TP-P6.5a"
+   ],
+   "design": "Inspect PIA methodology and most recent completed PIA",
+   "operating": "Verify PIAs conducted for relevant changes during period; inspect results and remediation",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-P6.6-01",
+   "tsc": "P6.6",
+   "domain": "P",
+   "objective": "Train personnel on privacy practices",
+   "activity": "Include privacy-specific content in security awareness training covering: data handling requirements, classification, privacy notice commitments, DSAR procedures, and incident reporting. Provide enhanced training for personnel with elevated PII access.",
+   "type": "Preventive",
+   "freq": "Annual",
+   "owner": "Privacy / HR",
+   "evidence": [
+    "EVD-021",
+    "EVD-096"
+   ],
+   "interview": [
+    "INT-005",
+    "INT-013"
+   ],
+   "test": [
+    "TP-P6.6a"
+   ],
+   "design": "Inspect privacy training content and delivery mechanism",
+   "operating": "Verify privacy training completion for all personnel during period",
+   "processes": [
+    "7.3.4"
+   ]
+  },
+  {
+   "id": "CM-P6.7-01",
+   "tsc": "P6.7",
+   "domain": "P",
+   "objective": "Maintain processing activity records",
+   "activity": "Maintain a Record of Processing Activities (ROPA) documenting: processing purpose, data categories, data subjects, recipients, transfers, retention periods, and security measures. Update the ROPA when processing activities change.",
+   "type": "Preventive",
+   "freq": "Per change",
+   "owner": "Privacy",
+   "evidence": [
+    "EVD-044",
+    "EVD-097"
+   ],
+   "interview": [
+    "INT-009",
+    "INT-013"
+   ],
+   "test": [
+    "TP-P6.7a"
+   ],
+   "design": "Inspect ROPA for completeness against actual processing activities",
+   "operating": "Verify ROPA updated during period; compare to actual processing",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-P7.1-01",
+   "tsc": "P7.1",
+   "domain": "P",
+   "objective": "Ensure data accuracy and purpose alignment",
+   "activity": "Implement technical controls to ensure PII collected aligns with purposes stated in the privacy notice. Audit data collection touchpoints periodically to verify no scope creep. Remediate unauthorized collection promptly.",
+   "type": "Detective",
+   "freq": "Quarterly",
+   "owner": "Privacy / Dev",
+   "evidence": [
+    "EVD-043"
+   ],
+   "interview": [
+    "INT-013"
+   ],
+   "test": [
+    "TP-P7.1a"
+   ],
+   "design": "Review data collection against privacy notice purposes",
+   "operating": "Verify quarterly audits conducted; inspect findings and remediation",
+   "processes": [
+    "8.3.5"
+   ]
+  },
+  {
+   "id": "CM-P8.1-01",
+   "tsc": "P8.1",
+   "domain": "P",
+   "objective": "Provide data subject access and correction rights",
+   "activity": "Implement self-service or assisted mechanisms for data subjects to: view their PII, request corrections, request deletion, obtain a copy of their data, and object to processing. Track and fulfill requests within regulatory timeframes.",
+   "type": "Corrective",
+   "freq": "Per event",
+   "owner": "Privacy / Dev",
+   "evidence": [
+    "EVD-043",
+    "EVD-090"
+   ],
+   "interview": [
+    "INT-013"
+   ],
+   "test": [
+    "TP-P8.1a"
+   ],
+   "design": "Inspect mechanisms for data subject rights exercise",
+   "operating": "Sample requests during period; verify proper fulfillment within required timeframes",
+   "processes": [
+    "8.3.5"
+   ]
+  }
+ ]
+}
