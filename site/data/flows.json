@@ -75,9 +75,8 @@
    "type": "Preventive",
    "owner": "XO / Project Controller",
    "system": "HaloPSA",
-   "assumed": true,
-   "description": "A project is closed only after the client's acceptance of the deliverables is recorded in Halo.",
-   "evidence": "Acceptance recorded on the Halo project"
+   "description": "A project is closed only after the client's written acceptance of the deliverables (an email is enough) is recorded on the Halo project.",
+   "evidence": "Client's acceptance email attached to the Halo project"
   },
   {
    "id": "KC-SVC-01",
@@ -85,7 +84,7 @@
    "process": "6.2.2",
    "step": "6.2.2",
    "type": "Preventive",
-   "owner": "Service Desk",
+   "owner": "Managed Technology dispatcher; Service Desk Tier 1",
    "system": "HaloPSA",
    "description": "Every ticket gets a category and priority at triage, which starts the matching SLA timers in Halo.",
    "evidence": "Halo SLA reports"
@@ -98,9 +97,8 @@
    "type": "Preventive",
    "owner": "XO",
    "system": "HaloPSA",
-   "assumed": true,
-   "description": "Work outside the managed services agreement is approved (quoted or accepted as billable) before it starts.",
-   "evidence": "Approval recorded on the Halo ticket"
+   "description": "Work outside the managed services agreement starts only after the XO approves it and the client accepts the quote or T&M estimate in Halo.",
+   "evidence": "XO approval and client acceptance recorded on the Halo ticket or quote"
   },
   {
    "id": "KC-REV-01",
@@ -834,8 +832,7 @@
   "5.4": {
    "title": "Deliver service to customer",
    "span": "XO acceptance → project closeout",
-   "draft": true,
-   "summary": "Project delivery for professional and technical work: plan, kick off, deliver, handle scope changes, get acceptance, close.",
+   "summary": "Project delivery for professional and technical work: plan, kick off, deliver, handle scope changes, get acceptance, close. From 1/1/2027 the Digital Transformation teams also run their projects in Halo.",
    "lanes": [
     {
      "name": "XO / Project Controller",
@@ -856,12 +853,7 @@
    "downstream": [
     "9.2.2"
    ],
-   "questions": [
-    "Who assigns and schedules resources: the practice lead, or someone central? Is it the weekly Monday capacity meeting?",
-    "Who runs the client kickoff: the XO or the delivery owner?",
-    "Is formal client acceptance required to close a project? What counts as evidence?",
-    "What's the client status-reporting cadence on projects?"
-   ],
+   "questions": [],
    "steps": [
     {
      "id": "d1",
@@ -885,17 +877,17 @@
      "col": 1,
      "title": "Plan and staff",
      "apqc": "5.4.1",
-     "note": "Delivery owner books resources",
+     "note": "Practice lead books resources in Halo",
      "system": "Halo",
      "who": "Practice lead",
-     "assumed": true,
      "next": [
       {
        "to": "d3",
        "from": "right",
        "toSide": "bottom"
       }
-     ]
+     ],
+     "detail": "The practice lead books resources against the Halo project. Conflicts and over-allocation are resolved at the weekly Monday capacity meeting."
     },
     {
      "id": "d3",
@@ -906,15 +898,15 @@
      "apqc": "5.4.1",
      "note": "Scope, timeline, contacts",
      "system": "Halo",
-     "who": "XO",
-     "assumed": true,
+     "who": "XO leads; delivery owner presents the plan",
      "next": [
       {
        "to": "d4",
        "from": "right",
        "toSide": "left"
       }
-     ]
+     ],
+     "detail": "The XO runs the kickoff (relationship, scope, contacts, communication plan) and the delivery owner presents the delivery plan and staffing."
     },
     {
      "id": "d4",
@@ -926,7 +918,7 @@
      "note": "Time in Halo; expenses in Paylocity",
      "system": "Halo, Paylocity",
      "who": "Delivery resources",
-     "detail": "Resources log time daily against Halo project tasks; expenses go through Paylocity and sync to Halo for billing.",
+     "detail": "Resources log time daily against Halo project tasks; expenses go through Paylocity and sync to Halo for billing. The delivery owner sends client status reports at the cadence set in the SOW (weekly if the SOW does not say).",
      "next": [
       {
        "to": "d5",
@@ -998,7 +990,8 @@
        "toSide": "bottom",
        "label": "Rework"
       }
-     ]
+     ],
+     "detail": "Formal client acceptance is required to close. The client's written approval (an email is enough) is recorded on the Halo project."
     },
     {
      "id": "d8",
@@ -1011,8 +1004,7 @@
      "system": "Halo",
      "who": "XO",
      "control": "KC-DEL-02",
-     "controlNote": "acceptance recorded",
-     "assumed": true,
+     "controlNote": "written acceptance on file",
      "next": [
       {
        "to": "d9",
@@ -1034,8 +1026,7 @@
   "6.2.2": {
    "title": "Manage customer service problems, requests, and inquiries",
    "span": "Ticket opened → ticket closed",
-   "draft": true,
-   "summary": "Managed services tickets. Also the system of record for APQC 8.7.8 (IT user support), so the service desk is documented once.",
+   "summary": "Support tickets in Halo for two service models: Managed Technology clients (managed, co-managed, NOC and endpoint management), worked by a dispatcher and Tier 1 to 3 plus Centralized Services engineers; and large enterprise clients, where the Service Desk practice is Tier 1 and escalates to the client's own IT.",
    "lanes": [
     {
      "name": "Client",
@@ -1046,16 +1037,24 @@
      "sub": "Halo, NinjaOne, Dialpad"
     },
     {
-     "name": "Service Desk",
-     "sub": "Tier 1"
-    },
-    {
-     "name": "Escalation",
-     "sub": "Managed Technology (Tier 2/3)"
+     "name": "Managed Technology",
+     "sub": "Dispatcher and Tier 1"
     },
     {
      "name": "XO",
      "sub": "Relationship owner"
+    },
+    {
+     "name": "Managed Technology escalation",
+     "sub": "Tier 2/3 and Centralized Services"
+    },
+    {
+     "name": "Service Desk practice",
+     "sub": "Tier 1, Process Leads, Service Managers (enterprise clients)"
+    },
+    {
+     "name": "Client IT",
+     "sub": "Enterprise client's own resources"
     }
    ],
    "upstream": [
@@ -1064,13 +1063,7 @@
    "downstream": [
     "9.2.2"
    ],
-   "questions": [
-    "Which intake channels are live for 1/1/2027: email, portal, phone (Dialpad), NinjaOne alerts? Do RMM alerts create tickets automatically?",
-    "Is there a dispatcher role, or does Tier 1 triage its own queue?",
-    "Is Managed Technology the escalation tier for every client, or does it depend on the agreement?",
-    "For out-of-scope requests, who approves: the XO, the client, or both?",
-    "Is a CSAT survey sent on close?"
-   ],
+   "questions": [],
    "steps": [
     {
      "id": "m1",
@@ -1092,15 +1085,36 @@
      "lane": 1,
      "col": 1,
      "title": "Ticket created",
-     "note": "Email, portal, phone or RMM alert",
-     "system": "Halo, NinjaOne",
+     "note": "Email, portal, phone or NinjaOne alert",
+     "system": "Halo, NinjaOne, Dialpad",
      "who": "Automated",
-     "assumed": true,
+     "detail": "Email, the Halo client portal and Dialpad calls create Halo tickets; NinjaOne RMM alerts create tickets automatically.",
+     "next": [
+      {
+       "to": "m3a",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "m3a",
+     "type": "decision",
+     "lane": 1,
+     "col": 2,
+     "title": "Service model?",
      "next": [
       {
        "to": "m3",
        "from": "right",
-       "toSide": "top"
+       "toSide": "top",
+       "label": "Managed Technology"
+      },
+      {
+       "to": "s1",
+       "from": "bottom",
+       "toSide": "left",
+       "label": "Enterprise service desk"
       }
      ]
     },
@@ -1108,14 +1122,15 @@
      "id": "m3",
      "type": "process",
      "lane": 2,
-     "col": 2,
-     "title": "Triage and categorize",
+     "col": 3,
+     "title": "Dispatch: triage and assign",
      "apqc": "6.2.2",
      "note": "Priority starts SLA timers",
      "system": "Halo",
-     "who": "Service Desk",
+     "who": "Managed Technology dispatcher",
      "control": "KC-SVC-01",
      "controlNote": "priority and SLA set",
+     "detail": "The dedicated Managed Technology dispatcher categorizes and prioritizes each ticket and assigns it to Tier 1.",
      "next": [
       {
        "to": "m4",
@@ -1128,7 +1143,7 @@
      "id": "m4",
      "type": "decision",
      "lane": 2,
-     "col": 3,
+     "col": 4,
      "title": "In contract scope?",
      "next": [
       {
@@ -1146,13 +1161,34 @@
      ]
     },
     {
+     "id": "m9",
+     "type": "process",
+     "lane": 3,
+     "col": 4,
+     "title": "Approve billable work",
+     "note": "XO approves, then client accepts",
+     "system": "Halo",
+     "who": "XO, then client",
+     "control": "KC-SVC-02",
+     "controlNote": "approved before work",
+     "detail": "The XO approves the quote or T&M estimate, then the client accepts it in Halo, before out-of-scope work starts.",
+     "next": [
+      {
+       "to": "m5",
+       "from": "right",
+       "toSide": "bottom",
+       "label": "Approved"
+      }
+     ]
+    },
+    {
      "id": "m5",
      "type": "process",
      "lane": 2,
-     "col": 4,
+     "col": 5,
      "title": "Resolve or fulfill",
      "system": "Halo, NinjaOne",
-     "who": "Service Desk",
+     "who": "Managed Technology Tier 1",
      "next": [
       {
        "to": "m6",
@@ -1165,7 +1201,7 @@
      "id": "m6",
      "type": "decision",
      "lane": 2,
-     "col": 5,
+     "col": 6,
      "title": "Resolved at Tier 1?",
      "next": [
       {
@@ -1185,12 +1221,12 @@
     {
      "id": "m7",
      "type": "process",
-     "lane": 3,
-     "col": 5,
+     "lane": 4,
+     "col": 6,
      "title": "Escalate and resolve",
-     "note": "Tier 2/3 engineering",
-     "system": "Halo",
-     "who": "Managed Technology",
+     "note": "Tier 2/3 or Centralized Services",
+     "system": "Halo, NinjaOne",
+     "who": "Managed Technology Tier 2/3, Centralized Services",
      "next": [
       {
        "to": "m8",
@@ -1203,12 +1239,119 @@
      "id": "m8",
      "type": "process",
      "lane": 2,
-     "col": 6,
+     "col": 7,
      "title": "Confirm and close",
      "note": "Client confirms resolution",
      "system": "Halo",
-     "who": "Service Desk",
-     "assumed": true,
+     "who": "Managed Technology",
+     "next": [
+      {
+       "to": "m11",
+       "from": "top",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "s1",
+     "type": "process",
+     "lane": 5,
+     "col": 3,
+     "title": "Triage and categorize",
+     "apqc": "6.2.2",
+     "note": "Priority starts SLA timers",
+     "system": "Halo",
+     "who": "Service Desk Tier 1",
+     "control": "KC-SVC-01",
+     "controlNote": "priority and SLA set",
+     "next": [
+      {
+       "to": "s2",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "s2",
+     "type": "process",
+     "lane": 5,
+     "col": 4,
+     "title": "Resolve or fulfill",
+     "system": "Halo",
+     "who": "Service Desk Tier 1",
+     "next": [
+      {
+       "to": "s3",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "s3",
+     "type": "decision",
+     "lane": 5,
+     "col": 5,
+     "title": "Resolved at Tier 1?",
+     "next": [
+      {
+       "to": "s5",
+       "from": "right",
+       "toSide": "left",
+       "label": "Yes"
+      },
+      {
+       "to": "s4",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "s4",
+     "type": "process",
+     "lane": 6,
+     "col": 5,
+     "title": "Escalate to client IT",
+     "note": "Often into the client's Halo",
+     "system": "Halo (integration to client Halo)",
+     "who": "Client's IT team",
+     "detail": "The Service Desk practice has no Tier 2/3: escalations go to the client's own resources, often through the existing integration with the client's Halo. Do not change those integration runbooks.",
+     "next": [
+      {
+       "to": "s5",
+       "from": "right",
+       "toSide": "bottom"
+      }
+     ]
+    },
+    {
+     "id": "s5",
+     "type": "process",
+     "lane": 5,
+     "col": 7,
+     "title": "Confirm and close",
+     "system": "Halo",
+     "who": "Service Desk Tier 1 / Service Manager",
+     "next": [
+      {
+       "to": "m11",
+       "from": "right",
+       "toSide": "bottom"
+      }
+     ]
+    },
+    {
+     "id": "m11",
+     "type": "process",
+     "lane": 1,
+     "col": 8,
+     "title": "CSAT survey sent",
+     "system": "Halo",
+     "who": "Automated",
+     "detail": "Halo sends a CSAT survey when a ticket closes.",
      "next": [
       {
        "to": "m10",
@@ -1218,31 +1361,10 @@
      ]
     },
     {
-     "id": "m9",
-     "type": "process",
-     "lane": 4,
-     "col": 3,
-     "title": "Approve billable work",
-     "note": "Quote or accept T&M",
-     "system": "Halo",
-     "who": "XO",
-     "control": "KC-SVC-02",
-     "controlNote": "approved before work",
-     "assumed": true,
-     "next": [
-      {
-       "to": "m5",
-       "from": "right",
-       "toSide": "bottom",
-       "label": "Approved"
-      }
-     ]
-    },
-    {
      "id": "m10",
      "type": "end",
-     "lane": 2,
-     "col": 7,
+     "lane": 1,
+     "col": 9,
      "title": "End: closed; billable time to 9.2.2",
      "link": "9.2.2"
     }
