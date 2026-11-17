@@ -1589,7 +1589,7 @@
   "9.2.3": {
    "title": "Process accounts receivable (AR)",
    "span": "Invoice issued → cash applied",
-   "summary": "Payments land in QuickBooks Online, are applied and reconciled, and paid status flows back to Halo. Invoices unpaid past their due date go to collections; escalation days count from the due date.",
+   "summary": "Clients pay by ACH or check; payments are matched from the QuickBooks Online bank feed, applied and reconciled, and the Next Level Now controller reviews AR aging monthly with the XOs. Invoices still unpaid after their due date go to collections. Whether paid status syncs back to Halo is still open.",
    "lanes": [
     {
      "name": "AR",

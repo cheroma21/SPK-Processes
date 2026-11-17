@@ -22,6 +22,51 @@
     return ({ 'EOS (Ninety.io)': 'EOS', 'OpenAir / SuiteProjects Pro': 'OpenAir', 'Apollo.io': 'Apollo', 'Arctic Wolf Managed Awareness': 'Arctic Wolf' })[name] || name;
   }
   var FLAG = '<svg class="flagic" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 15V2M3 2.5h9l-2 3 2 3H3" fill="#fde4e1" stroke="#b42318" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  /* ---------- Glossary ---------- */
+  var GLOSS = [
+    ['People and roles', [
+      ['partner', 'Partner', 'The Sparkhound deal owner: the partner-level seller who owns the opportunity. Not a channel partner.'],
+      ['alliance', 'Alliance/Channel', 'Outside firms Sparkhound sells with or through, such as Microsoft and Pax8.'],
+      ['xo', 'XO (Experience Owner)', "The client's relationship owner, by default the Project Controller. Approves billable time and invoices. The Managing Partner over Operations assigns XOs."],
+      ['pc', 'Project Controller', "Controls a project's budget, time and billing. By default this is the client's XO."],
+      ['eo', 'EO (Executive Owner)', "The Sparkhound executive accountable for a client account. Engages the client's executives when an invoice is 60+ days past due."],
+      ['mt', 'Managed Technology', 'The practice that supports managed, co-managed, NOC and endpoint management clients: a dispatcher, Tier 1 to 3 and Centralized Services engineers.'],
+      ['sd', 'Service Desk practice', "Tier 1 support for large enterprise clients: Tier 1, Process Leads and Service Managers. Escalations go to the client's own IT."],
+      ['nln', 'Next Level Now', "The outside firm that runs Sparkhound's accounting, including AR and the controller role."]
+    ]],
+    ['The framework', [
+      ['apqc', 'APQC PCF', "APQC's Process Classification Framework, cross-industry version 8.0: a standard list of business processes. This library is built on it."],
+      ['pcf', 'PCF ID', "A process's number in the APQC framework, such as 9.2.4: category 9, process group 9.2, process 9.2.4."],
+      ['level', 'Level (L1 to L5)', 'Depth in the framework: L1 category, L2 process group, L3 process, L4 activity, L5 task. Most flows document an L3 process.'],
+      ['scope', 'In scope', 'A process Sparkhound runs and documents. Out-of-scope APQC processes stay in the workbook, marked rather than deleted.'],
+      ['relevance', 'Relevance', 'How central a process is to Sparkhound: Core, Supporting or Not Applicable.'],
+      ['fn', 'EOS function', "The function on Sparkhound's EOS Accountability Chart that owns the process: Leadership, Sales, Operations, Finance or Shared Services."],
+      ['sor', 'System of record', 'The system that holds the authoritative data for a process from 1/1/2027. Supporting systems feed it or use it.'],
+      ['status', 'Status', 'How far the documentation has got: Not Started, Draft, In Review (waiting for the process owner to confirm), Published or Needs Update.']
+    ]],
+    ['Reading a flow', [
+      ['kc', 'Key control', 'A check built into a step that prevents an error (Preventive) or catches one afterwards (Detective). Shown with an orange border. IDs look like KC-AR-01.'],
+      ['assumed', 'Assumption to confirm', 'A step drawn from an assumption rather than a confirmed answer. Shown with a dashed outline.'],
+      ['flag', 'Review flag', 'A decision made in a design session that the process owner still has to confirm. Listed on the Review page.']
+    ]]
+  ];
+  var GDEF = {}; GLOSS.forEach(function (g) { g[1].forEach(function (t) { GDEF[t[0]] = t; }); });
+  function term(key, label) {
+    var t = GDEF[key];
+    return '<a class="term" href="#glossary/' + key + '" data-tip="' + esc(t[2]) + '">' + esc(label || t[1]) + '</a>';
+  }
+  var LANE_TERMS = [[/\bXO\b/, 'xo'], [/\bEO\b/, 'eo'], [/(?<!Managing )\bPartner\b/, 'partner'], [/\bProject Controller\b/, 'pc'], [/\bAlliance\/Channel\b/, 'alliance'],
+    [/\bManaged Technology\b/, 'mt'], [/\bService Desk practice\b/, 'sd'], [/\bNext Level Now\b/, 'nln']];
+  function linkTerms(text) {
+    var out = esc(text), used = false;
+    LANE_TERMS.forEach(function (lt) {
+      var m = !used && out.match(lt[0]);
+      if (m) { out = out.replace(lt[0], term(lt[1], m[0])); used = true; }
+    });
+    return out;
+  }
+  function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
+
   function flagsFor(k) {
     var fl = D.flows[k], out = [];
     if (fl) fl.steps.forEach(function (st, i) { if (st.flag) out.push({ process: k, where: 'Step ' + (i + 1) + ': ' + st.title, text: st.flag }); });
@@ -65,9 +110,29 @@
     if (h === 'systems') { setNav('systems'); return renderSystems(); }
     if (h === 'controls') { setNav('controls'); return renderControls(); }
     if (h === 'review') { setNav('review'); return renderReview(); }
+    if (h === 'glossary' || h.indexOf('glossary/') === 0) { setNav('glossary'); return renderGlossary(h.split('/')[1]); }
     setNav('library'); renderLibrary();
   }
   window.addEventListener('hashchange', route);
+
+  /* Term definitions: one shared tooltip, shown on hover and keyboard focus */
+  var tip = document.createElement('div');
+  tip.id = 'tip'; tip.className = 'tip'; tip.setAttribute('role', 'tooltip'); tip.hidden = true;
+  document.body.appendChild(tip);
+  var tipFor = null;
+  function showTip(el) {
+    tipFor = el; tip.textContent = el.getAttribute('data-tip'); tip.hidden = false; el.setAttribute('aria-describedby', 'tip');
+    var r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+    var left = Math.max(8, Math.min(r.left, window.innerWidth - w - 8));
+    var top = r.bottom + 6 + h > window.innerHeight ? r.top - h - 6 : r.bottom + 6;
+    tip.style.left = left + 'px'; tip.style.top = top + 'px';
+  }
+  function hideTip() { if (tipFor) tipFor.removeAttribute('aria-describedby'); tipFor = null; tip.hidden = true; }
+  document.addEventListener('mouseover', function (e) { var t = e.target.closest && e.target.closest('.term'); if (t) showTip(t); else if (tipFor && !tipFor.matches(':focus')) hideTip(); });
+  document.addEventListener('focusin', function (e) { if (e.target.classList && e.target.classList.contains('term')) showTip(e.target); else hideTip(); });
+  document.addEventListener('focusout', function (e) { if (e.target === tipFor) hideTip(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hideTip(); });
+  window.addEventListener('scroll', hideTip, true);
 
   qInput.addEventListener('input', function () {
     S.q = qInput.value.trim(); S.limit = 250;
@@ -104,13 +169,13 @@
   function renderLibrary() {
     var inScope = D.procs.filter(function (p) { return p.scope === 'Yes'; }).length;
     view.innerHTML =
-      '<div><h1>Process Library</h1><p class="sub">APQC PCF Cross-Industry v8.0 · Sparkhound subset · ' + inScope + ' in-scope processes of ' + D.procs.length + '</p></div>' +
+      '<div><h1>Process Library</h1><p class="sub">Sparkhound\'s processes, numbered by the ' + term('apqc', 'APQC framework') + '. ' + inScope.toLocaleString() + ' of the framework\'s ' + D.procs.length.toLocaleString() + ' processes are ' + term('scope', 'in scope') + ' for Sparkhound.</p></div>' +
       '<div class="filters">' +
-        '<label>Level<select id="fLevel">' + opts([['1-3', 'Levels 1–3'], ['1', 'Level 1'], ['2', 'Level 2'], ['3', 'Level 3'], ['4', 'Level 4'], ['5', 'Level 5']], S.level, 'All levels') + '</select></label>' +
-        '<label>EOS function<select id="fFn">' + opts(uniq('fn'), S.fn, 'All functions') + '</select></label>' +
-        '<label>System<select id="fSys">' + opts(D.systems.filter(function (s) { return s.status !== 'Retired'; }).map(function (s) { return [sysKey(s.name), s.name]; }), S.system, 'All systems') + '</select></label>' +
-        '<label>Status<select id="fSt">' + opts(['Not Started', 'Draft', 'In Review', 'Published', 'Needs Update'], S.status, 'All statuses') + '</select></label>' +
-        '<label>Relevance<select id="fRel">' + opts(['Core', 'Supporting', 'Not Applicable'], S.rel, 'All') + '</select></label>' +
+        '<label><span>' + term('level', 'Level') + '</span><select id="fLevel">' + opts([['1-3', 'Levels 1–3'], ['1', 'Level 1'], ['2', 'Level 2'], ['3', 'Level 3'], ['4', 'Level 4'], ['5', 'Level 5']], S.level, 'All levels') + '</select></label>' +
+        '<label><span>' + term('fn', 'EOS function') + '</span><select id="fFn">' + opts(uniq('fn'), S.fn, 'All functions') + '</select></label>' +
+        '<label><span>' + term('sor', 'System') + '</span><select id="fSys">' + opts(D.systems.filter(function (s) { return s.status !== 'Retired'; }).map(function (s) { return [sysKey(s.name), s.name]; }), S.system, 'All systems') + '</select></label>' +
+        '<label><span>' + term('status', 'Status') + '</span><select id="fSt">' + opts(['Not Started', 'Draft', 'In Review', 'Published', 'Needs Update'], S.status, 'All statuses') + '</select></label>' +
+        '<label><span>' + term('relevance', 'Relevance') + '</span><select id="fRel">' + opts(['Core', 'Supporting', 'Not Applicable'], S.rel, 'All') + '</select></label>' +
         '<label class="chk"><input type="checkbox" id="fScope"' + (S.scope ? ' checked' : '') + '> In scope only</label>' +
         '<label class="chk"><input type="checkbox" id="fFlow"' + (S.flowOnly ? ' checked' : '') + '> Has a process flow</label>' +
       '</div>' +
@@ -125,8 +190,15 @@
   function renderLibraryBody() {
     var el = document.getElementById('libBody'); if (!el) return renderLibrary();
     var rows = filtered(), shown = rows.slice(0, S.limit);
-    if (!rows.length) { el.innerHTML = '<div class="card empty">No processes match these filters.</div>'; return; }
-    el.innerHTML = '<div class="card tablewrap"><table><thead><tr><th>PCF ID</th><th>Process</th><th>Level</th><th>Process owner</th><th>Function</th><th>System of record</th><th>Controls</th><th>Flow</th><th>Status</th></tr></thead><tbody>' +
+    if (!rows.length) {
+      el.innerHTML = '<div class="card empty"><p style="margin:0 0 12px">No processes match ' + (S.q ? '“' + esc(S.q) + '” with these filters' : 'these filters') + '.</p><button class="btn" id="clearAll">Clear search and filters</button></div>';
+      document.getElementById('clearAll').addEventListener('click', function () {
+        S.q = ''; qInput.value = ''; S.level = '1-3'; S.fn = ''; S.system = ''; S.status = ''; S.rel = ''; S.scope = true; S.flowOnly = false; S.limit = 250;
+        renderLibrary(); qInput.focus();
+      });
+      return;
+    }
+    el.innerHTML = '<div class="card tablewrap"><table><thead><tr><th>' + term('pcf', 'PCF ID') + '</th><th>Process</th><th>' + term('level', 'Level') + '</th><th>Process owner</th><th>' + term('fn', 'Function') + '</th><th>' + term('sor', 'System of record') + '</th><th>' + term('kc', 'Controls') + '</th><th>Flow</th><th>' + term('status', 'Status') + '</th></tr></thead><tbody>' +
       shown.map(function (p) {
         var kc = controlsFor(p.id).length, fl = D.flows[p.id];
         return '<tr' + (fl ? ' class="hl"' : '') + '><td class="mono" style="color:#4a5361">' + esc(p.id) + '</td>' +
@@ -135,7 +207,7 @@
           '<td style="color:#3c4655">' + esc(p.sor) + '</td><td style="text-align:center">' + (kc || '') + '</td>' +
           '<td>' + (fl ? '<a href="' + hashFor(p.id) + '">View</a>' : '') + '</td><td>' + pill(p.status) + '</td></tr>';
       }).join('') + '</tbody></table></div>' +
-      '<div style="display:flex;gap:12px;align-items:center;margin-top:10px"><span class="muted">Showing ' + shown.length + ' of ' + rows.length + '</span>' +
+      '<div style="display:flex;gap:12px;align-items:center;margin-top:10px"><span class="muted">Showing ' + shown.length + ' of ' + rows.length + ' matching processes</span>' +
       (rows.length > shown.length ? '<button class="btn" id="more">Show more</button>' : '') + '</div>';
     var m = document.getElementById('more');
     if (m) m.addEventListener('click', function () { S.limit += 500; renderLibraryBody(); });
@@ -194,7 +266,7 @@
       if (open) kids.forEach(function (k) { walk(k, depth + 1); });
     }
     D.procs.filter(function (p) { return p.lvl === 1; }).forEach(function (p) { walk(p.id, 0); });
-    el.innerHTML = out.length ? out.join('') : '<div class="empty">Nothing in the taxonomy matches.</div>';
+    el.innerHTML = out.length ? out.join('') : '<div class="empty">No process names match “' + esc(S.tq) + '”. Try a shorter word, or search the Library, which also matches owners, systems and controls.</div>';
     Array.prototype.forEach.call(el.querySelectorAll('.tog'), function (b) {
       b.addEventListener('click', function () { var id = b.getAttribute('data-id'); S.open[id] = !isOpen(id); renderTreeBody(); var nb = el.querySelector('.tog[data-id="' + id + '"]'); if (nb) nb.focus(); });
     });
@@ -226,9 +298,9 @@
 
     html += '<div class="cols"><div class="main">' +
       '<section class="card" aria-label="Process fields"><div class="grid">' +
-        f('Level', 'L' + p.lvl) + f('Parent process', par ? '<a href="' + hashFor(par.id) + '">' + esc(par.id + ' ' + par.name) + '</a>' : '—', 1) +
+        f(term('level', 'Level'), 'L' + p.lvl) + f('Parent process', par ? '<a href="' + hashFor(par.id) + '">' + esc(par.id + ' ' + par.name) + '</a>' : '—', 1) +
         f('Process owner', p.owner ? esc(p.owner) : '<span class="muted">Not assigned</span>', 1) + f('Accountable leader', p.acct ? esc(p.acct) : '<span class="muted">Not assigned</span>', 1) +
-        f('EOS function', p.fn) + f('Business unit', p.bu) + f('Relevance', p.rel) + f('Priority', p.pri) + f('APQC metrics', p.metrics ? p.metrics + ' benchmarks' : '—') +
+        f(term('fn', 'EOS function'), p.fn) + f('Business unit', p.bu) + f(term('relevance', 'Relevance'), p.rel) + f('Priority', p.pri) + f('APQC metrics', p.metrics ? p.metrics + ' benchmarks' : '—') +
       '</div></section>' +
       (p.desc ? '<section class="card sec"><div class="fl">APQC description</div><p style="margin:4px 0 0;font-size:14px;line-height:1.55">' + esc(p.desc) + '</p>' + (p.notes ? '<div class="fl" style="margin-top:12px">Sparkhound notes</div><p style="margin:4px 0 0;font-size:14px;line-height:1.55">' + esc(p.notes) + '</p>' : '') + '</section>' : '');
 
@@ -331,7 +403,7 @@
     var html = '<div class="lanes" id="lanesInner" style="width:' + W + 'px;height:' + H + 'px">';
     flow.lanes.forEach(function (l, i) {
       html += '<div class="laneband' + (i % 2 ? ' alt' : '') + '" style="top:' + laneTop[i] + 'px;height:' + (laneRows[i] * ROWH) + 'px;width:' + W + 'px"></div>' +
-        '<div class="lanelab" style="top:' + laneTop[i] + 'px;height:' + (laneRows[i] * ROWH) + 'px;width:' + LABW + 'px"><b>' + esc(l.name) + '</b>' + (l.sub ? '<span>' + esc(l.sub) + '</span>' : '') + '</div>';
+        '<div class="lanelab" style="top:' + laneTop[i] + 'px;height:' + (laneRows[i] * ROWH) + 'px;width:' + LABW + 'px"><b>' + linkTerms(l.name) + '</b>' + (l.sub ? '<span>' + linkTerms(l.sub) + '</span>' : '') + '</div>';
     });
     var paths = [], labels = [];
     flow.steps.forEach(function (s) {
@@ -393,7 +465,7 @@
     var card = function (k) {
         var fl = D.flows[k], p = D.byId[k], kc = controlsFor(k).length;
         return '<a class="card flowcard" href="' + hashFor(k) + '"><span class="mono" style="color:#4a5361">' + esc(k) + '</span><strong style="font-size:16px">' + esc(p.name) + '</strong><span class="muted">' + esc(fl.summary) + '</span>' +
-          '<span style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><span class="chip">' + fl.steps.length + ' steps</span><span class="chip">' + fl.lanes.length + ' lanes</span>' + (kc ? '<span class="chip kc">' + kc + ' controls</span>' : '') + (flagsFor(k).length ? '<span class="chip flagchip">' + FLAG + ' ' + flagsFor(k).length + ' to review</span>' : '') + pill(p.status) + '</span></a>';
+          '<span style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><span class="chip">' + plural(fl.steps.length, 'step', 'steps') + '</span><span class="chip">' + plural(fl.lanes.length, 'lane', 'lanes') + '</span>' + (kc ? '<span class="chip kc">' + plural(kc, 'control', 'controls') + '</span>' : '') + (flagsFor(k).length ? '<span class="chip flagchip">' + FLAG + ' ' + flagsFor(k).length + ' to review</span>' : '') + pill(p.status) + '</span></a>';
     };
     view.innerHTML = '<div><h1>Process flows</h1><p class="sub">Swimlane flows with owners, systems and controls on every step: how Sparkhound sells, delivers and bills work. ' + keys.length + ' documented.</p></div>' +
       groups.map(function (g) { var ks = g[1].filter(function (k) { return D.flows[k]; }); return ks.length ? '<h2 style="margin:6px 0 0">' + g[0] + '</h2><div class="flowcards">' + ks.map(card).join('') + '</div>' : ''; }).join('') +
@@ -431,6 +503,17 @@
     Array.prototype.forEach.call(view.querySelectorAll('[data-q]'), function (a) {
       a.addEventListener('click', function () { S.q = a.getAttribute('data-q'); qInput.value = S.q; S.level = ''; S.system = ''; });
     });
+  }
+
+  function renderGlossary(key) {
+    view.innerHTML = '<div><h1>Glossary</h1><p class="sub">The roles and terms used across the library. Dotted-underlined words elsewhere on the site link here.</p></div>' +
+      GLOSS.map(function (g) {
+        return '<section class="card sec"><h2>' + esc(g[0]) + '</h2><dl class="gloss">' + g[1].map(function (t) {
+          return '<div id="g-' + t[0] + '"' + (t[0] === key ? ' class="hit"' : '') + '><dt>' + esc(t[1]) + '</dt><dd>' + esc(t[2]) + '</dd></div>';
+        }).join('') + '</dl></section>';
+      }).join('');
+    var hit = key && document.getElementById('g-' + key);
+    if (hit) { hit.scrollIntoView({ block: 'center' }); hit.setAttribute('tabindex', '-1'); hit.focus({ preventScroll: true }); }
   }
 
   function renderReview() {
