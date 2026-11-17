@@ -14,7 +14,7 @@ for r in wb["APQC Metrics"].iter_rows(min_row=2, values_only=True):
 def clean(v):
     if v is None:
         return ""
-    v = str(v).strip()
+    v = str(v).replace("\ufffd", " ").strip()  # APQC source text has a few garbled spaces
     return v.replace("DocuSign", "E-Signature Platform")
 
 procs = []
