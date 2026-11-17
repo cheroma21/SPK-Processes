@@ -50,7 +50,7 @@ over = {
                   notes="System of record for the service desk; APQC 8.7.8 (Operate IT user support) cross-references this process."),
     "9.2.2": dict(owner="AR Clerk (runs invoices); XO / Project Controller (approves)", acct="Finance seat (to confirm)", status="In Review",
                   sor="HaloPSA -> QuickBooks Online", sup="Avalara, Paylocity, Pax8"),
-    "9.2.3": dict(owner="AR, Next Level Now (proposed)", acct="Finance seat (to confirm)", status="Draft"),
+    "9.2.3": dict(owner="AR, Next Level Now", acct="Finance seat (to confirm)", status="In Review"),
     "9.2.4": dict(owner="AR, Next Level Now (proposed)", acct="Finance seat (to confirm)", status="Draft"),
     "3.5.5": dict(owner="Derrick Helms", acct=DH, status="Not Started", notes="Deferred: alliance and channel partners (Microsoft, Pax8, Red River-style subcontracts)."),
 }

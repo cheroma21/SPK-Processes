@@ -174,10 +174,9 @@
    "process": "9.2.3",
    "step": "9.2.3.4",
    "type": "Detective",
-   "owner": "Controller",
+   "owner": "Controller (Next Level Now)",
    "system": "QuickBooks Online",
-   "assumed": true,
-   "description": "AR aging is reviewed each month with XOs on past-due accounts.",
+   "description": "The Next Level Now controller reviews AR aging each month, and XOs review their past-due accounts.",
    "evidence": "Reviewed AR aging report"
   },
   {
@@ -1592,7 +1591,6 @@
   "9.2.3": {
    "title": "Process accounts receivable (AR)",
    "span": "Invoice issued → cash applied",
-   "draft": true,
    "summary": "Payments land in QuickBooks Online, are applied and reconciled, and paid status flows back to Halo. Invoices unpaid past their due date go to collections; escalation days count from the due date.",
    "lanes": [
     {
@@ -1615,9 +1613,7 @@
     "9.2.4"
    ],
    "questions": [
-    "How do clients pay: ACH, check, card? Is QuickBooks Payments turned on?",
-    "Does paid status sync from QuickBooks Online back to Halo?",
-    "Who runs the month-end AR aging review, and do XOs join it?"
+    "Does paid status sync from QuickBooks Online back to Halo, or does it live only in QuickBooks Online?"
    ],
    "steps": [
     {
@@ -1654,7 +1650,8 @@
        "toSide": "top",
        "label": "No"
       }
-     ]
+     ],
+     "detail": "Payments arrive by ACH or check."
     },
     {
      "id": "c3",
@@ -1662,17 +1659,17 @@
      "lane": 2,
      "col": 2,
      "title": "Payment received",
-     "note": "Bank feed or QBO Payments",
+     "note": "ACH or check, matched from the bank feed",
      "system": "QuickBooks Online",
      "who": "Automated",
-     "assumed": true,
      "next": [
       {
        "to": "c4",
        "from": "right",
        "toSide": "bottom"
       }
-     ]
+     ],
+     "detail": "Clients pay by ACH or check; payments are matched from the bank feed in QuickBooks Online. A client payment portal using Alternative Payments is planned for a later date."
     },
     {
      "id": "c4",
@@ -1708,7 +1705,8 @@
        "from": "right",
        "toSide": "bottom"
       }
-     ]
+     ],
+     "detail": "Not yet confirmed whether the Halo–QuickBooks Online integration writes paid status back to Halo."
     },
     {
      "id": "c6",
@@ -1719,17 +1717,17 @@
      "apqc": "9.2.3.4",
      "note": "With XOs on past-due accounts",
      "system": "QuickBooks Online",
-     "who": "Controller",
+     "who": "Next Level Now controller, with XOs",
      "control": "KC-AR-02",
      "controlNote": "aging reviewed",
-     "assumed": true,
      "next": [
       {
        "to": "c7",
        "from": "right",
        "toSide": "left"
       }
-     ]
+     ],
+     "detail": "The Next Level Now controller runs the month-end AR aging review; XOs review their own past-due accounts."
     },
     {
      "id": "c7",
