@@ -108,7 +108,7 @@
    "type": "Preventive",
    "owner": "XO / Project Controller",
    "system": "HaloPSA",
-   "description": "Billable time and expenses are approved by the Project Controller / XO before they can be invoiced.",
+   "description": "Billable time and expenses, due by end of day Friday each week, are approved by the Project Controller / XO before they can be invoiced.",
    "evidence": "Halo timesheet approvals",
    "flag": "Project Controller / XO approves billable time."
   },
@@ -139,12 +139,23 @@
    "id": "KC-REV-04",
    "name": "Sales tax calculated by Avalara",
    "process": "9.2.2",
-   "step": "9.2.2.4",
+   "step": "9.2.2.2",
    "type": "Preventive",
    "owner": "Billing",
    "system": "Avalara (Halo and QuickBooks Online)",
-   "description": "Avalara adds estimated sales tax to quotes in Halo and calculates final sales tax in QuickBooks Online; tax is never keyed by hand.",
+   "description": "Avalara adds estimated sales tax to quotes and calculates final sales tax on invoices in Halo; QuickBooks Online and Avalara handle filing and remittance. Tax is never keyed by hand.",
    "evidence": "Avalara transaction log"
+  },
+  {
+   "id": "KC-REV-05",
+   "name": "Finance spot-check of invoice run",
+   "process": "9.2.2",
+   "step": "9.2.2.3",
+   "type": "Detective",
+   "owner": "Finance (Next Level Now)",
+   "system": "HaloPSA",
+   "description": "Before each invoice run is sent, Finance spot-checks the run summary (totals and exceptions) after XO approval.",
+   "evidence": "Invoice run summary with Finance sign-off"
   },
   {
    "id": "KC-AR-01",
@@ -1373,8 +1384,7 @@
   "9.2.2": {
    "title": "Invoice customer",
    "span": "Month end → invoice delivered",
-   "draft": true,
-   "summary": "XO or Project Controller approves time and invoices; the AR Clerk runs and sends approved invoices from Halo; invoices then sync to QuickBooks Online.",
+   "summary": "XO or Project Controller approves time and invoices; Finance (Next Level Now) spot-checks the run; the AR Clerk sends approved invoices from Halo with Avalara tax; invoices then sync to QuickBooks Online.",
    "lanes": [
     {
      "name": "Delivery",
@@ -1387,6 +1397,10 @@
     {
      "name": "AR Clerk",
      "sub": "Runs and sends invoices"
+    },
+    {
+     "name": "Finance",
+     "sub": "Next Level Now"
     },
     {
      "name": "Systems",
@@ -1404,12 +1418,7 @@
    "downstream": [
     "9.2.3"
    ],
-   "questions": [
-    "What is the timesheet and expense deadline each period?",
-    "Invoices go out from Halo, but Avalara's final tax runs in QuickBooks Online. Does the Halo–Avalara integration calculate tax on invoices too (with QuickBooks Online and Avalara handling filing and remittance), or does the invoice go out before final tax is applied?",
-    "How are Pax8 licensing changes reconciled into recurring invoices each month?",
-    "Does anyone in Finance (Next Level Now) review the invoice run after the XO approves, or is XO approval final?"
-   ],
+   "questions": [],
    "steps": [
     {
      "id": "b1",
@@ -1431,17 +1440,18 @@
      "lane": 0,
      "col": 1,
      "title": "Submit time and expenses",
-     "note": "Time in Halo; expenses in Paylocity",
+     "note": "Due end of day Friday",
      "system": "Halo, Paylocity",
      "who": "Delivery resources",
-     "detail": "Expenses flow from Paylocity into Halo through the planned integration so billable ones land on the invoice.",
+     "detail": "Each week's time (Halo) and expenses (Paylocity) are due by end of day Friday. Expenses flow from Paylocity into Halo through the planned integration so billable ones land on the invoice.",
      "next": [
       {
        "to": "b3",
        "from": "right",
        "toSide": "left"
       }
-     ]
+     ],
+     "flag": "Time and expenses are due by end of day Friday each week."
     },
     {
      "id": "b3",
@@ -1467,21 +1477,23 @@
     {
      "id": "b4",
      "type": "process",
-     "lane": 3,
+     "lane": 4,
      "col": 3,
      "title": "Draft invoices generated",
      "apqc": "9.2.2.2",
-     "note": "Time, recurring, licensing, expenses",
+     "note": "Time, recurring, licensing, expenses; Avalara tax",
      "system": "Halo",
      "who": "Automated",
-     "assumed": true,
      "next": [
       {
        "to": "b5",
        "from": "right",
        "toSide": "bottom"
       }
-     ]
+     ],
+     "detail": "Halo generates draft invoices. The Pax8 integration updates recurring licensing quantities and amounts automatically, and Avalara calculates final sales tax on the Halo invoice.",
+     "control": "KC-REV-04",
+     "controlNote": "tax by Avalara"
     },
     {
      "id": "b5",
@@ -1493,7 +1505,7 @@
      "detail": "The XO or Project Controller reviews each draft invoice because they know the project best.",
      "next": [
       {
-       "to": "b7",
+       "to": "b6",
        "from": "right",
        "toSide": "top",
        "label": "Approved"
@@ -1507,13 +1519,34 @@
      ]
     },
     {
+     "id": "b6",
+     "type": "process",
+     "lane": 3,
+     "col": 5,
+     "title": "Spot-check invoice run",
+     "apqc": "9.2.2.3",
+     "note": "Totals and exceptions",
+     "system": "Halo",
+     "who": "Finance (Next Level Now)",
+     "control": "KC-REV-05",
+     "controlNote": "run spot-checked",
+     "detail": "After XO approval, Finance reviews the invoice run summary (totals and exceptions) and sends anything questionable back to the XO before invoices go out.",
+     "next": [
+      {
+       "to": "b7",
+       "from": "right",
+       "toSide": "bottom"
+      }
+     ]
+    },
+    {
      "id": "b7",
      "type": "process",
      "lane": 2,
-     "col": 5,
+     "col": 6,
      "title": "Run and send invoices",
      "apqc": "9.2.2.3",
-     "note": "Approved invoices, sent from Halo",
+     "note": "Approved, spot-checked invoices",
      "system": "Halo",
      "who": "AR Clerk",
      "next": [
@@ -1528,11 +1561,11 @@
     {
      "id": "b8",
      "type": "process",
-     "lane": 3,
-     "col": 6,
+     "lane": 4,
+     "col": 7,
      "title": "Sync to QuickBooks Online",
      "apqc": "9.2.2.4",
-     "note": "Avalara handles tax filing in QBO",
+     "note": "QBO + Avalara file and remit tax",
      "system": "Halo → QBO, Avalara",
      "who": "Integration",
      "control": "KC-REV-03",
@@ -1549,8 +1582,8 @@
     {
      "id": "b9",
      "type": "end",
-     "lane": 4,
-     "col": 7,
+     "lane": 5,
+     "col": 8,
      "title": "End: invoice delivered; AR (9.2.3)",
      "link": "9.2.3"
     }
