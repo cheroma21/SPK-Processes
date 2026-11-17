@@ -185,10 +185,9 @@
    "process": "9.2.4",
    "step": "9.2.4.4",
    "type": "Preventive",
-   "owner": "Managing Partner, Operations",
+   "owner": "Managing Partner, Operations and account EO",
    "system": "HaloPSA",
-   "assumed": true,
-   "description": "Placing a client on credit hold or suspending service requires leadership approval.",
+   "description": "A credit hold or service suspension, considered at 90+ days past due, requires joint approval from the Managing Partner over Operations and the account EO.",
    "evidence": "Approval recorded on the client in Halo"
   },
   {
@@ -197,10 +196,9 @@
    "process": "9.2.4",
    "step": "9.2.4.5",
    "type": "Preventive",
-   "owner": "Leadership / Controller",
+   "owner": "CEO",
    "system": "QuickBooks Online",
-   "assumed": true,
-   "description": "Bad-debt write-offs are approved by leadership before the Controller posts them.",
+   "description": "Every bad-debt write-off is approved by the CEO (no dollar threshold today) before the Controller posts it.",
    "evidence": "Approved write-off memo; QBO journal entry"
   }
  ],
@@ -1750,8 +1748,7 @@
   "9.2.4": {
    "title": "Manage and process collections",
    "span": "Past due → paid, plan or write-off",
-   "draft": true,
-   "summary": "Automated reminders first; the XO steps in at 45+ days past the invoice due date and the account's Executive Owner (EO) at 60+; leadership handles credit holds and write-offs.",
+   "summary": "Automated QuickBooks Online reminders first (Net 30, then +15 to +90 days); the XO steps in at 45+ days past the due date and the account's Executive Owner (EO) at 60+; at 90+ the Managing Partner over Operations and the EO approve any credit hold, and the CEO approves write-offs.",
    "lanes": [
     {
      "name": "AR",
@@ -1767,18 +1764,14 @@
     },
     {
      "name": "Leadership",
-     "sub": "Managing Partner, Operations and Controller"
+     "sub": "Managing Partner, Operations; CEO; Controller"
     }
    ],
    "upstream": [
     "9.2.3"
    ],
    "downstream": [],
-   "questions": [
-    "What's the reminder schedule before 45 days, and does QuickBooks Online send it automatically?",
-    "Who can approve a credit hold or service suspension, and at what point?",
-    "Who approves write-offs, and is there a dollar threshold?"
-   ],
+   "questions": [],
    "steps": [
     {
      "id": "k1",
@@ -1802,7 +1795,7 @@
      "col": 1,
      "title": "Send reminders",
      "apqc": "9.2.4.3",
-     "note": "Automated reminder schedule",
+     "note": "Net 30; reminders +15, +30, +45, +60, +90",
      "system": "QuickBooks Online",
      "who": "AR",
      "assumed": true,
@@ -1812,7 +1805,8 @@
        "from": "right",
        "toSide": "left"
       }
-     ]
+     ],
+     "detail": "Planned QuickBooks Online setup (not yet configured): invoices are Net 30, with automated reminders at 15, 30, 45, 60 and 90 days past due. The 90-day reminder warns that service may be cancelled."
     },
     {
      "id": "k3",
@@ -1938,17 +1932,18 @@
      "title": "Credit hold or suspension",
      "apqc": "9.2.4.4",
      "system": "Halo",
-     "who": "Managing Partner, Operations",
+     "who": "Managing Partner, Operations and the account EO",
      "control": "KC-AR-03",
      "controlNote": "leadership approval",
-     "assumed": true,
      "next": [
       {
        "to": "k9",
        "from": "bottom",
        "toSide": "top"
       }
-     ]
+     ],
+     "note": "90+ days past due",
+     "detail": "At 90+ days past due, after the final warning, the Managing Partner over Operations and the account EO jointly approve a credit hold or service suspension."
     },
     {
      "id": "k9",
@@ -1990,17 +1985,17 @@
      "row": 2,
      "apqc": "9.2.4.5",
      "system": "QuickBooks Online",
-     "who": "Leadership / Controller",
+     "who": "CEO approves; Controller posts",
      "control": "KC-AR-04",
      "controlNote": "approved before posting",
-     "assumed": true,
      "next": [
       {
        "to": "k14",
        "from": "right",
        "toSide": "left"
       }
-     ]
+     ],
+     "detail": "The CEO currently approves every write-off (no dollar threshold); the Controller posts it in QuickBooks Online."
     },
     {
      "id": "k14",
