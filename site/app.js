@@ -265,10 +265,10 @@
     el.innerHTML = '<div class="card tablewrap"><table><thead><tr><th>' + term('pcf', 'PCF ID') + '</th><th>Process</th><th>' + term('level', 'Level') + '</th><th>Process owner</th><th>' + term('fn', 'Function') + '</th><th>' + term('sor', 'System of record') + '</th><th>' + term('kc', 'Controls') + '</th><th>Flow</th><th>' + term('status', 'Status') + '</th></tr></thead><tbody>' +
       shown.map(function (p) {
         var kc = controlsFor(p.id).length, fl = D.flows[p.id];
-        return '<tr' + (fl ? ' class="hl"' : '') + '><td class="mono" style="color:#4a5361">' + esc(p.id) + '</td>' +
+        return '<tr' + (fl ? ' class="hl"' : '') + '><td class="mono" style="color:#4f5b64">' + esc(p.id) + '</td>' +
           '<td style="padding-left:' + (12 + (p.lvl - 1) * 20) + 'px;' + (p.lvl === 1 ? 'font-weight:600' : '') + '"><a href="' + hashFor(p.id) + '">' + esc(p.name) + '</a></td>' +
-          '<td><span class="lvl">L' + p.lvl + '</span></td><td>' + esc(p.owner) + '</td><td style="color:#3c4655">' + esc(p.fn) + '</td>' +
-          '<td style="color:#3c4655">' + esc(p.sor) + '</td><td style="text-align:center">' + (kc || '') + '</td>' +
+          '<td><span class="lvl">L' + p.lvl + '</span></td><td>' + esc(p.owner) + '</td><td style="color:#384550">' + esc(p.fn) + '</td>' +
+          '<td style="color:#384550">' + esc(p.sor) + '</td><td style="text-align:center">' + (kc || '') + '</td>' +
           '<td>' + (fl ? '<a href="' + hashFor(p.id) + '">View</a>' : '') + '</td><td>' + pill(p.status) + '</td></tr>';
       }).join('') + '</tbody></table></div>' +
       '<div style="display:flex;gap:12px;align-items:center;margin-top:10px"><span class="muted">Showing ' + shown.length + ' of ' + rows.length + ' matching processes</span>' +
@@ -321,8 +321,8 @@
       var name = esc(p.name);
       if (q) { var i = p.name.toLowerCase().indexOf(q); if (i >= 0) name = esc(p.name.slice(0, i)) + '<span class="mark">' + esc(p.name.slice(i, i + q.length)) + '</span>' + esc(p.name.slice(i + q.length)); }
       out.push('<div class="tnode" style="padding-left:' + (4 + depth * 22) + 'px">' +
-        (kids.length ? '<button class="tog' + (open ? ' open' : '') + '" data-id="' + esc(id) + '" aria-expanded="' + !!open + '" aria-label="' + (open ? 'Collapse ' : 'Expand ') + esc(p.name) + '"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="#4a5361" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' : '<span class="dot" aria-hidden="true">•</span>') +
-        '<span class="lvl" style="flex:none">L' + p.lvl + '</span><span class="mono" style="min-width:60px;color:#4a5361">' + esc(id) + '</span>' +
+        (kids.length ? '<button class="tog' + (open ? ' open' : '') + '" data-id="' + esc(id) + '" aria-expanded="' + !!open + '" aria-label="' + (open ? 'Collapse ' : 'Expand ') + esc(p.name) + '"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="#4f5b64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' : '<span class="dot" aria-hidden="true">•</span>') +
+        '<span class="lvl" style="flex:none">L' + p.lvl + '</span><span class="mono" style="min-width:60px;color:#4f5b64">' + esc(id) + '</span>' +
         '<a href="' + hashFor(id) + '" style="' + (depth === 0 ? 'font-weight:600' : '') + '">' + name + '</a>' +
         (kids.length && !open ? '<span class="muted" style="font-size:12px">' + kids.length + '</span>' : '') +
         (D.flows[id] ? ' <span class="chip sor" style="margin:0">Flow</span>' : '') +
@@ -346,7 +346,7 @@
     var sys = function (s, cls) { return s ? s.split(/,\s*/).map(function (v) { return '<span class="chip ' + (cls || '') + '">' + esc(v) + '</span>'; }).join('') : '<span class="muted">—</span>'; };
 
     var html = '<div><nav class="crumbs" aria-label="Breadcrumb"><a href="#library">Process Library</a>' + crumbs.map(function (c) { return '<span aria-hidden="true">›</span>' + c; }).join('') + '</nav>' +
-      '<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px"><span class="mono" style="font-size:15px;color:#4a5361">' + esc(p.id) + '</span><h1 style="font-size:24px">' + esc(p.name) + '</h1>' + pill(p.status) + '</div></div>';
+      '<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px"><span class="mono" style="font-size:15px;color:#4f5b64">' + esc(p.id) + '</span><h1 style="font-size:24px">' + esc(p.name) + '</h1>' + pill(p.status) + '</div></div>';
 
     if (flow) {
       html += '<section class="card" aria-label="Process flow">' +
@@ -371,7 +371,7 @@
     if (flow) {
       html += '<section class="card tablewrap" aria-label="Workflow steps"><div class="sec" style="padding-bottom:6px"><h2 style="margin:0">Workflow steps</h2></div><table><thead><tr><th>#</th><th>Step</th><th>Lane</th><th>Responsible</th><th>System</th><th>Control</th></tr></thead><tbody>' +
         flow.steps.map(function (s, i) {
-          return '<tr><td>' + (i + 1) + '</td><td>' + (s.apqc ? '<span class="mono" style="color:#4a5361">' + esc(s.apqc) + '</span> ' : '') + esc(s.title) + '</td><td>' + esc(flow.lanes[s.lane].name) + '</td><td>' + esc(s.who || '') + '</td><td>' + esc(s.system || '') + '</td><td>' + (s.control ? '<a class="chip kc" href="#controls">' + esc(s.control) + '</a>' : '') + '</td></tr>';
+          return '<tr><td>' + (i + 1) + '</td><td>' + (s.apqc ? '<span class="mono" style="color:#4f5b64">' + esc(s.apqc) + '</span> ' : '') + esc(s.title) + '</td><td>' + esc(flow.lanes[s.lane].name) + '</td><td>' + esc(s.who || '') + '</td><td>' + esc(s.system || '') + '</td><td>' + (s.control ? '<a class="chip kc" href="#controls">' + esc(s.control) + '</a>' : '') + '</td></tr>';
         }).join('') + '</tbody></table></section>';
     } else if (childFlows.length) {
       html += '<section class="card sec"><h2>Process flows in this branch</h2><div style="display:flex;flex-wrap:wrap;gap:10px">' + childFlows.map(function (k) {
@@ -379,7 +379,7 @@
     }
     if (kids.length) {
       html += '<section class="card tablewrap"><div class="sec" style="padding-bottom:6px"><h2 style="margin:0">Sub-processes</h2></div><table><thead><tr><th>PCF ID</th><th>Process</th><th>Owner</th><th>System of record</th><th>Status</th></tr></thead><tbody>' +
-        kids.map(function (k) { return '<tr><td class="mono" style="color:#4a5361">' + esc(k.id) + '</td><td><a href="' + hashFor(k.id) + '">' + esc(k.name) + '</a>' + (D.flows[k.id] ? ' <span class="chip sor">Flow</span>' : '') + (k.scope !== 'Yes' ? ' <span class="chip">Out of scope</span>' : '') + '</td><td>' + esc(k.owner) + '</td><td>' + esc(k.sor) + '</td><td>' + pill(k.status) + '</td></tr>'; }).join('') +
+        kids.map(function (k) { return '<tr><td class="mono" style="color:#4f5b64">' + esc(k.id) + '</td><td><a href="' + hashFor(k.id) + '">' + esc(k.name) + '</a>' + (D.flows[k.id] ? ' <span class="chip sor">Flow</span>' : '') + (k.scope !== 'Yes' ? ' <span class="chip">Out of scope</span>' : '') + '</td><td>' + esc(k.owner) + '</td><td>' + esc(k.sor) + '</td><td>' + pill(k.status) + '</td></tr>'; }).join('') +
         '</tbody></table></section>';
     }
     html += '</div><div class="aside">';
@@ -528,7 +528,7 @@
     var groups = [['Sell work', ['3.5.1', '3.5.3', '3.5.4']], ['Do work', ['5.4', '6.2.2']], ['Bill work', ['9.2.2', '9.2.3', '9.2.4']]];
     var card = function (k) {
         var fl = D.flows[k], p = D.byId[k], kc = controlsFor(k).length;
-        return '<a class="card flowcard" href="' + hashFor(k) + '"><span class="mono" style="color:#4a5361">' + esc(k) + '</span><strong style="font-size:16px">' + esc(p.name) + '</strong><span class="muted">' + esc(fl.summary) + '</span>' +
+        return '<a class="card flowcard" href="' + hashFor(k) + '"><span class="mono" style="color:#4f5b64">' + esc(k) + '</span><strong style="font-size:16px">' + esc(p.name) + '</strong><span class="muted">' + esc(fl.summary) + '</span>' +
           '<span style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px"><span class="chip">' + plural(fl.steps.length, 'step', 'steps') + '</span><span class="chip">' + plural(fl.lanes.length, 'lane', 'lanes') + '</span>' + (kc ? '<span class="chip kc">' + plural(kc, 'control', 'controls') + '</span>' : '') + (flagsFor(k).length ? '<span class="chip flagchip">' + FLAG + ' ' + flagsFor(k).length + ' to review</span>' : '') + pill(p.status) + '</span></a>';
     };
     view.innerHTML = '<div><h1>Process flows</h1><p class="sub">Swimlane flows with owners, systems and controls on every step: how Sparkhound sells, delivers and bills work. ' + keys.length + ' documented.</p></div>' +
