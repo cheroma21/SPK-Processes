@@ -55,27 +55,19 @@ tr.hl{background:#f1f7ea}
 .cols>.main{flex:3 1 640px;min-width:0;display:flex;flex-direction:column;gap:16px}
 .cols>.aside{flex:1 1 280px;display:flex;flex-direction:column;gap:16px}
 /* swimlane */
-.lanewrap{overflow-x:auto;padding:0 0 4px}
 .lanes{position:relative;margin:0 auto}
-.lanecol{position:absolute;top:0;bottom:0;border-left:1px solid var(--line2)}
-.lanecol:nth-child(even){background:#f8faf9}
-.lanehd{position:absolute;top:0;height:38px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--ink2);background:#f3f6f5;border-bottom:1px solid #d3dcd9;text-align:center;padding:0 6px}
 .node{position:absolute;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;background:none;border:0;padding:0;font:inherit;color:var(--ink)}
 .node svg.shape{position:absolute;inset:0;overflow:visible}
-.node .lab{position:relative;font-size:12px;line-height:1.25;padding:0 12px;display:flex;flex-direction:column;align-items:center;gap:3px}
-.node .lab b{font-weight:600}
 .node .tag{font-size:10.5px;color:var(--muted)}
 .node .kct{font-size:10px;font-weight:600;color:#8a3d06;background:#fdeedd;border-radius:3px;padding:0 4px}
 .node:focus-visible{outline:2px solid var(--blue);outline-offset:4px;border-radius:6px}
 .node.sel svg.shape *{stroke:var(--blue);stroke-width:2.5}
 .edges{position:absolute;inset:0;pointer-events:none;overflow:visible}
-.edges text{font-size:11px;fill:var(--ink2);font-family:var(--f-body);paint-order:stroke;stroke:#fff;stroke-width:4px}
+.edges text{font-size:12px;fill:var(--ink);font-family:var(--f-body);paint-order:stroke;stroke:#fff;stroke-width:4px}
 .legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;font-size:12px;color:var(--muted);padding:10px 14px;border-top:1px solid var(--line2)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .linkcard{display:flex;flex-direction:column;gap:2px;border:2px dashed #81BE41;border-radius:8px;padding:8px 12px;font-size:13px;text-decoration:none;color:var(--blue-d);background:#f1f7ea}
 .linkcard small{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em}
-.stepd{display:flex;flex-direction:column;gap:6px;font-size:13px}
-.stepd .h{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
 .flowcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
 .flowcard{padding:16px 18px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:6px}
 .flowcard:hover{border-color:#8fb5ab}
@@ -94,7 +86,6 @@ tr.hl{background:#f1f7ea}
 .node-decision .lab{padding:0 40px}
 .node-start .lab,.node-end .lab{padding:0 18px}
 .node:hover svg.shape *{filter:brightness(.97)}
-.edges text{font-size:12px;fill:var(--ink)}
 .lanewrap{overflow:auto;max-height:80vh}
 .tnode .lvl{font-size:11px;padding:1px 6px}
 .qs ol{margin:0;padding-left:20px;font-size:14px;line-height:1.5;display:flex;flex-direction:column;gap:6px}
@@ -165,9 +156,9 @@ input[type=search]:focus,select:focus{outline:2px solid var(--blue);outline-offs
 /* Sparkhound type: Overpass (Interstate stand-in), Barlow Condensed caps (Interstate Condensed Bold stand-in) */
 h1{font-weight:900;letter-spacing:-.02em;text-wrap:balance}
 h2{font-weight:700;letter-spacing:-.01em}
-.navlab,.linkcard small,.stepd .h{font-family:var(--f-caps);font-weight:600;letter-spacing:.1em}
+.navlab,.linkcard small{font-family:var(--f-caps);font-weight:600;letter-spacing:.1em}
 .navlab{font-size:12.5px}
-.linkcard small,.stepd .h{font-size:12px}
+.linkcard small{font-size:12px}
 .sep{display:inline-block;width:15px;height:10px;vertical-align:middle;position:relative;font-size:0;color:inherit}
 .sep::before{content:'';position:absolute;left:50%;top:50%;width:3px;height:3px;margin:-1.5px 0 0 -1.5px;border-radius:50%;background:currentColor}
 
@@ -200,3 +191,12 @@ h2{font-weight:700;letter-spacing:-.01em}
 @media (max-width:1100px){.flowbody{flex-direction:column}.steppanel{width:auto;max-height:none;border-left:0;border-top:1px solid var(--line);box-shadow:none}}
 .sp-meta{margin-top:4px;font-size:13px;color:var(--muted)}
 .lanelab{z-index:4}
+
+/* skip link */
+.skip{position:absolute;left:12px;top:-60px;z-index:60;background:var(--navy);color:#fff;padding:10px 14px;border-radius:6px;font-weight:600;text-decoration:none;outline:2px solid var(--green);outline-offset:2px}
+.skip:focus{top:12px}
+/* legend swatches drawn at real size so control borders and dashes are visible */
+.legend svg{flex:none;overflow:visible}
+.view:focus{outline:none}
+.chip{white-space:nowrap}
+td,.count,.chip{font-variant-numeric:tabular-nums}
