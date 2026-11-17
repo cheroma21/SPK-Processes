@@ -104,6 +104,7 @@
   function route() {
     var h = location.hash.replace(/^#/, '');
     window.scrollTo(0, 0);
+    if (h !== 'library' && h !== 'taxonomy' && S.q) { S.q = ''; S.tq = ''; qInput.value = ''; }
     if (h.indexOf('p-') === 0 && D.byId[idFromHash(h)]) { setNav(''); return renderProcess(idFromHash(h)); }
     if (h === 'taxonomy') { setNav('taxonomy'); return renderTree(); }
     if (h === 'flows') { setNav('flows'); return renderFlows(); }
@@ -111,7 +112,8 @@
     if (h === 'controls') { setNav('controls'); return renderControls(); }
     if (h === 'review') { setNav('review'); return renderReview(); }
     if (h === 'glossary' || h.indexOf('glossary/') === 0) { setNav('glossary'); return renderGlossary(h.split('/')[1]); }
-    setNav('library'); renderLibrary();
+    if (h === 'library') { setNav('library'); return renderLibrary(); }
+    setNav('home'); renderHome();
   }
   window.addEventListener('hashchange', route);
 
@@ -138,9 +140,49 @@
     S.q = qInput.value.trim(); S.limit = 250;
     var h = location.hash.replace(/^#/, '');
     if (h === 'taxonomy') { S.tq = S.q; renderTreeBody(); return; }
-    if (h !== '' && h !== 'library') { location.hash = 'library'; return; }
+    if (h !== 'library') { location.hash = 'library'; return; }
     renderLibraryBody();
   });
+
+  /* ---------- Home ---------- */
+  function renderHome() {
+    var nFlows = Object.keys(D.flows).length;
+    var inScope = D.procs.filter(function (p) { return p.scope === 'Yes'; }).length;
+    var nFlags = 0; Object.keys(D.flows).forEach(function (k) { nFlags += flagsFor(k).length; });
+    var link = function (h, t) { return '<a href="#' + h + '">' + t + '</a>'; };
+    var row = function (title, body) { return '<div class="howrow"><h3>' + title + '</h3><p>' + body + '</p></div>'; };
+    var shape = function (type, ctl, as) { var w = type === 'decision' ? 46 : 56, h = type === 'decision' ? 34 : 30; return '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" aria-hidden="true">' + shapeSvg(type, w, h, ctl, as) + '</svg>'; };
+    var key = function (svg, title, body) { return '<div class="keyrow"><span class="keyshape">' + svg + '</span><div><b>' + title + '</b><p>' + body + '</p></div></div>'; };
+    view.innerHTML = '<article class="home">' +
+      '<header><h1>Sparkhound Process Library</h1>' +
+      '<p class="lead">How Sparkhound runs its business, written down: who owns each process, the system it runs in, and the checks that keep it right. It describes the operating model for 1/1/2027, when HaloPSA, QuickBooks Online and Paylocity become the systems of record.</p>' +
+      '<p class="state">This is a working prototype. ' + nFlows + ' processes have full flows and are being reviewed with their owners now. The other ' + (inScope - nFlows).toLocaleString() + ' in-scope processes are listed with their suggested systems, but aren\'t written up yet.</p></header>' +
+
+      '<section><h2>How to use it</h2>' +
+        row('Find a process', 'Type in the search box at the top of any page. It matches process names, owners, systems and controls. To browse instead, use the ' + link('library', 'Library') + ', a filterable table, or the ' + link('taxonomy', 'Taxonomy') + ', the full tree of processes.') +
+        row('Read a flow', link('flows', 'Process flows') + ' lists the processes documented so far. Each flow has one row per role, and the work runs left to right. Select any step to see who does it, in which system, and under which control.') +
+        row('See what\'s still open', link('review', 'Review') + ' collects the ' + nFlags + ' decisions waiting for a process owner to confirm. Each flow also lists its open questions at the bottom of the page.') +
+        row('Check systems and controls', link('systems', 'Systems') + ' shows which system is the record for what from 1/1/2027. ' + link('controls', 'Controls') + ' lists the key controls and the step each one sits on.') +
+        row('Look up a term', 'The ' + link('glossary', 'Glossary') + ' explains roles like XO and EO and terms like PCF ID. Words with a dotted underline anywhere on the site show their definition when you point at them.') +
+      '</section>' +
+
+      '<section><h2>Reading a flow</h2>' +
+        '<div class="keygrid">' +
+        key(shape('start'), 'Start and end', 'Where a process begins and where it hands off. An end that names another process links to it.') +
+        key(shape('process'), 'Step', 'Work someone does. The lane says who; the box names the system.') +
+        key(shape('decision'), 'Decision', 'A question, with a labelled arrow for each answer.') +
+        key(shape('document'), 'Document', 'A record the process produces, such as a signed SOW.') +
+        key(shape('process', 1), 'Key control', 'An orange border marks a check that prevents or catches an error.') +
+        key(shape('process', 0, 1), 'Assumption', 'A dashed outline means the step is assumed and not yet confirmed.') +
+        key('<svg width="56" height="30" viewBox="0 0 56 30" aria-hidden="true" style="overflow:visible">' + shapeSvg('process', 56, 30) + '<circle cx="50" cy="6" r="8" fill="#fff" stroke="#b42318" stroke-width="1.5"/><path d="M47 11V2.5M47 3h5.5l-1.3 2 1.3 2H47" fill="#fde4e1" stroke="#b42318" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>', 'Review flag', 'A decision made in a design session that the process owner still has to confirm.') +
+        '</div>' +
+      '</section>' +
+
+      '<section><h2>Something wrong or missing?</h2>' +
+        '<p>Every process page names its owner. Tell them, or bring it to the next review session. Once a correction is agreed, the process is updated and the site republished.</p>' +
+      '</section>' +
+    '</article>';
+  }
 
   /* ---------- Library ---------- */
   function filtered() {
