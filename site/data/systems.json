@@ -1,0 +1,116 @@
+[
+ {
+  "name": "HaloPSA",
+  "role": "PSA for the entire company",
+  "status": "Target",
+  "note": "Replaces OpenAir for DT projects and time. Also holds price book / items and billable expenses."
+ },
+ {
+  "name": "QuickBooks Online",
+  "role": "Financial system",
+  "status": "Target",
+  "note": "Replaces NetSuite."
+ },
+ {
+  "name": "Paylocity",
+  "role": "HRIS / payroll / expense management",
+  "status": "Target",
+  "note": "Replaces generic 'HRIS / Payroll'. Owns expense reimbursement (9.6.2)."
+ },
+ {
+  "name": "Avalara",
+  "role": "Tax management",
+  "status": "Target",
+  "note": "Sales/use tax. Income tax stays QBO + External CPA."
+ },
+ {
+  "name": "Claude",
+  "role": "Corporate AI",
+  "status": "Target",
+  "note": "Supporting only; mapped to knowledge mgmt (13.5) and analytics (13.8)."
+ },
+ {
+  "name": "M365",
+  "role": "Collaboration and tools (email, Teams, Office)",
+  "status": "Target",
+  "note": "Includes Entra ID identity rows."
+ },
+ {
+  "name": "SharePoint",
+  "role": "Intranet",
+  "status": "Target",
+  "note": "Also still the document store for strategy, BCDR and process docs."
+ },
+ {
+  "name": "ComplianceScorecard",
+  "role": "Policies and compliance tracking",
+  "status": "Target",
+  "note": "System of record for 11.1, 11.2 and IT compliance assessments (8.3.6)."
+ },
+ {
+  "name": "Arctic Wolf Managed Awareness",
+  "role": "Security awareness training",
+  "status": "Target",
+  "note": "Supporting on employee training and IT risk/resilience training rows."
+ },
+ {
+  "name": "HubSpot",
+  "role": "CRM / marketing (relaunch in flight)",
+  "status": "Retained - confirm",
+  "note": "Not on the 1/1/2027 list."
+ },
+ {
+  "name": "Pax8",
+  "role": "Distribution / licensing",
+  "status": "Retained - confirm",
+  "note": "Not on the 1/1/2027 list."
+ },
+ {
+  "name": "Power BI",
+  "role": "Reporting / analytics",
+  "status": "Retained - confirm",
+  "note": "Not on the 1/1/2027 list. SOR for 13.7 and 13.8."
+ },
+ {
+  "name": "Azure DevOps",
+  "role": "Dev / DT delivery",
+  "status": "Retained - confirm",
+  "note": "Not on the 1/1/2027 list."
+ },
+ {
+  "name": "RMM",
+  "role": "Endpoint management (NinjaOne)",
+  "status": "Retained - confirm",
+  "note": "Not on the 1/1/2027 list. Rename to NinjaOne?"
+ },
+ {
+  "name": "E-Signature Platform",
+  "role": "E-signature (moving to Halo e-signature)",
+  "status": "Retained - confirm",
+  "note": "Placeholder name; DocuSign today, Halo's e-signature planned."
+ },
+ {
+  "name": "Apollo.io",
+  "role": "Prospecting",
+  "status": "Retained - confirm",
+  "note": "Not on the 1/1/2027 list."
+ },
+ {
+  "name": "EOS (Ninety.io)",
+  "role": "EOS V/TO, Rocks, Accountability Chart",
+  "status": "Retained - confirm",
+  "note": "Not on the 1/1/2027 list."
+ },
+ {
+  "name": "NetSuite",
+  "role": "-",
+  "status": "Retired",
+  "note": "Should read 0."
+ },
+ {
+  "name": "OpenAir / SuiteProjects Pro",
+  "role": "-",
+  "status": "Retired",
+  "note": "Should read 0."
+ }
+]

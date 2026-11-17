@@ -1,0 +1,1863 @@
+{
+ "controls": [
+  {
+   "id": "KC-SELL-01",
+   "name": "Discovery exit gate",
+   "process": "3.5.1",
+   "step": "3.5.1.4",
+   "type": "Preventive",
+   "owner": "Partner",
+   "system": "HubSpot",
+   "description": "A deal cannot move to Proposal until scope, a specific decision maker, budget and a dated close are confirmed.",
+   "evidence": "HubSpot deal stage history and required deal properties"
+  },
+  {
+   "id": "KC-SELL-02",
+   "name": "Loss reason recorded",
+   "process": "3.5.1",
+   "step": "3.5.1.8.5",
+   "type": "Detective",
+   "owner": "Partner",
+   "system": "HubSpot",
+   "description": "The reason for a loss is written in the HubSpot deal notes before the deal is set to Closed Lost.",
+   "evidence": "HubSpot deal notes"
+  },
+  {
+   "id": "KC-SELL-03",
+   "name": "Partner signs SOW first",
+   "process": "3.5.3",
+   "step": "3.5.3.12",
+   "type": "Preventive",
+   "owner": "Partner",
+   "system": "E-Signature Platform",
+   "description": "Every SOW goes out by e-signature envelope with the Partner as signer 1. The Partner's signature is the review and approval; the client cannot see the SOW until it is signed.",
+   "evidence": "E-signature envelope audit trail"
+  },
+  {
+   "id": "KC-SELL-04",
+   "name": "Void and re-sign on any change",
+   "process": "3.5.3",
+   "step": "3.5.3.14",
+   "type": "Preventive",
+   "owner": "Service line owner",
+   "system": "HaloPSA",
+   "description": "Any change requested in Negotiation voids the envelope. The service line owner revises the quote in Halo and the Partner signs the new version first.",
+   "evidence": "Voided and reissued envelopes; Halo quote revisions"
+  },
+  {
+   "id": "KC-SELL-05",
+   "name": "XO handoff acceptance",
+   "process": "3.5.4",
+   "step": "3.5.4",
+   "type": "Preventive",
+   "owner": "Experience Owner (XO)",
+   "system": "HaloPSA",
+   "description": "The XO confirms the auto-created project and sales order match the executed SOW and records acceptance in Halo. Sell work ends and delivery starts only after acceptance.",
+   "evidence": "Halo acceptance field / action on the project"
+  },
+  {
+   "id": "KC-DEL-01",
+   "name": "Partner signs change orders first",
+   "process": "5.4",
+   "step": "5.4.2",
+   "type": "Preventive",
+   "owner": "Partner (Account Executive Owner)",
+   "system": "HaloPSA, E-Signature Platform",
+   "description": "Every change order is signed by the Partner (Account Executive Owner) before it reaches the client, and out-of-scope work starts only after the client signs.",
+   "evidence": "Signed change order envelope; revised Halo project budget",
+   "flag": "Partner signs every change order before the client."
+  },
+  {
+   "id": "KC-DEL-02",
+   "name": "Client acceptance before closeout",
+   "process": "5.4",
+   "step": "5.4.3",
+   "type": "Preventive",
+   "owner": "XO / Project Controller",
+   "system": "HaloPSA",
+   "assumed": true,
+   "description": "A project is closed only after the client's acceptance of the deliverables is recorded in Halo.",
+   "evidence": "Acceptance recorded on the Halo project"
+  },
+  {
+   "id": "KC-SVC-01",
+   "name": "Priority and SLA set at triage",
+   "process": "6.2.2",
+   "step": "6.2.2",
+   "type": "Preventive",
+   "owner": "Service Desk",
+   "system": "HaloPSA",
+   "description": "Every ticket gets a category and priority at triage, which starts the matching SLA timers in Halo.",
+   "evidence": "Halo SLA reports"
+  },
+  {
+   "id": "KC-SVC-02",
+   "name": "Out-of-scope work approved first",
+   "process": "6.2.2",
+   "step": "6.2.2",
+   "type": "Preventive",
+   "owner": "XO",
+   "system": "HaloPSA",
+   "assumed": true,
+   "description": "Work outside the managed services agreement is approved (quoted or accepted as billable) before it starts.",
+   "evidence": "Approval recorded on the Halo ticket"
+  },
+  {
+   "id": "KC-REV-01",
+   "name": "Billable time approved",
+   "process": "9.2.2",
+   "step": "9.2.2.2",
+   "type": "Preventive",
+   "owner": "XO / Project Controller",
+   "system": "HaloPSA",
+   "description": "Billable time and expenses are approved by the Project Controller / XO before they can be invoiced.",
+   "evidence": "Halo timesheet approvals",
+   "flag": "Project Controller / XO approves billable time."
+  },
+  {
+   "id": "KC-REV-02",
+   "name": "Invoice approved by XO / Project Controller",
+   "process": "9.2.2",
+   "step": "9.2.2.2",
+   "type": "Preventive",
+   "owner": "XO / Project Controller",
+   "system": "HaloPSA",
+   "description": "The XO or Project Controller reviews and approves each invoice before the AR Clerk runs and sends it.",
+   "evidence": "Invoice approval in Halo"
+  },
+  {
+   "id": "KC-REV-03",
+   "name": "Halo-to-QBO invoice sync reconciled",
+   "process": "9.2.2",
+   "step": "9.2.2.4",
+   "type": "Detective",
+   "owner": "AR Clerk",
+   "system": "HaloPSA, QuickBooks Online",
+   "assumed": true,
+   "description": "Each invoice run, invoice counts and totals in Halo are reconciled to QuickBooks Online.",
+   "evidence": "Sync reconciliation report"
+  },
+  {
+   "id": "KC-REV-04",
+   "name": "Sales tax calculated by Avalara",
+   "process": "9.2.2",
+   "step": "9.2.2.4",
+   "type": "Preventive",
+   "owner": "Billing",
+   "system": "Avalara (Halo and QuickBooks Online)",
+   "description": "Avalara adds estimated sales tax to quotes in Halo and calculates final sales tax in QuickBooks Online; tax is never keyed by hand.",
+   "evidence": "Avalara transaction log"
+  },
+  {
+   "id": "KC-AR-01",
+   "name": "Cash application reconciled",
+   "process": "9.2.3",
+   "step": "9.2.3.3",
+   "type": "Detective",
+   "owner": "AR",
+   "system": "QuickBooks Online",
+   "description": "Payments applied to invoices are reconciled to bank deposits.",
+   "evidence": "QBO bank reconciliation"
+  },
+  {
+   "id": "KC-AR-02",
+   "name": "Monthly AR aging review",
+   "process": "9.2.3",
+   "step": "9.2.3.4",
+   "type": "Detective",
+   "owner": "Controller",
+   "system": "QuickBooks Online",
+   "assumed": true,
+   "description": "AR aging is reviewed each month with XOs on past-due accounts.",
+   "evidence": "Reviewed AR aging report"
+  },
+  {
+   "id": "KC-AR-03",
+   "name": "Credit hold approval",
+   "process": "9.2.4",
+   "step": "9.2.4.4",
+   "type": "Preventive",
+   "owner": "Managing Partner, Operations",
+   "system": "HaloPSA",
+   "assumed": true,
+   "description": "Placing a client on credit hold or suspending service requires leadership approval.",
+   "evidence": "Approval recorded on the client in Halo"
+  },
+  {
+   "id": "KC-AR-04",
+   "name": "Write-off approval",
+   "process": "9.2.4",
+   "step": "9.2.4.5",
+   "type": "Preventive",
+   "owner": "Leadership / Controller",
+   "system": "QuickBooks Online",
+   "assumed": true,
+   "description": "Bad-debt write-offs are approved by leadership before the Controller posts them.",
+   "evidence": "Approved write-off memo; QBO journal entry"
+  }
+ ],
+ "flows": {
+  "3.5.1": {
+   "title": "Manage leads and opportunities",
+   "span": "Lead → Discovery",
+   "summary": "Everything runs in HubSpot; a tier-1 hand-raiser skips the BDR qualification call.",
+   "lanes": [
+    {
+     "name": "Sales & Marketing",
+     "sub": "Marketing, BDR, SDR"
+    },
+    {
+     "name": "Partner",
+     "sub": "Deal owner (BDR supports Discovery)"
+    }
+   ],
+   "upstream": [],
+   "downstream": [
+    "3.5.3"
+   ],
+   "steps": [
+    {
+     "id": "s1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: inbound signal or ICP fit",
+     "next": [
+      {
+       "to": "s2",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "s2",
+     "type": "process",
+     "lane": 0,
+     "col": 1,
+     "apqc": "3.5.1.1–2",
+     "title": "Create lead",
+     "note": "Tier-1 flag set by rules",
+     "system": "HubSpot",
+     "who": "Marketing, BDR, SDR",
+     "detail": "Tier-1 is a rules-based HubSpot property set from firmographics (employee band, vertical, metro).",
+     "next": [
+      {
+       "to": "s3",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "s3",
+     "type": "decision",
+     "lane": 0,
+     "col": 2,
+     "title": "Tier-1 and hand-raiser?",
+     "detail": "A hand-raiser has reached out to us looking to do work.",
+     "next": [
+      {
+       "to": "s4",
+       "from": "right",
+       "toSide": "left",
+       "label": "No"
+      },
+      {
+       "to": "s7",
+       "from": "top",
+       "toSide": "top",
+       "label": "Yes: skip to Partner"
+      }
+     ]
+    },
+    {
+     "id": "s4",
+     "type": "process",
+     "lane": 0,
+     "col": 3,
+     "apqc": "3.5.1.3",
+     "title": "Qualification call",
+     "note": "BDR",
+     "system": "HubSpot",
+     "who": "BDR",
+     "detail": "Confirms the lead fits and is warm. Warm criteria are not yet documented (open item).",
+     "next": [
+      {
+       "to": "s5",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "s5",
+     "type": "decision",
+     "lane": 0,
+     "col": 4,
+     "title": "Fit and warm?",
+     "next": [
+      {
+       "to": "s7",
+       "from": "right",
+       "toSide": "left",
+       "label": "Yes"
+      },
+      {
+       "to": "s6",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "s6",
+     "type": "end",
+     "lane": 0,
+     "col": 4,
+     "row": 1,
+     "title": "End: not qualified, nurture in HubSpot",
+     "system": "HubSpot"
+    },
+    {
+     "id": "s7",
+     "type": "process",
+     "lane": 0,
+     "col": 5,
+     "title": "Book discovery",
+     "note": "Creates deal at Discovery",
+     "system": "HubSpot",
+     "who": "BDR",
+     "detail": "Booking the discovery meeting creates the deal record at the Discovery stage.",
+     "next": [
+      {
+       "to": "s8",
+       "from": "right",
+       "toSide": "top"
+      }
+     ]
+    },
+    {
+     "id": "s8",
+     "type": "process",
+     "lane": 1,
+     "col": 6,
+     "apqc": "3.5.1.4–8",
+     "title": "Discovery",
+     "note": "Scope, decision maker, budget, close date",
+     "system": "HubSpot",
+     "who": "Partner + BDR",
+     "detail": "All vetting happens here: scope, a specific decision maker, budget and a time-bound close date.",
+     "next": [
+      {
+       "to": "s9",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "s9",
+     "type": "decision",
+     "lane": 1,
+     "col": 7,
+     "title": "Exit criteria met?",
+     "control": "KC-SELL-01",
+     "next": [
+      {
+       "to": "s10",
+       "from": "right",
+       "toSide": "left",
+       "label": "Yes"
+      },
+      {
+       "to": "s11",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "s10",
+     "type": "end",
+     "lane": 1,
+     "col": 8,
+     "title": "End: to 3.5.3 Proposal",
+     "link": "3.5.3"
+    },
+    {
+     "id": "s11",
+     "type": "process",
+     "lane": 1,
+     "col": 7,
+     "row": 1,
+     "apqc": "3.5.1.8.5",
+     "title": "Record loss",
+     "system": "HubSpot notes",
+     "who": "Partner",
+     "control": "KC-SELL-02",
+     "controlNote": "reason logged",
+     "detail": "Loss reason in deal notes. Still-ideal-fit accounts get the nurture tag (replacing the Warm 250).",
+     "next": [
+      {
+       "to": "s12",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "s12",
+     "type": "end",
+     "lane": 1,
+     "col": 8,
+     "row": 1,
+     "title": "End: closed lost, nurture tag if ideal fit"
+    }
+   ]
+  },
+  "3.5.3": {
+   "title": "Develop and manage proposals and quotes",
+   "span": "Proposal → Negotiation",
+   "summary": "Operations builds the SOW in Halo; the Partner signs first; any change voids the envelope and reissues it.",
+   "lanes": [
+    {
+     "name": "Partner",
+     "sub": "Deal owner"
+    },
+    {
+     "name": "Operations",
+     "sub": "Service line owner(s)"
+    },
+    {
+     "name": "Systems",
+     "sub": "Halo, HubSpot, E-Signature Platform"
+    },
+    {
+     "name": "Client",
+     "sub": ""
+    }
+   ],
+   "upstream": [
+    "3.5.1"
+   ],
+   "downstream": [
+    "3.5.4"
+   ],
+   "steps": [
+    {
+     "id": "t1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: deal enters Proposal",
+     "link": "3.5.1",
+     "next": [
+      {
+       "to": "t2",
+       "from": "right",
+       "toSide": "top"
+      }
+     ]
+    },
+    {
+     "id": "t2",
+     "type": "process",
+     "lane": 2,
+     "col": 1,
+     "title": "Opportunity created",
+     "note": "Halo opp synced to HubSpot deal",
+     "system": "HubSpot ↔ Halo",
+     "who": "Integration",
+     "next": [
+      {
+       "to": "t3",
+       "from": "right",
+       "toSide": "bottom"
+      }
+     ]
+    },
+    {
+     "id": "t3",
+     "type": "process",
+     "lane": 1,
+     "col": 2,
+     "apqc": "3.5.3.7–10",
+     "title": "Build quote and SOW",
+     "note": "Estimated sales tax from Avalara",
+     "system": "Halo, Avalara",
+     "who": "Service line owner(s)",
+     "detail": "One quote and one SOW. On multi-service-line deals the Partner coordinates the service line owners; lines are tagged by service line. Avalara is integrated with Halo so quotes carry estimated sales tax.",
+     "next": [
+      {
+       "to": "t4",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "t4",
+     "type": "document",
+     "lane": 1,
+     "col": 3,
+     "title": "SOW and quote",
+     "system": "Halo",
+     "next": [
+      {
+       "to": "t5",
+       "from": "top",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "t5",
+     "type": "process",
+     "lane": 0,
+     "col": 4,
+     "apqc": "3.5.3.11–12",
+     "title": "Partner signs first",
+     "system": "E-Signature Platform",
+     "who": "Partner",
+     "control": "KC-SELL-03",
+     "controlNote": "signature is approval",
+     "detail": "The Partner is signer 1 on the envelope; the signature is the review and approval.",
+     "next": [
+      {
+       "to": "t6",
+       "from": "bottom",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "t6",
+     "type": "process",
+     "lane": 2,
+     "col": 5,
+     "apqc": "3.5.3.13",
+     "title": "Envelope sent",
+     "note": "Deal moves to Negotiation",
+     "system": "E-Signature Platform",
+     "who": "Automated",
+     "next": [
+      {
+       "to": "t7",
+       "from": "bottom",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "t7",
+     "type": "decision",
+     "lane": 3,
+     "col": 6,
+     "title": "Client response?",
+     "next": [
+      {
+       "to": "t9",
+       "from": "right",
+       "toSide": "left",
+       "label": "Signs"
+      },
+      {
+       "to": "t8",
+       "from": "top",
+       "toSide": "bottom",
+       "label": "Changes"
+      },
+      {
+       "to": "t11",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "Declines"
+      }
+     ]
+    },
+    {
+     "id": "t8",
+     "type": "process",
+     "lane": 1,
+     "col": 6,
+     "apqc": "3.5.3.14",
+     "title": "Void and revise",
+     "note": "Service line owner",
+     "system": "Halo (no integration push)",
+     "who": "Service line owner",
+     "control": "KC-SELL-04",
+     "controlNote": "Partner re-signs",
+     "detail": "The envelope is voided and the quote revised in Halo. Revisions trigger no integration push.",
+     "next": [
+      {
+       "to": "t5",
+       "from": "top",
+       "toSide": "right",
+       "label": "Re-sign"
+      }
+     ]
+    },
+    {
+     "id": "t9",
+     "type": "process",
+     "lane": 3,
+     "col": 7,
+     "title": "Client signs",
+     "system": "E-Signature Platform",
+     "who": "Client",
+     "next": [
+      {
+       "to": "t10",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "t10",
+     "type": "end",
+     "lane": 3,
+     "col": 8,
+     "title": "End: to 3.5.4 (Closed Won)",
+     "link": "3.5.4"
+    },
+    {
+     "id": "t11",
+     "type": "end",
+     "lane": 3,
+     "col": 6,
+     "row": 1,
+     "title": "End: closed lost (3.5.1.8.5)",
+     "link": "3.5.1"
+    }
+   ]
+  },
+  "3.5.4": {
+   "title": "Manage sales orders",
+   "span": "Closed Won → XO acceptance",
+   "summary": "Halo builds the records; the XO runs the handoff and accepts it, which ends sell work.",
+   "lanes": [
+    {
+     "name": "Systems",
+     "sub": "Halo, HubSpot"
+    },
+    {
+     "name": "Managing Partner, Operations",
+     "sub": ""
+    },
+    {
+     "name": "Experience Owner (XO)",
+     "sub": ""
+    },
+    {
+     "name": "Partner",
+     "sub": "Deal owner"
+    }
+   ],
+   "upstream": [
+    "3.5.3"
+   ],
+   "downstream": [
+    "5.4",
+    "6.2.2"
+   ],
+   "steps": [
+    {
+     "id": "u1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: envelope completed",
+     "link": "3.5.3",
+     "next": [
+      {
+       "to": "u2",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "u2",
+     "type": "process",
+     "lane": 0,
+     "col": 1,
+     "title": "Closed Won",
+     "note": "Halo opp and HubSpot deal",
+     "system": "Halo → HubSpot",
+     "who": "Integration",
+     "next": [
+      {
+       "to": "u3",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "u3",
+     "type": "process",
+     "lane": 0,
+     "col": 2,
+     "title": "Auto-create records",
+     "note": "Project per service line, sales order",
+     "system": "Halo",
+     "who": "Automated",
+     "next": [
+      {
+       "to": "u4",
+       "from": "right",
+       "toSide": "top"
+      }
+     ]
+    },
+    {
+     "id": "u4",
+     "type": "process",
+     "lane": 1,
+     "col": 3,
+     "title": "Assign XO",
+     "system": "Halo",
+     "who": "Managing Partner over Operations",
+     "next": [
+      {
+       "to": "u5",
+       "from": "right",
+       "toSide": "top"
+      }
+     ]
+    },
+    {
+     "id": "u5",
+     "type": "process",
+     "lane": 2,
+     "col": 4,
+     "apqc": "3.5.4",
+     "title": "Handoff call",
+     "note": "XO runs; Partner required",
+     "system": "Halo",
+     "who": "XO",
+     "detail": "Internal sales-to-delivery handoff. Partner attendance is required.",
+     "next": [
+      {
+       "to": "u7",
+       "from": "right",
+       "toSide": "left"
+      },
+      {
+       "to": "u6",
+       "from": "bottom",
+       "toSide": "top",
+       "dash": true
+      }
+     ]
+    },
+    {
+     "id": "u6",
+     "type": "process",
+     "lane": 3,
+     "col": 4,
+     "title": "Attend handoff",
+     "note": "Transfer client context and commitments",
+     "who": "Partner",
+     "detail": "Transfers client context and any commitments made outside the SOW."
+    },
+    {
+     "id": "u7",
+     "type": "decision",
+     "lane": 2,
+     "col": 5,
+     "title": "Records match executed SOW?",
+     "next": [
+      {
+       "to": "u9",
+       "from": "right",
+       "toSide": "left",
+       "label": "Yes"
+      },
+      {
+       "to": "u8",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "u8",
+     "type": "process",
+     "lane": 2,
+     "col": 5,
+     "row": 1,
+     "title": "Resolve mismatch",
+     "note": "Records and commitments",
+     "system": "Halo",
+     "who": "XO",
+     "next": [
+      {
+       "to": "u9",
+       "from": "right",
+       "toSide": "bottom"
+      }
+     ]
+    },
+    {
+     "id": "u9",
+     "type": "process",
+     "lane": 2,
+     "col": 6,
+     "title": "Accept handoff",
+     "system": "Halo",
+     "who": "XO",
+     "control": "KC-SELL-05",
+     "controlNote": "XO acceptance recorded",
+     "next": [
+      {
+       "to": "u10",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "u10",
+     "type": "end",
+     "lane": 2,
+     "col": 7,
+     "title": "End: sell work ends, do work begins"
+    }
+   ]
+  },
+  "5.4": {
+   "title": "Deliver service to customer",
+   "span": "XO acceptance → project closeout",
+   "draft": true,
+   "summary": "Project delivery for professional and technical work: plan, kick off, deliver, handle scope changes, get acceptance, close.",
+   "lanes": [
+    {
+     "name": "XO / Project Controller",
+     "sub": "Default controller is the client's XO"
+    },
+    {
+     "name": "Delivery",
+     "sub": "Practice lead (delivery owner) and resources"
+    },
+    {
+     "name": "Client",
+     "sub": ""
+    }
+   ],
+   "upstream": [
+    "3.5.4"
+   ],
+   "downstream": [
+    "9.2.2"
+   ],
+   "questions": [
+    "Who assigns and schedules resources: the practice lead, or someone central? Is it the weekly Monday capacity meeting?",
+    "Who runs the client kickoff: the XO or the delivery owner?",
+    "Is formal client acceptance required to close a project? What counts as evidence?",
+    "What's the client status-reporting cadence on projects?"
+   ],
+   "steps": [
+    {
+     "id": "d1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: handoff accepted (3.5.4)",
+     "link": "3.5.4",
+     "next": [
+      {
+       "to": "d2",
+       "from": "right",
+       "toSide": "top"
+      }
+     ]
+    },
+    {
+     "id": "d2",
+     "type": "process",
+     "lane": 1,
+     "col": 1,
+     "title": "Plan and staff",
+     "apqc": "5.4.1",
+     "note": "Delivery owner books resources",
+     "system": "Halo",
+     "who": "Practice lead",
+     "assumed": true,
+     "next": [
+      {
+       "to": "d3",
+       "from": "right",
+       "toSide": "bottom"
+      }
+     ]
+    },
+    {
+     "id": "d3",
+     "type": "process",
+     "lane": 0,
+     "col": 2,
+     "title": "Client kickoff",
+     "apqc": "5.4.1",
+     "note": "Scope, timeline, contacts",
+     "system": "Halo",
+     "who": "XO",
+     "assumed": true,
+     "next": [
+      {
+       "to": "d4",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "d4",
+     "type": "process",
+     "lane": 1,
+     "col": 3,
+     "title": "Deliver and log time",
+     "apqc": "5.4.2",
+     "note": "Time in Halo; expenses in Paylocity",
+     "system": "Halo, Paylocity",
+     "who": "Delivery resources",
+     "detail": "Resources log time daily against Halo project tasks; expenses go through Paylocity and sync to Halo for billing.",
+     "next": [
+      {
+       "to": "d5",
+       "from": "top",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "d5",
+     "type": "decision",
+     "lane": 0,
+     "col": 4,
+     "title": "Scope change requested?",
+     "next": [
+      {
+       "to": "d6",
+       "from": "right",
+       "toSide": "left",
+       "label": "Yes"
+      },
+      {
+       "to": "d7",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "d6",
+     "type": "process",
+     "lane": 0,
+     "col": 5,
+     "title": "Change order",
+     "note": "XO quotes; Partner signs first",
+     "system": "Halo, E-Signature Platform",
+     "who": "XO quotes; Partner (Account Executive Owner) signs",
+     "control": "KC-DEL-01",
+     "controlNote": "Partner signs before client",
+     "link": "3.5.3",
+     "next": [
+      {
+       "to": "d4",
+       "from": "bottom",
+       "toSide": "right",
+       "label": "Re-plan"
+      }
+     ],
+     "flag": "The Partner (Account Executive Owner) signs every change order before it reaches the client.",
+     "detail": "Change orders are quoted in Halo and sent by e-signature with the Partner signing before the client."
+    },
+    {
+     "id": "d7",
+     "type": "decision",
+     "lane": 2,
+     "col": 4,
+     "title": "Client accepts deliverables?",
+     "next": [
+      {
+       "to": "d8",
+       "from": "right",
+       "toSide": "bottom",
+       "label": "Yes"
+      },
+      {
+       "to": "d4",
+       "from": "left",
+       "toSide": "bottom",
+       "label": "Rework"
+      }
+     ]
+    },
+    {
+     "id": "d8",
+     "type": "process",
+     "lane": 0,
+     "col": 6,
+     "title": "Close project",
+     "apqc": "5.4.3",
+     "note": "Final billing, lessons learned",
+     "system": "Halo",
+     "who": "XO",
+     "control": "KC-DEL-02",
+     "controlNote": "acceptance recorded",
+     "assumed": true,
+     "next": [
+      {
+       "to": "d9",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "d9",
+     "type": "end",
+     "lane": 0,
+     "col": 7,
+     "title": "End: project closed; final billing (9.2.2)",
+     "link": "9.2.2"
+    }
+   ]
+  },
+  "6.2.2": {
+   "title": "Manage customer service problems, requests, and inquiries",
+   "span": "Ticket opened → ticket closed",
+   "draft": true,
+   "summary": "Managed services tickets. Also the system of record for APQC 8.7.8 (IT user support), so the service desk is documented once.",
+   "lanes": [
+    {
+     "name": "Client",
+     "sub": ""
+    },
+    {
+     "name": "Systems",
+     "sub": "Halo, NinjaOne, Dialpad"
+    },
+    {
+     "name": "Service Desk",
+     "sub": "Tier 1"
+    },
+    {
+     "name": "Escalation",
+     "sub": "Managed Technology (Tier 2/3)"
+    },
+    {
+     "name": "XO",
+     "sub": "Relationship owner"
+    }
+   ],
+   "upstream": [
+    "3.5.4"
+   ],
+   "downstream": [
+    "9.2.2"
+   ],
+   "questions": [
+    "Which intake channels are live for 1/1/2027: email, portal, phone (Dialpad), NinjaOne alerts? Do RMM alerts create tickets automatically?",
+    "Is there a dispatcher role, or does Tier 1 triage its own queue?",
+    "Is Managed Technology the escalation tier for every client, or does it depend on the agreement?",
+    "For out-of-scope requests, who approves: the XO, the client, or both?",
+    "Is a CSAT survey sent on close?"
+   ],
+   "steps": [
+    {
+     "id": "m1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: client request or alert",
+     "next": [
+      {
+       "to": "m2",
+       "from": "right",
+       "toSide": "top"
+      }
+     ]
+    },
+    {
+     "id": "m2",
+     "type": "process",
+     "lane": 1,
+     "col": 1,
+     "title": "Ticket created",
+     "note": "Email, portal, phone or RMM alert",
+     "system": "Halo, NinjaOne",
+     "who": "Automated",
+     "assumed": true,
+     "next": [
+      {
+       "to": "m3",
+       "from": "right",
+       "toSide": "top"
+      }
+     ]
+    },
+    {
+     "id": "m3",
+     "type": "process",
+     "lane": 2,
+     "col": 2,
+     "title": "Triage and categorize",
+     "apqc": "6.2.2",
+     "note": "Priority starts SLA timers",
+     "system": "Halo",
+     "who": "Service Desk",
+     "control": "KC-SVC-01",
+     "controlNote": "priority and SLA set",
+     "next": [
+      {
+       "to": "m4",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "m4",
+     "type": "decision",
+     "lane": 2,
+     "col": 3,
+     "title": "In contract scope?",
+     "next": [
+      {
+       "to": "m5",
+       "from": "right",
+       "toSide": "left",
+       "label": "Yes"
+      },
+      {
+       "to": "m9",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "m5",
+     "type": "process",
+     "lane": 2,
+     "col": 4,
+     "title": "Resolve or fulfill",
+     "system": "Halo, NinjaOne",
+     "who": "Service Desk",
+     "next": [
+      {
+       "to": "m6",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "m6",
+     "type": "decision",
+     "lane": 2,
+     "col": 5,
+     "title": "Resolved at Tier 1?",
+     "next": [
+      {
+       "to": "m8",
+       "from": "right",
+       "toSide": "left",
+       "label": "Yes"
+      },
+      {
+       "to": "m7",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "m7",
+     "type": "process",
+     "lane": 3,
+     "col": 5,
+     "title": "Escalate and resolve",
+     "note": "Tier 2/3 engineering",
+     "system": "Halo",
+     "who": "Managed Technology",
+     "next": [
+      {
+       "to": "m8",
+       "from": "right",
+       "toSide": "bottom"
+      }
+     ]
+    },
+    {
+     "id": "m8",
+     "type": "process",
+     "lane": 2,
+     "col": 6,
+     "title": "Confirm and close",
+     "note": "Client confirms resolution",
+     "system": "Halo",
+     "who": "Service Desk",
+     "assumed": true,
+     "next": [
+      {
+       "to": "m10",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "m9",
+     "type": "process",
+     "lane": 4,
+     "col": 3,
+     "title": "Approve billable work",
+     "note": "Quote or accept T&M",
+     "system": "Halo",
+     "who": "XO",
+     "control": "KC-SVC-02",
+     "controlNote": "approved before work",
+     "assumed": true,
+     "next": [
+      {
+       "to": "m5",
+       "from": "right",
+       "toSide": "bottom",
+       "label": "Approved"
+      }
+     ]
+    },
+    {
+     "id": "m10",
+     "type": "end",
+     "lane": 2,
+     "col": 7,
+     "title": "End: closed; billable time to 9.2.2",
+     "link": "9.2.2"
+    }
+   ]
+  },
+  "9.2.2": {
+   "title": "Invoice customer",
+   "span": "Month end → invoice delivered",
+   "draft": true,
+   "summary": "XO or Project Controller approves time and invoices; the AR Clerk runs and sends approved invoices from Halo; invoices then sync to QuickBooks Online.",
+   "lanes": [
+    {
+     "name": "Delivery",
+     "sub": "Resources"
+    },
+    {
+     "name": "XO / Project Controller",
+     "sub": "Most familiar with the project"
+    },
+    {
+     "name": "AR Clerk",
+     "sub": "Runs and sends invoices"
+    },
+    {
+     "name": "Systems",
+     "sub": "Halo, QuickBooks Online, Avalara"
+    },
+    {
+     "name": "Client",
+     "sub": ""
+    }
+   ],
+   "upstream": [
+    "5.4",
+    "6.2.2"
+   ],
+   "downstream": [
+    "9.2.3"
+   ],
+   "questions": [
+    "What is the timesheet and expense deadline each period?",
+    "Invoices go out from Halo, but Avalara's final tax runs in QuickBooks Online. Does the Halo–Avalara integration calculate tax on invoices too (with QuickBooks Online and Avalara handling filing and remittance), or does the invoice go out before final tax is applied?",
+    "How are Pax8 licensing changes reconciled into recurring invoices each month?",
+    "Does anyone in Finance (Next Level Now) review the invoice run after the XO approves, or is XO approval final?"
+   ],
+   "steps": [
+    {
+     "id": "b1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: billing period closes",
+     "next": [
+      {
+       "to": "b2",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "b2",
+     "type": "process",
+     "lane": 0,
+     "col": 1,
+     "title": "Submit time and expenses",
+     "note": "Time in Halo; expenses in Paylocity",
+     "system": "Halo, Paylocity",
+     "who": "Delivery resources",
+     "detail": "Expenses flow from Paylocity into Halo through the planned integration so billable ones land on the invoice.",
+     "next": [
+      {
+       "to": "b3",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "b3",
+     "type": "process",
+     "lane": 1,
+     "col": 2,
+     "title": "Approve billable time",
+     "apqc": "9.2.2.2",
+     "note": "Project Controller / XO",
+     "system": "Halo",
+     "who": "XO / Project Controller",
+     "control": "KC-REV-01",
+     "controlNote": "time approved",
+     "flag": "Billable time is approved by the Project Controller / XO.",
+     "next": [
+      {
+       "to": "b4",
+       "from": "right",
+       "toSide": "top"
+      }
+     ]
+    },
+    {
+     "id": "b4",
+     "type": "process",
+     "lane": 3,
+     "col": 3,
+     "title": "Draft invoices generated",
+     "apqc": "9.2.2.2",
+     "note": "Time, recurring, licensing, expenses",
+     "system": "Halo",
+     "who": "Automated",
+     "assumed": true,
+     "next": [
+      {
+       "to": "b5",
+       "from": "right",
+       "toSide": "bottom"
+      }
+     ]
+    },
+    {
+     "id": "b5",
+     "type": "decision",
+     "lane": 1,
+     "col": 4,
+     "title": "Invoice correct?",
+     "control": "KC-REV-02",
+     "detail": "The XO or Project Controller reviews each draft invoice because they know the project best.",
+     "next": [
+      {
+       "to": "b7",
+       "from": "right",
+       "toSide": "top",
+       "label": "Approved"
+      },
+      {
+       "to": "b3",
+       "from": "top",
+       "toSide": "top",
+       "label": "No: correct and regenerate"
+      }
+     ]
+    },
+    {
+     "id": "b7",
+     "type": "process",
+     "lane": 2,
+     "col": 5,
+     "title": "Run and send invoices",
+     "apqc": "9.2.2.3",
+     "note": "Approved invoices, sent from Halo",
+     "system": "Halo",
+     "who": "AR Clerk",
+     "next": [
+      {
+       "to": "b8",
+       "from": "right",
+       "toSide": "top"
+      }
+     ],
+     "detail": "The AR Clerk runs only XO-approved invoices and sends them to clients from Halo."
+    },
+    {
+     "id": "b8",
+     "type": "process",
+     "lane": 3,
+     "col": 6,
+     "title": "Sync to QuickBooks Online",
+     "apqc": "9.2.2.4",
+     "note": "Avalara handles tax filing in QBO",
+     "system": "Halo → QBO, Avalara",
+     "who": "Integration",
+     "control": "KC-REV-03",
+     "controlNote": "sync reconciled",
+     "assumed": true,
+     "next": [
+      {
+       "to": "b9",
+       "from": "right",
+       "toSide": "top"
+      }
+     ]
+    },
+    {
+     "id": "b9",
+     "type": "end",
+     "lane": 4,
+     "col": 7,
+     "title": "End: invoice delivered; AR (9.2.3)",
+     "link": "9.2.3"
+    }
+   ]
+  },
+  "9.2.3": {
+   "title": "Process accounts receivable (AR)",
+   "span": "Invoice issued → cash applied",
+   "draft": true,
+   "summary": "Payments land in QuickBooks Online, are applied and reconciled, and paid status flows back to Halo. Invoices unpaid past their due date go to collections; escalation days count from the due date.",
+   "lanes": [
+    {
+     "name": "AR",
+     "sub": "AR Clerk with Next Level Now"
+    },
+    {
+     "name": "Client",
+     "sub": ""
+    },
+    {
+     "name": "Systems",
+     "sub": "QuickBooks Online, bank, Halo"
+    }
+   ],
+   "upstream": [
+    "9.2.2"
+   ],
+   "downstream": [
+    "9.2.4"
+   ],
+   "questions": [
+    "How do clients pay: ACH, check, card? Is QuickBooks Payments turned on?",
+    "Does paid status sync from QuickBooks Online back to Halo?",
+    "Who runs the month-end AR aging review, and do XOs join it?"
+   ],
+   "steps": [
+    {
+     "id": "c1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: invoice issued (9.2.2)",
+     "link": "9.2.2",
+     "next": [
+      {
+       "to": "c2",
+       "from": "right",
+       "toSide": "top"
+      }
+     ]
+    },
+    {
+     "id": "c2",
+     "type": "decision",
+     "lane": 1,
+     "col": 1,
+     "title": "Paid by due date?",
+     "next": [
+      {
+       "to": "c3",
+       "from": "right",
+       "toSide": "top",
+       "label": "Yes"
+      },
+      {
+       "to": "c8",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "c3",
+     "type": "process",
+     "lane": 2,
+     "col": 2,
+     "title": "Payment received",
+     "note": "Bank feed or QBO Payments",
+     "system": "QuickBooks Online",
+     "who": "Automated",
+     "assumed": true,
+     "next": [
+      {
+       "to": "c4",
+       "from": "right",
+       "toSide": "bottom"
+      }
+     ]
+    },
+    {
+     "id": "c4",
+     "type": "process",
+     "lane": 0,
+     "col": 3,
+     "title": "Apply cash",
+     "apqc": "9.2.3.3",
+     "system": "QuickBooks Online",
+     "who": "AR",
+     "control": "KC-AR-01",
+     "controlNote": "reconciled to bank",
+     "next": [
+      {
+       "to": "c5",
+       "from": "right",
+       "toSide": "top"
+      }
+     ]
+    },
+    {
+     "id": "c5",
+     "type": "process",
+     "lane": 2,
+     "col": 4,
+     "title": "Paid status to Halo",
+     "system": "QBO → Halo",
+     "who": "Integration",
+     "assumed": true,
+     "next": [
+      {
+       "to": "c6",
+       "from": "right",
+       "toSide": "bottom"
+      }
+     ]
+    },
+    {
+     "id": "c6",
+     "type": "process",
+     "lane": 0,
+     "col": 5,
+     "title": "Month-end AR aging review",
+     "apqc": "9.2.3.4",
+     "note": "With XOs on past-due accounts",
+     "system": "QuickBooks Online",
+     "who": "Controller",
+     "control": "KC-AR-02",
+     "controlNote": "aging reviewed",
+     "assumed": true,
+     "next": [
+      {
+       "to": "c7",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "c7",
+     "type": "end",
+     "lane": 0,
+     "col": 6,
+     "title": "End: AR reconciled for close"
+    },
+    {
+     "id": "c8",
+     "type": "end",
+     "lane": 1,
+     "col": 1,
+     "title": "To 9.2.4 collections",
+     "row": 1,
+     "link": "9.2.4"
+    }
+   ]
+  },
+  "9.2.4": {
+   "title": "Manage and process collections",
+   "span": "Past due → paid, plan or write-off",
+   "draft": true,
+   "summary": "Automated reminders first; the XO steps in at 45+ days past the invoice due date and the account's Executive Owner (EO) at 60+; leadership handles credit holds and write-offs.",
+   "lanes": [
+    {
+     "name": "AR",
+     "sub": "AR Clerk with Next Level Now"
+    },
+    {
+     "name": "XO",
+     "sub": "Experience Owner"
+    },
+    {
+     "name": "EO",
+     "sub": "Executive Owner for the account"
+    },
+    {
+     "name": "Leadership",
+     "sub": "Managing Partner, Operations and Controller"
+    }
+   ],
+   "upstream": [
+    "9.2.3"
+   ],
+   "downstream": [],
+   "questions": [
+    "What's the reminder schedule before 45 days, and does QuickBooks Online send it automatically?",
+    "Who can approve a credit hold or service suspension, and at what point?",
+    "Who approves write-offs, and is there a dollar threshold?"
+   ],
+   "steps": [
+    {
+     "id": "k1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: invoice past due (9.2.3)",
+     "link": "9.2.3",
+     "next": [
+      {
+       "to": "k2",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "k2",
+     "type": "process",
+     "lane": 0,
+     "col": 1,
+     "title": "Send reminders",
+     "apqc": "9.2.4.3",
+     "note": "Automated reminder schedule",
+     "system": "QuickBooks Online",
+     "who": "AR",
+     "assumed": true,
+     "next": [
+      {
+       "to": "k3",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "k3",
+     "type": "decision",
+     "lane": 0,
+     "col": 2,
+     "title": "Paid within 45 days of due date?",
+     "next": [
+      {
+       "to": "k10",
+       "from": "right",
+       "toSide": "left",
+       "label": "Yes"
+      },
+      {
+       "to": "k4",
+       "from": "bottom",
+       "toSide": "left",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "k10",
+     "type": "end",
+     "lane": 0,
+     "col": 3,
+     "title": "End: cash applied (9.2.3)",
+     "link": "9.2.3"
+    },
+    {
+     "id": "k4",
+     "type": "process",
+     "lane": 1,
+     "col": 3,
+     "title": "XO contacts client",
+     "apqc": "9.2.4.3",
+     "note": "45+ days past due date",
+     "system": "Halo",
+     "who": "XO",
+     "flag": "The XO is the first escalation once an invoice is 45+ days past its due date.",
+     "next": [
+      {
+       "to": "k5",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "k5",
+     "type": "decision",
+     "lane": 1,
+     "col": 4,
+     "title": "Paid within 60 days of due date?",
+     "next": [
+      {
+       "to": "k10",
+       "from": "top",
+       "toSide": "right",
+       "label": "Yes"
+      },
+      {
+       "to": "k6",
+       "from": "right",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "k6",
+     "type": "process",
+     "lane": 2,
+     "col": 5,
+     "title": "EO engages client executive",
+     "note": "60+ days past due date",
+     "system": "Halo",
+     "who": "Executive Owner (EO)",
+     "flag": "The account's Executive Owner (EO) gets involved at 60+ days past the invoice due date.",
+     "next": [
+      {
+       "to": "k7",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "k7",
+     "type": "decision",
+     "lane": 2,
+     "col": 6,
+     "title": "Resolved?",
+     "next": [
+      {
+       "to": "k11",
+       "from": "top",
+       "toSide": "bottom",
+       "label": "Paid or plan agreed"
+      },
+      {
+       "to": "k8",
+       "from": "right",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "k11",
+     "type": "end",
+     "lane": 0,
+     "col": 6,
+     "title": "End: paid or plan agreed",
+     "link": "9.2.3"
+    },
+    {
+     "id": "k8",
+     "type": "process",
+     "lane": 3,
+     "col": 7,
+     "title": "Credit hold or suspension",
+     "apqc": "9.2.4.4",
+     "system": "Halo",
+     "who": "Managing Partner, Operations",
+     "control": "KC-AR-03",
+     "controlNote": "leadership approval",
+     "assumed": true,
+     "next": [
+      {
+       "to": "k9",
+       "from": "bottom",
+       "toSide": "top"
+      }
+     ]
+    },
+    {
+     "id": "k9",
+     "type": "decision",
+     "lane": 3,
+     "col": 7,
+     "title": "Recoverable?",
+     "row": 1,
+     "next": [
+      {
+       "to": "k12",
+       "from": "right",
+       "toSide": "left",
+       "label": "Yes"
+      },
+      {
+       "to": "k13",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "k12",
+     "type": "end",
+     "lane": 3,
+     "col": 8,
+     "title": "End: payment plan or adjustment (9.2.5)",
+     "row": 1,
+     "link": "9.2.5"
+    },
+    {
+     "id": "k13",
+     "type": "process",
+     "lane": 3,
+     "col": 7,
+     "title": "Approve write-off",
+     "row": 2,
+     "apqc": "9.2.4.5",
+     "system": "QuickBooks Online",
+     "who": "Leadership / Controller",
+     "control": "KC-AR-04",
+     "controlNote": "approved before posting",
+     "assumed": true,
+     "next": [
+      {
+       "to": "k14",
+       "from": "right",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "k14",
+     "type": "end",
+     "lane": 3,
+     "col": 8,
+     "title": "End: written off",
+     "row": 2
+    }
+   ]
+  }
+ }
+}

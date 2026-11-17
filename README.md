@@ -1,0 +1,59 @@
+# Sparkhound Process Library
+
+Internal site for Sparkhound's process framework (APQC PCF Cross-Industry v8.0): search processes, browse the taxonomy, and view swimlane process flows with owners, systems and controls.
+
+- **URL:** https://process.sparkhound.com
+- **Hosting:** Azure Static Web Apps (Standard plan), deployed from this repo by GitHub Actions
+- **Sign-in:** Microsoft Entra ID, restricted to the Sparkhound tenant. Employees do not need GitHub access to view the site.
+
+## Repo layout
+
+| Path | What it is |
+|---|---|
+| `site/` | The website: `index.html`, `app.js`, `styles.css`. No build step. |
+| `site/data/processes.json`, `systems.json` | Generated from the workbook. Don't edit by hand. |
+| `site/data/flows.json` | Process flows and key controls. Edited by hand. |
+| `site/staticwebapp.config.json` | Sign-in, access rules and security headers. |
+| `source/Sparkhound_Process_Framework.xlsx` | The process framework workbook, the source of truth for processes, owners and systems. |
+| `scripts/build_data.py` | Rebuilds `processes.json` and `systems.json` from the workbook. |
+| `.github/workflows/deploy.yml` | Rebuilds the data and deploys on every push to `main`. |
+
+## Updating content
+
+- **Processes, owners, systems, status:** edit the workbook's category tabs (1.0–13.0) and commit it to `source/`. The deploy rebuilds the data.
+- **Process flows and controls:** edit `site/data/flows.json`. Each step has a `type` (start, end, process, decision, document), a `lane`, a `col` (left-to-right position), an optional `row` (second row within a lane), and `next` arrows with `from` / `toSide` sides (top, right, bottom, left).
+- **Preview locally:** `python scripts/build_data.py source/Sparkhound_Process_Framework.xlsx site/data`, then `cd site && python -m http.server 8000` and open http://localhost:8000.
+
+## One-time setup
+
+### 1. Create the Static Web App (Azure portal)
+1. Create a resource: **Static Web App**.
+2. Plan: **Standard** (needed for custom Entra ID sign-in).
+3. Deployment source: **GitHub**. Pick this repo and the `main` branch.
+4. Build presets: **Custom**. App location `site`, API location empty, output location empty.
+5. Azure adds the `AZURE_STATIC_WEB_APPS_API_TOKEN` secret to the repo. If it creates its own workflow file, delete it and keep `.github/workflows/deploy.yml`.
+
+### 2. Register the app in Entra ID
+1. Entra admin center → App registrations → **New registration**.
+2. Name: `Process Library`. Supported account types: **Accounts in this organizational directory only**.
+3. Redirect URI (Web): `https://process.sparkhound.com/.auth/login/aad/callback`. Also add the default `https://<app-name>.azurestaticapps.net/.auth/login/aad/callback`.
+4. Authentication: enable **ID tokens**.
+5. Certificates & secrets: create a **client secret** and copy its value.
+6. Copy the **Application (client) ID** and **Directory (tenant) ID**.
+7. Optional, to limit access to specific people: Enterprise applications → Process Library → Properties → **Assignment required = Yes**, then assign a group (for example, All Employees).
+
+### 3. Connect sign-in
+1. In `site/staticwebapp.config.json`, replace `<SPARKHOUND_TENANT_ID>` with the tenant ID and commit.
+2. Static Web App → **Environment variables**: add `AZURE_CLIENT_ID` (the client ID) and `AZURE_CLIENT_SECRET` (the secret value).
+3. Put a reminder on the calendar for the secret's expiry date.
+
+### 4. Custom domain
+1. Static Web App → **Custom domains** → Add → `process.sparkhound.com`.
+2. In Sparkhound's DNS, create a **CNAME** record: `process` → `<app-name>.azurestaticapps.net`.
+3. Azure validates the record and issues the HTTPS certificate automatically.
+
+### 5. SharePoint
+Add **process.sparkhound.com** to the intranet as a link (navigation, Quick Links or a button). An embedded iframe is not recommended: Microsoft's sign-in page cannot load inside a frame, and browsers increasingly block the cookies an embedded, signed-in site needs.
+
+## Signing out
+Visit `/logout`.

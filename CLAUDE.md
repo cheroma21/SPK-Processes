@@ -1,0 +1,36 @@
+# Sparkhound Process Library: working notes for Claude
+
+Internal site documenting Sparkhound's processes on the APQC PCF Cross-Industry v8.0 framework, aligned to the systems of record for 1/1/2027. See README.md for hosting and setup.
+
+## How the site works
+- Static site in `site/`: `index.html`, `app.js` (vanilla JS, no framework, no build), `styles.css`. Data is fetched from `site/data/`.
+- Routing uses the URL hash: `#library`, `#taxonomy`, `#flows`, `#systems`, `#controls`, and `#p-<id>` for a process (dots become hyphens, so 3.5.1 is `#p-3-5-1`).
+- The site is served behind Entra ID sign-in (`site/staticwebapp.config.json`). The CSP allows only this origin plus Google Fonts; keep scripts in `app.js`, never inline or loaded from a CDN.
+
+## Data sources: what to edit
+- **Processes, owners, systems, status:** the workbook `source/Sparkhound_Process_Framework.xlsx` (category tabs 1.0 to 13.0). `scripts/build_data.py` turns it into `site/data/processes.json` and `systems.json`; never edit those two JSON files by hand.
+- **Decisions not yet in the workbook** (owners, statuses, notes for documented processes) live in the `over` dictionary in `scripts/build_data.py`. When the workbook catches up, remove the override.
+- **Flows and controls:** `site/data/flows.json`, edited by hand.
+- DocuSign is shown as "E-Signature Platform" (Sparkhound is moving to Halo's e-signature). `build_data.py` does the rename.
+
+## flows.json format
+- `controls[]`: `id` (KC-AREA-NN), `name`, `process`, `step`, `type` (Preventive or Detective), `owner`, `system`, `description`, `evidence`, and `assumed: true` while proposed.
+- `flows["<process id>"]`: `title`, `span` (start → end), `summary`, `lanes[]` (`name`, `sub`), `upstream[]`, `downstream[]`, `draft` (true until reviewed), `questions[]` (open questions shown on the page), `steps[]`.
+- A step has `id`, `type` (start | end | process | decision | document), `lane` (index), `col` (left-to-right position), an optional `row` (1 = second row inside the lane), `title`, and optionally `apqc`, `note`, `system`, `who`, `detail`, `control` (control id), `controlNote`, `link` (a process id), `assumed` (Claude's assumption, shown dashed), `flag` (a decision to confirm with the process owner, shown with a red flag and listed on the Review page).
+- `next[]` arrows: `to`, `from` and `toSide` (top | right | bottom | left), optional `label` and `dash`. Arrows are drawn as right-angle paths between those sides. Choose sides so no line crosses a box: at most one step per column within a lane row, and route around occupied cells.
+- Conventions: start and end pills are named "Start: …" and "End: …"; ends that hand off name the next process ("End: to 3.5.3 Proposal") and set `link`. Every flow stays wide (lanes are rows, flow runs left to right) with the standard shapes and colors.
+
+## Review flags
+When Curtis marks an answer "**Flag this for review**", record the decision as made and add a `flag` (one sentence stating the decision) to the step, and to its control if it has one. Flags stay until the process owner confirms in review.
+
+## Process conventions
+- "Partner" means the Sparkhound deal owner (partner-level seller), not a channel partner; outside firms are "Alliance/Channel".
+- XO = Experience Owner (client relationship owner, default Project Controller). The Managing Partner over Operations assigns XOs.
+- Halo owns customer data; HubSpot owns marketing, leads and qualification.
+- Never edit, modify or delete existing HaloPSA runbooks (they integrate Sparkhound's Halo with client Halo systems).
+
+## Checking changes
+1. `python scripts/build_data.py source/Sparkhound_Process_Framework.xlsx site/data`
+2. `node --check site/app.js` and confirm `site/data/flows.json` parses.
+3. `cd site && python -m http.server 8000`, then open each changed process page and check the flow has no overlapping boxes or arrows crossing boxes.
+4. Push to `main` to deploy (GitHub Actions → Azure Static Web Apps).
