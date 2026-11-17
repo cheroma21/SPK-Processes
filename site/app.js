@@ -350,13 +350,13 @@
 
     if (flow) {
       html += '<section class="card" aria-label="Process flow">' +
-        '<div class="sec" style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;justify-content:space-between;padding-bottom:10px">' +
+        '<div class="sec" style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;justify-content:space-between;padding-bottom:6px">' +
           '<div><h2 style="margin:0">Process flow<span class="muted" style="font-weight:400"><span class="sep" aria-hidden="true">·</span>' + esc(flow.span) + '</span></h2><p class="muted" style="margin:4px 0 0">' + esc(flow.summary) + ' Select a step for details.</p></div>' +
           '<button class="btn" id="fitBtn" type="button">' + (S.fit ? 'Actual size' : 'Fit to width') + '</button>' +
         '</div>' +
-        '<div class="legend" style="border-top:0;border-bottom:1px solid #eceff3;padding-top:0">' + legend() + '</div>' +
-        '<div class="lanewrap" id="laneWrap"></div>' +
-        '<div class="stepbar" id="stepPanel" aria-live="polite"><span class="muted">Select a step in the flow to see who does it, where, and under which control.</span></div>' +
+        '<details class="legendbox"' + (window.innerWidth > 860 ? ' open' : '') + '><summary>How to read this flow</summary><div class="legend">' + legend() + '</div></details>' +
+        '<div class="flowbody"><div class="lanewrap" id="laneWrap"></div>' +
+        '<aside class="steppanel" id="stepPanel" aria-label="Step details" hidden></aside></div>' +
       '</section>';
     }
 
@@ -402,6 +402,7 @@
     html += '</div></div>';
     view.innerHTML = html;
     if (flow) {
+      S.step = null;
       drawFlow(flow);
       document.getElementById('fitBtn').addEventListener('click', function (e) { S.fit = !S.fit; e.target.textContent = S.fit ? 'Actual size' : 'Fit to width'; drawFlow(flow); });
     }
@@ -500,26 +501,58 @@
     var labs = wrap.querySelectorAll('.lanelab');
     wrap.onscroll = function () { var x = S.fit ? 0 : wrap.scrollLeft; Array.prototype.forEach.call(labs, function (l) { l.style.left = x + 'px'; }); };
     Array.prototype.forEach.call(wrap.querySelectorAll('.node'), function (b) {
-      b.addEventListener('click', function () {
-        var s = pos[b.getAttribute('data-step')].s;
-        Array.prototype.forEach.call(wrap.querySelectorAll('.node'), function (x) { x.classList.toggle('sel', x === b); });
-        showStep(flow, s);
-      });
+      b.addEventListener('click', function () { selectStep(flow, b.getAttribute('data-step')); });
+      if (b.getAttribute('data-step') === S.step) b.classList.add('sel');
     });
+  }
+
+  /* Step details: docked beside the flow on wide screens, below it on narrow ones */
+  function selectStep(flow, id) {
+    var panel = document.getElementById('stepPanel'), wrap = document.getElementById('laneWrap');
+    var s = flow.steps.filter(function (x) { return x.id === id; })[0]; if (!s || !panel) return;
+    var wasHidden = panel.hidden;
+    S.step = id; panel.hidden = false;
+    showStep(flow, s);
+    if (wasHidden && S.fit) drawFlow(flow);
+    var node = null;
+    Array.prototype.forEach.call(wrap.querySelectorAll('.node'), function (x) { x.classList.toggle('sel', x.getAttribute('data-step') === id); if (x.getAttribute('data-step') === id) node = x; });
+    if (node && !S.fit) {
+      var nl = node.offsetLeft, nr = nl + node.offsetWidth, vl = wrap.scrollLeft + 180, vr = wrap.scrollLeft + wrap.clientWidth - 16;
+      if (nr > vr) wrap.scrollLeft += nr - vr; else if (nl < vl) wrap.scrollLeft -= vl - nl;
+      var nt = node.offsetTop, nb = nt + node.offsetHeight;
+      if (nb > wrap.scrollTop + wrap.clientHeight) wrap.scrollTop = nb - wrap.clientHeight + 16; else if (nt < wrap.scrollTop) wrap.scrollTop = nt - 16;
+    }
+    var h = document.getElementById('stepTitle');
+    var stacked = getComputedStyle(panel.parentNode).flexDirection === 'column';
+    if (h) { h.focus({ preventScroll: true }); if (stacked) panel.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+  }
+  function closeStep(flow) {
+    var panel = document.getElementById('stepPanel'); if (!panel || panel.hidden) return;
+    var id = S.step; S.step = null; panel.hidden = true;
+    if (S.fit) drawFlow(flow);
+    var wrap = document.getElementById('laneWrap'), back = null;
+    Array.prototype.forEach.call(wrap.querySelectorAll('.node'), function (x) { x.classList.remove('sel'); if (x.getAttribute('data-step') === id) back = x; });
+    if (back) back.focus();
   }
   function showStep(flow, s) {
     var el = document.getElementById('stepPanel'); if (!el) return;
     var idx = flow.steps.indexOf(s) + 1;
     var c = s.control && D.controls.filter(function (x) { return x.id === s.control; })[0];
-    var types = { start: 'Start', end: 'End', process: 'Process step', decision: 'Decision', document: 'Document' };
-    var row = function (k, v) { return v ? '<div><span class="muted">' + k + ':</span> ' + v + '</div>' : ''; };
-    el.innerHTML = '<div style="font-weight:600;font-size:15px;flex-basis:100%">' + idx + '<span class="sep" aria-hidden="true">·</span>' + esc(s.title) + '</div>' +
-      (s.flag ? '<div class="flagrow" style="flex-basis:100%">' + FLAG + '<b>Flagged for review:</b> ' + esc(s.flag) + '</div>' : '') + (s.assumed ? '<div style="flex-basis:100%"><span class="pill st-Draft">Assumption to confirm</span></div>' : '') + row('Type', esc(types[s.type])) + row('Lane', esc(flow.lanes[s.lane].name)) + row('APQC', s.apqc ? '<span class="mono">' + esc(s.apqc) + '</span>' : '') +
-      row('Responsible', esc(s.who || '')) + row('System', esc(s.system || '')) +
-      (s.detail ? '<div style="line-height:1.5;flex-basis:100%">' + esc(s.detail) + '</div>' : '') +
-      (c ? '<div style="border-top:1px solid #eceff3;padding-top:8px;flex-basis:100%"><span class="chip kc">' + esc(c.id) + '</span> <strong>' + esc(c.name) + '</strong> <span class="muted">(' + esc(c.type) + ')</span><div class="muted" style="margin-top:4px">' + esc(c.description) + '</div><div class="muted" style="margin-top:4px">Evidence: ' + esc(c.evidence) + '</div></div>' : '') +
+    var types = { start: 'Start', end: 'End', process: 'Step', decision: 'Decision', document: 'Document' };
+    var row = function (k, v) { return v ? '<dt>' + k + '</dt><dd>' + v + '</dd>' : ''; };
+    el.innerHTML = '<div class="sp-head"><div><h3 id="stepTitle" tabindex="-1">' + esc(s.title) + '</h3>' +
+        '<div class="sp-meta">Step ' + idx + ' of ' + flow.steps.length + '<span class="sep" aria-hidden="true">·</span>' + esc(types[s.type]) + '</div></div>' +
+        '<button type="button" class="sp-close" id="stepClose" aria-label="Close step details"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>' +
+      (s.flag ? '<div class="flagrow">' + FLAG + '<b>Flagged for review:</b> ' + esc(s.flag) + '</div>' : '') +
+      (s.assumed ? '<div><span class="pill st-Draft">Assumption to confirm</span></div>' : '') +
+      '<dl class="sp-facts">' + row('Lane', esc(flow.lanes[s.lane].name)) + row('Responsible', esc(s.who || '')) + row('System', esc(s.system || '')) + row('APQC', s.apqc ? '<span class="mono">' + esc(s.apqc) + '</span>' : '') + '</dl>' +
+      (s.detail ? '<p class="sp-detail">' + esc(s.detail) + '</p>' : '') +
+      (c ? '<div class="sp-control"><div><span class="chip kc">' + esc(c.id) + '</span> <strong>' + esc(c.name) + '</strong></div><p>' + esc(c.type) + ' control. ' + esc(c.description) + '</p><p><span class="muted">Evidence:</span> ' + esc(c.evidence) + '</p></div>' : '') +
       (s.link ? '<a class="linkcard" href="' + hashFor(s.link) + '"><small>Go to</small><strong>' + esc(s.link + ' ' + D.byId[s.link].name) + ' →</strong></a>' : '') +
-      ((s.next || []).length ? '<div><span class="muted">Next:</span> ' + s.next.map(function (n) { var t = flow.steps.filter(function (x) { return x.id === n.to; })[0]; return (n.label ? esc(n.label) + ' → ' : '') + esc(t.title); }).join('; ') + '</div>' : '');
+      ((s.next || []).length ? '<div class="sp-next"><div class="sp-label">Next</div>' + s.next.map(function (n) { var t = flow.steps.filter(function (x) { return x.id === n.to; })[0]; return '<button type="button" class="sp-nextbtn" data-to="' + esc(n.to) + '">' + (n.label ? '<span class="muted">' + esc(n.label) + ':</span> ' : '') + esc(t.title) + ' <span aria-hidden="true">→</span></button>'; }).join('') + '</div>' : '');
+    document.getElementById('stepClose').addEventListener('click', function () { closeStep(flow); });
+    Array.prototype.forEach.call(el.querySelectorAll('.sp-nextbtn'), function (b) { b.addEventListener('click', function () { selectStep(flow, b.getAttribute('data-to')); }); });
+    el.onkeydown = function (e) { if (e.key === 'Escape') { e.stopPropagation(); closeStep(flow); } };
   }
 
   /* ---------- Flows, systems, controls ---------- */
