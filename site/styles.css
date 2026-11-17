@@ -141,3 +141,5 @@ tr.hl{background:#f2f7ff}
 .keyrow b{font-size:14px;font-weight:600}
 .keyrow p{margin:2px 0 0;font-size:14px;line-height:1.5;color:var(--ink2)}
 @media (max-width:700px){.howrow{grid-template-columns:1fr}.keygrid{grid-template-columns:1fr}.home h1{font-size:26px}.home .lead{font-size:16.5px}}
+.howrow p .pill{margin:0 2px;vertical-align:1px}
+.howrow p b{font-weight:600;color:var(--ink)}

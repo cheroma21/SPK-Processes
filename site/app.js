@@ -34,6 +34,15 @@
       ['sd', 'Service Desk practice', "Tier 1 support for large enterprise clients: Tier 1, Process Leads and Service Managers. Escalations go to the client's own IT."],
       ['nln', 'Next Level Now', "The outside firm that runs Sparkhound's accounting, including AR and the controller role."]
     ]],
+    ['On a process page', [
+      ['owner', 'Process owner', 'The person or role who runs the process day to day and keeps its documentation right. They confirm the flow in review and answer its open questions.'],
+      ['acct', 'Accountable leader', 'The leader ultimately answerable for the process. Decisions the process owner cannot make go to them.'],
+      ['sup', 'Supporting systems', 'Systems that feed the system of record or work alongside it, such as Avalara calculating tax on invoices in Halo.'],
+      ['ctl', 'Compliance mapping', 'The framework a process helps satisfy, such as SOC 2, GAAP or CMMC.'],
+      ['bu', 'Business unit', 'Where the process applies: Corporate, Managed Services, Professional Services, or All BUs.'],
+      ['pri', 'Priority', 'The order processes get documented in: 1 - Now, 2 - Next, 3 - Later.'],
+      ['links', 'Linked processes', 'What feeds a process (upstream) and what it hands off to (downstream), so work can be followed from lead to cash.']
+    ]],
     ['The framework', [
       ['apqc', 'APQC PCF', "APQC's Process Classification Framework, cross-industry version 8.0: a standard list of business processes. This library is built on it."],
       ['pcf', 'PCF ID', "A process's number in the APQC framework, such as 9.2.4: category 9, process group 9.2, process 9.2.4."],
@@ -164,6 +173,19 @@
         row('See what\'s still open', link('review', 'Review') + ' collects the ' + nFlags + ' decisions waiting for a process owner to confirm. Each flow also lists its open questions at the bottom of the page.') +
         row('Check systems and controls', link('systems', 'Systems') + ' shows which system is the record for what from 1/1/2027. ' + link('controls', 'Controls') + ' lists the key controls and the step each one sits on.') +
         row('Look up a term', 'The ' + link('glossary', 'Glossary') + ' explains roles like XO and EO and terms like PCF ID. Words with a dotted underline anywhere on the site show their definition when you point at them.') +
+      '</section>' +
+
+      '<section><h2>What\'s recorded for each process</h2>' +
+        '<p>Every process page uses the same fields, so you can compare any two processes side by side.</p>' +
+        row('Process owner', 'The person or role who runs the process day to day and keeps its page right. They confirm the flow in review and answer its open questions. &ldquo;Not assigned&rdquo; means no one has been named yet.') +
+        row('Accountable leader', 'The leader ultimately answerable for the process. Decisions the process owner can\'t make, and disagreements between teams, go to them.') +
+        row('System of record', 'The one system that holds the authoritative data for the process from 1/1/2027. If two systems disagree, the system of record wins. <b>Supporting systems</b> feed it or work alongside it: invoices live in HaloPSA, for example, while Avalara calculates the tax on them.') +
+        row('Key controls', 'Checks built into the process so mistakes are prevented or caught. <b>Preventive</b> controls stop a problem before it happens, such as the XO approving an invoice before it is sent. <b>Detective</b> controls find one afterwards, such as reconciling applied payments to bank deposits. Each control has an ID like KC-AR-01, an owner, the system it runs in, and the evidence that proves it ran. They are all listed on ' + link('controls', 'Controls') + '.') +
+        row('Compliance mapping', 'The framework the process helps satisfy, such as SOC 2, GAAP or CMMC. Auditors and the compliance team use it to find every process behind a requirement.') +
+        row('Status', 'How far the documentation has got. ' + pill('Not Started') + ' nothing written yet. ' + pill('Draft') + ' written but not checked. ' + pill('In Review') + ' waiting for the process owner to confirm. ' + pill('Published') + ' confirmed and current. ' + pill('Needs Update') + ' out of date with how the work is really done.') +
+        row('Open questions and flags', '<b>Open questions</b> are things still unknown, listed at the bottom of a flow. <b>Flags</b> are decisions already made in a design session that the owner still has to confirm. Both are cleared in review.') +
+        row('Linked processes', 'What feeds a process and what it hands off to. Follow the links to trace work end to end, from a new lead to cash in the bank.') +
+        row('Where it sits', 'Each process has an APQC number and level, a parent process, the ' + term('fn', 'EOS function') + ' and business unit it belongs to, its relevance to Sparkhound, and a priority (1&nbsp;-&nbsp;Now, 2&nbsp;-&nbsp;Next, 3&nbsp;-&nbsp;Later) that sets the order processes get documented in.') +
       '</section>' +
 
       '<section><h2>Reading a flow</h2>' +
@@ -341,8 +363,8 @@
     html += '<div class="cols"><div class="main">' +
       '<section class="card" aria-label="Process fields"><div class="grid">' +
         f(term('level', 'Level'), 'L' + p.lvl) + f('Parent process', par ? '<a href="' + hashFor(par.id) + '">' + esc(par.id + ' ' + par.name) + '</a>' : '—', 1) +
-        f('Process owner', p.owner ? esc(p.owner) : '<span class="muted">Not assigned</span>', 1) + f('Accountable leader', p.acct ? esc(p.acct) : '<span class="muted">Not assigned</span>', 1) +
-        f(term('fn', 'EOS function'), p.fn) + f('Business unit', p.bu) + f(term('relevance', 'Relevance'), p.rel) + f('Priority', p.pri) + f('APQC metrics', p.metrics ? p.metrics + ' benchmarks' : '—') +
+        f(term('owner', 'Process owner'), p.owner ? esc(p.owner) : '<span class="muted">Not assigned</span>', 1) + f(term('acct', 'Accountable leader'), p.acct ? esc(p.acct) : '<span class="muted">Not assigned</span>', 1) +
+        f(term('fn', 'EOS function'), p.fn) + f(term('bu', 'Business unit'), p.bu) + f(term('relevance', 'Relevance'), p.rel) + f(term('pri', 'Priority'), p.pri) + f('APQC metrics', p.metrics ? p.metrics + ' benchmarks' : '—') +
       '</div></section>' +
       (p.desc ? '<section class="card sec"><div class="fl">APQC description</div><p style="margin:4px 0 0;font-size:14px;line-height:1.55">' + esc(p.desc) + '</p>' + (p.notes ? '<div class="fl" style="margin-top:12px">Sparkhound notes</div><p style="margin:4px 0 0;font-size:14px;line-height:1.55">' + esc(p.notes) + '</p>' : '') + '</section>' : '');
 
