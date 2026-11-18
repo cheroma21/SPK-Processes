@@ -222,6 +222,28 @@
    "system": "HaloPSA",
    "description": "Per-user quantities on recurring agreements change only at the quarterly QBR, using the user count the client confirmed in its user access review.",
    "evidence": "Client-confirmed quarterly user access review; Halo agreement change history"
+  },
+  {
+   "id": "KC-FIN-01",
+   "name": "Leadership approves the monthly close",
+   "process": "9.3.2.S1",
+   "step": "9.3.2.S1",
+   "type": "Detective",
+   "owner": "CEO; Managing Partner, Operations",
+   "system": "QuickBooks Online",
+   "description": "The CEO and the Managing Partner over Operations review the monthly P&L and balance sheet before Next Level Now finalizes the close.",
+   "evidence": "Approved monthly statements (email or sign-off) per month"
+  },
+  {
+   "id": "KC-FIN-02",
+   "name": "Closed periods locked",
+   "process": "9.3.2.S1",
+   "step": "9.3.2.S1",
+   "type": "Preventive",
+   "owner": "Next Level Now",
+   "system": "QuickBooks Online",
+   "description": "After approval, Next Level Now sets the password-protected closing date in QuickBooks Online so closed months cannot change without it.",
+   "evidence": "QuickBooks Online closing date settings and audit log"
   }
  ],
  "flows": {
@@ -2951,6 +2973,192 @@
      "col": 11,
      "title": "End: supported by the service desk (6.2.2)",
      "link": "6.2.2"
+    }
+   ]
+  },
+  "9.3.2.S1": {
+   "title": "Close the month",
+   "span": "Month ends → period locked",
+   "summary": "Next Level Now closes the books in QuickBooks Online by business day 5: invoices and payroll are posted, bank and card accounts reconciled, bills and accruals entered. The CEO and the Managing Partner over Operations review the P&L and balance sheet before the close is final, and the period is then locked. Revenue is recognized as invoiced.",
+   "lanes": [
+    {
+     "name": "Next Level Now",
+     "sub": "Outsourced accounting and controller"
+    },
+    {
+     "name": "Leadership",
+     "sub": "CEO; Managing Partner, Operations"
+    },
+    {
+     "name": "Systems",
+     "sub": "QuickBooks Online, Halo, Paylocity"
+    }
+   ],
+   "upstream": [
+    "9.2.2",
+    "9.2.3",
+    "9.5.1"
+   ],
+   "downstream": [],
+   "questions": [],
+   "steps": [
+    {
+     "id": "m1",
+     "type": "start",
+     "lane": 2,
+     "col": 0,
+     "title": "Start: month ends",
+     "next": [
+      {
+       "to": "m2",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "m2",
+     "type": "process",
+     "lane": 2,
+     "col": 1,
+     "title": "Invoice run synced from Halo",
+     "system": "Halo → QuickBooks Online",
+     "who": "AR Clerk; integration",
+     "link": "9.2.2",
+     "next": [
+      {
+       "to": "m3",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "m3",
+     "type": "process",
+     "lane": 2,
+     "col": 2,
+     "title": "Payroll and expenses posted",
+     "system": "Paylocity → QuickBooks Online",
+     "who": "Next Level Now",
+     "next": [
+      {
+       "to": "m4",
+       "from": "right",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "m4",
+     "type": "process",
+     "lane": 0,
+     "col": 3,
+     "title": "Reconcile bank and card accounts",
+     "apqc": "9.3.2.6",
+     "system": "QuickBooks Online",
+     "who": "Next Level Now",
+     "link": "9.2.3",
+     "next": [
+      {
+       "to": "m5",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "m5",
+     "type": "process",
+     "lane": 0,
+     "col": 4,
+     "title": "Enter bills and post accruals",
+     "apqc": "9.6.1.5",
+     "system": "QuickBooks Online",
+     "who": "Next Level Now",
+     "link": "9.6.1",
+     "next": [
+      {
+       "to": "m6",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "m6",
+     "type": "process",
+     "lane": 0,
+     "col": 5,
+     "title": "Prepare P&L and balance sheet",
+     "apqc": "9.3.4",
+     "note": "By business day 5",
+     "system": "QuickBooks Online",
+     "who": "Next Level Now",
+     "detail": "Next Level Now prepares the monthly P&L and balance sheet by business day 5. Revenue is recognized as invoiced, with no deferral.",
+     "next": [
+      {
+       "to": "m7",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "m7",
+     "type": "decision",
+     "lane": 1,
+     "col": 6,
+     "title": "CEO and MP Ops approve?",
+     "control": "KC-FIN-01",
+     "detail": "The CEO and the Managing Partner over Operations review the statements; questions go back to Next Level Now to adjust before the close is final.",
+     "next": [
+      {
+       "to": "m8",
+       "from": "right",
+       "toSide": "top",
+       "label": "Yes"
+      },
+      {
+       "to": "m6",
+       "from": "left",
+       "toSide": "bottom",
+       "label": "Questions"
+      }
+     ]
+    },
+    {
+     "id": "m8",
+     "type": "process",
+     "lane": 2,
+     "col": 7,
+     "title": "Set the closing date",
+     "note": "Password-protected",
+     "system": "QuickBooks Online",
+     "who": "Next Level Now",
+     "control": "KC-FIN-02",
+     "controlNote": "period locked",
+     "next": [
+      {
+       "to": "m9",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "m9",
+     "type": "end",
+     "lane": 2,
+     "col": 8,
+     "title": "End: month closed"
     }
    ]
   }

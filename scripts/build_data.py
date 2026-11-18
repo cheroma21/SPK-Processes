@@ -191,7 +191,7 @@ EXTRA += [
          desc="The XO runs an offboarding project: remove agents and Sparkhound access, hand over Hudu documentation and credentials, and send the final invoice."),
     dict(id="9.2.2.S1", name="Set up and maintain recurring agreements", owner="XO", acct=CH, status="In Review", sor="HaloPSA", sup="Pax8, QuickBooks Online", notes=REVIEW,
          desc="Managed services agreements bill monthly in advance from Halo. License lines change monthly via Pax8; seats and services change at the quarterly QBR from the client's user access review, and that rate holds for three months."),
-    dict(id="9.3.2.S1", name="Close the month", owner="Next Level Now", acct="Finance seat (to confirm)", sor="QuickBooks Online", notes=REVIEW + " Close-by day to set. Revenue is recognized as invoiced (no deferral).",
+    dict(id="9.3.2.S1", name="Close the month", owner="Next Level Now", acct="Finance seat (to confirm)", status="In Review", sor="QuickBooks Online", notes=REVIEW + " Close by business day 5. Revenue is recognized as invoiced (no deferral).",
          desc="Next Level Now closes the books in QuickBooks Online; the CEO and the Managing Partner over Operations review before the close is finalized."),
     dict(id="9.2.1.S1", name="Set up new clients and payment terms", owner="To confirm", acct="Finance seat (to confirm)", sor="HaloPSA", sup="QuickBooks Online", notes=REVIEW + " Credit and terms policy to be revised.",
          desc="Today every client is on Net 30 with no credit check; Sparkhound plans to change this. Halo owns the client record and QuickBooks Online follows it."),
