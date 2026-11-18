@@ -183,7 +183,7 @@ EXTRA += [
          desc="Clients change Microsoft licenses either self-service in their Pax8 portal, which pushes the change to Halo automatically, or by a Halo ticket that Tier 2 processes in Pax8."),
     dict(id="4.2.4.S1", name="Procure hardware and software for clients", owner="XO / Partner", acct=CH, sor="HaloPSA", sup="QuickBooks Online", notes=REVIEW,
          desc="Quote the item in Halo, order it from a distributor, receive and deliver it, then bill it through Halo."),
-    dict(id="5.4.1.S1", name="Onboard new managed services clients", owner="XO", acct=CH, sor="HaloPSA (projects)", sup="Hudu, RMM", notes=REVIEW,
+    dict(id="5.4.1.S1", name="Onboard new managed services clients", owner="XO", acct=CH, status="In Review", sor="HaloPSA (projects)", sup="Hudu, RMM", notes=REVIEW,
          desc="The XO runs Sparkhound's defined onboarding project plan for each new managed services client: discovery, documentation in Hudu, agent deployment and the rest of the plan through go-live."),
     dict(id="5.4.2.S1", name="Review project budget and burn weekly", owner="XO with practice lead", acct=CH, sor="HaloPSA (projects)", notes=REVIEW,
          desc="Each week the XO and practice lead review hours against budget in Halo, separately from the client status report."),

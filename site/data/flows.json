@@ -2693,6 +2693,266 @@
      "link": "9.2.2"
     }
    ]
+  },
+  "5.4.1.S1": {
+   "title": "Onboard new managed services clients",
+   "span": "Handoff accepted → go-live",
+   "summary": "The XO runs Sparkhound's onboarding project from a Halo template: kickoff with the client sets a go-live date about 30 days out, access is set up and vaulted in Hudu, the technical team does discovery, agent deployment and documentation, and a communication campaign tells end users how to get support. A one-time onboarding fee is billed up front; recurring billing starts at go-live.",
+   "lanes": [
+    {
+     "name": "XO",
+     "sub": "Owns the onboarding project"
+    },
+    {
+     "name": "Client",
+     "sub": "Kickoff, access, communications"
+    },
+    {
+     "name": "Technical team",
+     "sub": "Tier 2/3 (discovery, documentation); Centralized Services (tooling, agents)"
+    },
+    {
+     "name": "Systems",
+     "sub": "Halo, Hudu, NinjaOne"
+    }
+   ],
+   "upstream": [
+    "3.5.4"
+   ],
+   "downstream": [
+    "6.2.2",
+    "9.2.2.S1"
+   ],
+   "questions": [
+    "Does anyone confirm onboarding is complete before go-live, and who?"
+   ],
+   "steps": [
+    {
+     "id": "o1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: XO accepts the handoff (3.5.4)",
+     "link": "3.5.4",
+     "next": [
+      {
+       "to": "o2",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "o2",
+     "type": "process",
+     "lane": 0,
+     "col": 1,
+     "title": "Create the project from the onboarding template",
+     "apqc": "5.4.1",
+     "system": "Halo",
+     "who": "XO",
+     "next": [
+      {
+       "to": "o3",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "o3",
+     "type": "process",
+     "lane": 3,
+     "col": 2,
+     "title": "Invoice the onboarding fee",
+     "note": "One-time, up front",
+     "system": "Halo",
+     "who": "Automated / AR Clerk",
+     "link": "9.2.2",
+     "detail": "The one-time onboarding fee is billed up front through the invoice run (9.2.2); monthly services start at go-live.",
+     "next": [
+      {
+       "to": "o4",
+       "from": "right",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "o4",
+     "type": "process",
+     "lane": 1,
+     "col": 3,
+     "title": "Kickoff and agree the go-live date",
+     "note": "Usually about 30 days out",
+     "who": "XO with the client",
+     "detail": "At the kickoff meeting the XO proposes a go-live date from the plan's timeline and tasks, generally about 30 days out, and the team works toward it.",
+     "next": [
+      {
+       "to": "o5",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "o5",
+     "type": "decision",
+     "lane": 2,
+     "col": 4,
+     "title": "Coming from another MSP?",
+     "next": [
+      {
+       "to": "o6",
+       "from": "right",
+       "toSide": "left",
+       "label": "Yes"
+      },
+      {
+       "to": "o7",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "o6",
+     "type": "process",
+     "lane": 2,
+     "col": 5,
+     "title": "Collect and rotate credentials from the outgoing provider",
+     "who": "Technical team",
+     "next": [
+      {
+       "to": "o8",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "o7",
+     "type": "process",
+     "lane": 2,
+     "col": 4,
+     "title": "Client grants admin access",
+     "row": 1,
+     "note": "Our accounts or GDAP",
+     "who": "Client; technical team",
+     "next": [
+      {
+       "to": "o8",
+       "from": "right",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "o8",
+     "type": "process",
+     "lane": 2,
+     "col": 6,
+     "title": "Store credentials in Hudu",
+     "system": "Hudu",
+     "who": "Technical team",
+     "next": [
+      {
+       "to": "o9",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "o9",
+     "type": "process",
+     "lane": 2,
+     "col": 7,
+     "title": "Discovery, agents and documentation",
+     "apqc": "5.4.2",
+     "system": "NinjaOne, Hudu",
+     "who": "Tier 2/3; Centralized Services",
+     "detail": "Tier 2/3 engineers run discovery and document the environment in Hudu; Centralized Services deploys tooling and agents.",
+     "next": [
+      {
+       "to": "o10",
+       "from": "right",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "o10",
+     "type": "process",
+     "lane": 1,
+     "col": 8,
+     "title": "Go-live communications to end users",
+     "note": "Who to call, how tickets work",
+     "who": "XO with the client",
+     "detail": "A communication campaign leads up to go-live so every end user knows the date, how to reach the service desk and how tickets work.",
+     "next": [
+      {
+       "to": "o11",
+       "from": "right",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "o11",
+     "type": "process",
+     "lane": 0,
+     "col": 9,
+     "title": "Confirm onboarding is complete",
+     "who": "XO",
+     "assumed": true,
+     "detail": "Proposed: the XO confirms the plan's tasks are done (agents deployed, Hudu documentation complete, contacts in Halo) before go-live.",
+     "next": [
+      {
+       "to": "o12",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "o12",
+     "type": "process",
+     "lane": 3,
+     "col": 10,
+     "title": "Recurring billing starts",
+     "system": "Halo",
+     "who": "Automated",
+     "link": "9.2.2.S1",
+     "next": [
+      {
+       "to": "o13",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "o13",
+     "type": "end",
+     "lane": 3,
+     "col": 11,
+     "title": "End: supported by the service desk (6.2.2)",
+     "link": "6.2.2"
+    }
+   ]
   }
  }
 }
