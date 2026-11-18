@@ -164,6 +164,7 @@ EXTRA = [
 REVIEW = "From the Sales, Operations and Finance process review (11/18/2026)."
 REVIEW_OVER = {
     "3.4.1": dict(owner="Sales & Marketing leader", acct=DH, notes="Weekly pipeline review and forecast in HubSpot. " + REVIEW),
+    "3.3.3": dict(owner="Service line owners", acct=CH, notes="Street prices and floors in the Halo price book are reviewed annually by service line owners and approved by the Managing Partner over Operations. " + REVIEW),
     "5.2":   dict(owner="Practice leads", acct=CH, status="In Review", notes="Practice leads book resources in Halo; conflicts are resolved at the weekly Monday capacity meeting. Utilization is tracked by practice, each with its own target set by its staffing mix. " + REVIEW),
     "9.1.2": dict(owner="CEO with Next Level Now", sor="QuickBooks Online", sup="Excel", notes="CEO owns the annual budget with Next Level Now; monthly leadership reporting comes from QuickBooks Online and spreadsheets. " + REVIEW),
     "9.5.1": dict(owner="Practice leads (timesheets); XO / Project Controller (billable time)", acct=CH, status="In Review", sor="HaloPSA (timesheets)", sup="Paylocity", notes="Weekly time entry by Managed Services and Digital Transformation operations teams. " + REVIEW),
@@ -173,7 +174,7 @@ REVIEW_OVER = {
 for k, v in REVIEW_OVER.items():
     next(p for p in procs if p["id"] == k).update(v)
 EXTRA += [
-    dict(id="3.3.3.S1", name="Approve quote pricing and discounts", owner="Service line owners (price and floor); Partner; Managing Partner, Operations", acct=CH, sor="HaloPSA (items / price book)", notes=REVIEW,
+    dict(id="3.3.3.S1", status="In Review", name="Approve quote pricing and discounts", owner="Service line owners (price and floor); Partner; Managing Partner, Operations", acct=CH, sor="HaloPSA (items / price book)", notes=REVIEW,
          desc="Operations sets each item's street price and floor in the Halo price book. The Partner may discount freely between street price and floor; a discount below the floor needs Managing Partner, Operations approval before the quote goes out."),
     dict(id="3.5.2.S1", name="Hold client account reviews by tier", owner="XO", acct=CH, sor="HaloPSA", notes=REVIEW + " Tiers and review frequencies to define.",
          desc="The XO holds regular account reviews with each client, at a frequency set by the client's tier. Managed services clients have a quarterly QBR that includes the user access review, which sets the next quarter's seat counts."),

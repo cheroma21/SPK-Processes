@@ -255,6 +255,18 @@
    "system": "HaloPSA",
    "description": "Any renewal price increase, within the contract's annual cap, is approved by the Managing Partner over Operations before the XO tells the client.",
    "evidence": "Approval recorded on the Halo renewal ticket; written client notice"
+  },
+  {
+   "id": "KC-PRC-01",
+   "name": "Below-floor pricing approved",
+   "process": "3.3.3.S1",
+   "step": "3.3.3.S1",
+   "type": "Preventive",
+   "owner": "Managing Partner, Operations",
+   "system": "HaloPSA",
+   "description": "A quote priced below the price-book floor cannot be sent until the Managing Partner over Operations approves it.",
+   "evidence": "Halo quote approval history",
+   "flag": "Quotes priced below the floor are held in Halo until the Managing Partner over Operations approves them."
   }
  ],
  "flows": {
@@ -3366,6 +3378,148 @@
      "col": 9,
      "title": "End: to offboarding (5.4.3.S1)",
      "link": "5.4.3.S1"
+    }
+   ]
+  },
+  "3.3.3.S1": {
+   "title": "Approve quote pricing and discounts",
+   "span": "Partner prices a quote → quote continues",
+   "summary": "Service line owners set each item's street price and floor in the Halo price book every year, approved by the Managing Partner over Operations. The Partner may discount freely down to the floor; a quote below the floor needs the Managing Partner over Operations' approval before it goes out.",
+   "lanes": [
+    {
+     "name": "Partner",
+     "sub": "Deal owner"
+    },
+    {
+     "name": "Systems",
+     "sub": "Halo"
+    },
+    {
+     "name": "Managing Partner, Operations",
+     "sub": "Approves below-floor pricing"
+    }
+   ],
+   "upstream": [
+    "3.5.3"
+   ],
+   "downstream": [
+    "3.5.3"
+   ],
+   "questions": [],
+   "steps": [
+    {
+     "id": "q1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: Partner prices a quote (3.5.3)",
+     "link": "3.5.3",
+     "next": [
+      {
+       "to": "q2",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "q2",
+     "type": "process",
+     "lane": 0,
+     "col": 1,
+     "title": "Price from the Halo price book",
+     "apqc": "3.3.3",
+     "note": "Street price and floor per item",
+     "system": "Halo",
+     "who": "Partner",
+     "detail": "Service line owners review street prices and floors annually and the Managing Partner over Operations approves the price book. The Partner may discount freely between street price and floor.",
+     "next": [
+      {
+       "to": "q3",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "q3",
+     "type": "decision",
+     "lane": 0,
+     "col": 2,
+     "title": "Below the floor?",
+     "next": [
+      {
+       "to": "q7",
+       "from": "right",
+       "toSide": "left",
+       "label": "No"
+      },
+      {
+       "to": "q4",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "Yes"
+      }
+     ]
+    },
+    {
+     "id": "q4",
+     "type": "process",
+     "lane": 1,
+     "col": 2,
+     "title": "Hold the quote for approval",
+     "system": "Halo",
+     "who": "Automated",
+     "flag": "Quotes priced below the floor are held in Halo until the Managing Partner over Operations approves them.",
+     "control": "KC-PRC-01",
+     "controlNote": "approved before sending",
+     "detail": "Proposed design: a Halo quote approval rule stops a below-floor quote from being sent until approved. Today the request is informal.",
+     "next": [
+      {
+       "to": "q5",
+       "from": "bottom",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "q5",
+     "type": "decision",
+     "lane": 2,
+     "col": 3,
+     "title": "MP Ops approves?",
+     "next": [
+      {
+       "to": "q7",
+       "from": "top",
+       "toSide": "bottom",
+       "label": "Yes"
+      },
+      {
+       "to": "q6",
+       "from": "right",
+       "toSide": "left",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "q6",
+     "type": "end",
+     "lane": 2,
+     "col": 4,
+     "title": "End: re-price at or above the floor (3.5.3)",
+     "link": "3.5.3"
+    },
+    {
+     "id": "q7",
+     "type": "end",
+     "lane": 0,
+     "col": 5,
+     "title": "End: quote continues (3.5.3)",
+     "link": "3.5.3"
     }
    ]
   }
