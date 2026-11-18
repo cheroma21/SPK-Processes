@@ -747,7 +747,7 @@
     });
     df.nodes.forEach(function (n) {
       var q = pos[n.id];
-      svg += '<g class="dfn' + (n.core ? ' core' : '') + (n.external ? ' ext' : '') + '" data-id="' + n.id + '" tabindex="0" role="button" aria-label="' + esc(n.name) + ': show its data flows">' +
+      svg += '<g class="dfn' + (n.core ? ' core' : '') + (n.external ? ' ext' : '') + (n.planned ? ' plan' : '') + '" data-id="' + n.id + '" tabindex="0" role="button" aria-label="' + esc(n.name) + ': show its data flows">' +
         '<rect x="' + (q.x - BW / 2) + '" y="' + (q.y - BH / 2) + '" width="' + BW + '" height="' + BH + '" rx="8"/>' +
         '<text x="' + q.x + '" y="' + (q.y - 4) + '" class="dfnt">' + esc(n.name) + '</text>' +
         '<text x="' + q.x + '" y="' + (q.y + 14) + '" class="dfns">' + esc(n.role) + '</text></g>';
@@ -761,6 +761,7 @@
       '<span><svg width="34" height="10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" class="dfl manual"/></svg>Manual or self-service</span>' +
       '<span><svg width="34" height="10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" class="dfl planned"/></svg>Planned</span>' +
       '<span><svg width="34" height="14" aria-hidden="true"><rect x="1" y="1" width="32" height="12" rx="3" fill="#fff" stroke="#8a97a6" stroke-dasharray="4 3"/></svg>Outside Sparkhound</span>' +
+      '<span><svg width="34" height="14" aria-hidden="true"><rect x="1" y="1" width="32" height="12" rx="3" fill="#fff" stroke="#156b5e" stroke-width="1.5" stroke-dasharray="1.5 3" stroke-linecap="round"/></svg>Planned system</span>' +
       '<span>Numbers match the table. Arrows show the direction data moves.</span></div></section>' +
       '<section class="card tablewrap"><div class="sec" style="padding-bottom:6px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"><h2 style="margin:0" id="dfTitle">All data flows</h2><button class="btn" id="dfAll" type="button" hidden>Show all</button></div>' +
       '<table><thead><tr><th>#</th><th>From → to</th><th>Data</th><th>How</th><th>When</th><th>Processes</th></tr></thead><tbody>' +

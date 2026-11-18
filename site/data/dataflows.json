@@ -48,7 +48,8 @@
    "name": "Azure DevOps",
    "role": "Digital Transformation work",
    "col": 0,
-   "row": 2
+   "row": 2,
+   "planned": true
   },
   {
    "id": "rmm",
@@ -217,7 +218,7 @@
    "to": "ado",
    "both": true,
    "data": "Digital Transformation professional services work managed in Azure DevOps, synced with Halo projects.",
-   "how": "Native integration",
+   "how": "Planned integration (native)",
    "when": "Real time",
    "processes": [
     "5.4",

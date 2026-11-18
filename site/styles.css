@@ -237,6 +237,7 @@ a.chip.soc:hover{background:#cde9ef}
 .dfn{cursor:pointer}
 .dfn rect{fill:#fff;stroke:var(--blue);stroke-width:1.5}
 .dfn.ext rect{stroke:#8a97a6;stroke-dasharray:5 4}
+.dfn.plan rect{stroke-dasharray:1.5 3.5;stroke-linecap:round}
 .dfn.core rect{fill:var(--navy);stroke:var(--navy)}
 .dfn.core text{fill:#fff}
 .dfn.core .dfns{fill:#cfe3dd}
