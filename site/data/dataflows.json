@@ -81,7 +81,7 @@
    "to": "halo",
    "both": true,
    "data": "Opportunities start at Discovery and sync both ways: a new HubSpot deal creates the matching Halo opportunity (HubSpot's first stage equals Halo's first stage), and an opportunity created in Halo, mostly a quick quote for an existing client, is pushed into HubSpot. Stage changes stay in sync, and amounts are pushed back to HubSpot.",
-   "how": "Integration",
+   "how": "Native integration",
    "when": "On deal creation and stage change",
    "processes": [
     "3.5.1",
@@ -94,7 +94,7 @@
    "from": "pax8",
    "to": "halo",
    "data": "Cloud license quantities and amounts update the recurring license lines.",
-   "how": "Integration",
+   "how": "Native integration",
    "when": "Monthly, before the invoice run",
    "processes": [
     "5.3.3.S1",
@@ -108,7 +108,7 @@
    "to": "avalara",
    "both": true,
    "data": "Quote and invoice lines out; estimated tax on quotes and final sales tax on invoices back.",
-   "how": "Integration",
+   "how": "Native integration",
    "when": "Per quote and invoice",
    "processes": [
     "3.5.3",
@@ -120,7 +120,7 @@
    "from": "halo",
    "to": "qbo",
    "data": "Customers, products (items), suppliers, invoices, credit notes, purchase orders, bills and payments. Invoice lines map to QuickBooks items (a default product catches unmapped lines) and can carry classes.",
-   "how": "Integration",
+   "how": "Native integration",
    "when": "When a record changes in Halo",
    "processes": [
     "9.2.2",
@@ -133,7 +133,7 @@
    "from": "qbo",
    "to": "halo",
    "data": "Paid status written back to Halo invoices; payment terms set invoice due dates; existing customers and items imported once to link records.",
-   "how": "Integration",
+   "how": "Native integration",
    "when": "When payment is applied; at setup for imports",
    "processes": [
     "9.2.3",
@@ -146,7 +146,7 @@
    "to": "avalara",
    "both": true,
    "data": "Invoiced sales for filing; tax filed and remitted.",
-   "how": "Integration",
+   "how": "Native integration",
    "when": "Per filing period",
    "processes": [
     "9.2.2",
@@ -158,7 +158,7 @@
    "from": "bank",
    "to": "qbo",
    "data": "Account and card transactions (date, payee or description, amount, check number) download into QuickBooks Online banking, where ACH and check deposits are matched to invoices and accounts reconciled. Connected through First Horizon's Direct Connect bank feed, or a Web Connect (.qbo) file upload as the fallback.",
-   "how": "Bank feed",
+   "how": "Native integration",
    "when": "Nightly",
    "processes": [
     "9.2.3",
@@ -170,7 +170,7 @@
    "from": "paylocity",
    "to": "qbo",
    "data": "Payroll journals and expenses posted.",
-   "how": "Integration",
+   "how": "Native integration",
    "when": "Each payroll",
    "processes": [
     "9.3.2.S1",
@@ -182,7 +182,7 @@
    "from": "paylocity",
    "to": "halo",
    "data": "Approved client-facing expenses, for invoicing.",
-   "how": "Planned integration",
+   "how": "Planned custom integration",
    "when": "Weekly",
    "processes": [
     "5.4",
@@ -194,7 +194,7 @@
    "from": "rmm",
    "to": "halo",
    "data": "Monitoring alerts create tickets automatically.",
-   "how": "Integration",
+   "how": "Native integration",
    "when": "Real time",
    "processes": [
     "6.2.2"
@@ -206,7 +206,7 @@
    "to": "clientitsm",
    "both": true,
    "data": "Escalations to the client's own IT and their updates, through integrations with the client's ITSM platform (never edit the existing runbooks).",
-   "how": "Integration",
+   "how": "Custom integration",
    "when": "Per escalation",
    "processes": [
     "6.2.2"
@@ -218,7 +218,7 @@
    "to": "ado",
    "both": true,
    "data": "Digital Transformation professional services work managed in Azure DevOps, synced with Halo projects.",
-   "how": "Planned integration (native)",
+   "how": "Native integration",
    "when": "Real time",
    "processes": [
     "5.4",
