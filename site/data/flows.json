@@ -110,7 +110,7 @@
    "system": "HaloPSA",
    "description": "Billable time and expenses, due by end of day Friday each week, are approved by the Project Controller / XO before they can be invoiced.",
    "evidence": "Halo timesheet approvals",
-   "flag": "Project Controller / XO approves billable time."
+   "flag": "Practice lead approves each timesheet for completeness by Monday end of day; the XO then approves billable time on their clients before invoicing."
   },
   {
    "id": "KC-REV-02",
@@ -200,6 +200,17 @@
    "system": "QuickBooks Online",
    "description": "Every bad-debt write-off is approved by the CEO (no dollar threshold today) before the Controller posts it.",
    "evidence": "Approved write-off memo; QBO journal entry"
+  },
+  {
+   "id": "KC-TIME-01",
+   "name": "Approved time locked",
+   "process": "9.5.1",
+   "step": "9.5.1",
+   "type": "Preventive",
+   "owner": "Practice lead / XO",
+   "system": "HaloPSA",
+   "description": "Approved time entries are locked in Halo; a change requires the approver to reopen the entry, so billed and reported hours cannot be altered silently.",
+   "evidence": "Halo timesheet approval and edit history"
   }
  ],
  "flows": {
@@ -1411,6 +1422,7 @@
     }
    ],
    "upstream": [
+    "9.5.1",
     "5.4",
     "6.2.2"
    ],
@@ -2255,6 +2267,226 @@
      "col": 7,
      "title": "End: staffed; delivery starts (5.4)",
      "link": "5.4"
+    }
+   ]
+  },
+  "9.5.1": {
+   "title": "Report time",
+   "span": "Work done → approved time locked",
+   "summary": "Managed Services and Digital Transformation operations teams log time weekly in Halo, due Friday end of day; sales, admin and HR don't enter time. Halo reminds anyone late and the practice lead follows up Monday. Hourly staff also enter pay hours in Paylocity. Approved time is locked and feeds invoicing and utilization.",
+   "lanes": [
+    {
+     "name": "Delivery staff",
+     "sub": "Managed Services and Digital Transformation operations teams"
+    },
+    {
+     "name": "Hourly staff",
+     "sub": "Also enter pay hours"
+    },
+    {
+     "name": "Systems",
+     "sub": "Halo, Paylocity"
+    },
+    {
+     "name": "Practice lead",
+     "sub": "Owns the team's timesheets"
+    },
+    {
+     "name": "XO / Project Controller",
+     "sub": "Approves billable time"
+    }
+   ],
+   "upstream": [
+    "5.2",
+    "5.4",
+    "6.2.2"
+   ],
+   "downstream": [
+    "9.2.2"
+   ],
+   "questions": [],
+   "steps": [
+    {
+     "id": "t1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: work done during the week",
+     "next": [
+      {
+       "to": "t2",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      },
+      {
+       "to": "t3",
+       "from": "bottom",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "t2",
+     "type": "process",
+     "lane": 0,
+     "col": 1,
+     "title": "Log time against Halo tickets and tasks",
+     "apqc": "9.5.1",
+     "note": "Weekly; due Friday EOD",
+     "system": "Halo",
+     "who": "Managed Services and Digital Transformation operations teams",
+     "flag": "Time and expenses are due by end of day Friday each week.",
+     "detail": "Delivery staff log their week against Halo tickets and project tasks by Friday end of day. Most staff are salaried, so Halo time drives billing and utilization, not pay. Sales, admin and HR do not enter time.",
+     "next": [
+      {
+       "to": "t4",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "t3",
+     "type": "process",
+     "lane": 1,
+     "col": 1,
+     "title": "Enter pay hours in Paylocity",
+     "note": "Hourly staff; also log work in Halo",
+     "system": "Paylocity",
+     "who": "Hourly employees",
+     "detail": "Hourly employees enter their hours in Paylocity for pay and also log the work in Halo so it can be billed and counted for utilization.",
+     "next": [
+      {
+       "to": "e2",
+       "from": "bottom",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "e2",
+     "type": "end",
+     "lane": 1,
+     "col": 1,
+     "title": "End: to payroll (9.5.2)",
+     "row": 1,
+     "link": "9.5.2"
+    },
+    {
+     "id": "t4",
+     "type": "decision",
+     "lane": 2,
+     "col": 2,
+     "title": "All time in by Friday EOD?",
+     "next": [
+      {
+       "to": "t6",
+       "from": "right",
+       "toSide": "top",
+       "label": "Yes"
+      },
+      {
+       "to": "t5",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "t5",
+     "type": "process",
+     "lane": 3,
+     "col": 2,
+     "title": "Remind and follow up",
+     "note": "Halo reminder; lead chases Monday",
+     "system": "Halo",
+     "who": "Halo (automatic); practice lead",
+     "detail": "Halo sends an automatic reminder to anyone with missing time; the practice lead follows up on Monday with anyone still missing.",
+     "next": [
+      {
+       "to": "t6",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "t6",
+     "type": "process",
+     "lane": 3,
+     "col": 3,
+     "title": "Approve timesheets for completeness",
+     "apqc": "9.5.1",
+     "note": "By Monday EOD",
+     "system": "Halo, Paylocity",
+     "who": "Practice lead",
+     "flag": "Practice lead approves each timesheet for completeness by Monday end of day; the XO then approves billable time on their clients before invoicing.",
+     "detail": "The practice lead approves each timesheet for completeness and, for hourly staff, checks that Halo and Paylocity hours roughly match. Approval is inconsistent today; this is the proposed standard.",
+     "next": [
+      {
+       "to": "t7",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "t7",
+     "type": "process",
+     "lane": 4,
+     "col": 4,
+     "title": "Approve billable time",
+     "apqc": "9.2.2.2",
+     "note": "Before the invoice run",
+     "system": "Halo",
+     "who": "XO / Project Controller",
+     "control": "KC-REV-01",
+     "controlNote": "time approved",
+     "flag": "Practice lead approves each timesheet for completeness by Monday end of day; the XO then approves billable time on their clients before invoicing.",
+     "detail": "The XO or Project Controller approves billable time on their clients before invoices are generated (9.2.2).",
+     "next": [
+      {
+       "to": "t8",
+       "from": "right",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "t8",
+     "type": "process",
+     "lane": 2,
+     "col": 5,
+     "title": "Approved time locked",
+     "system": "Halo",
+     "who": "Automated",
+     "control": "KC-TIME-01",
+     "controlNote": "locked after approval",
+     "detail": "Once approved, time cannot be edited unless the approver reopens it.",
+     "next": [
+      {
+       "to": "t9",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "t9",
+     "type": "end",
+     "lane": 2,
+     "col": 6,
+     "title": "End: to invoicing (9.2.2) and utilization",
+     "link": "9.2.2"
     }
    ]
   }

@@ -166,6 +166,7 @@ REVIEW_OVER = {
     "3.4.1": dict(owner="Sales & Marketing leader", acct=DH, notes="Weekly pipeline review and forecast in HubSpot. " + REVIEW),
     "5.2":   dict(owner="Practice leads", acct=CH, status="In Review", notes="Practice leads book resources in Halo; conflicts are resolved at the weekly Monday capacity meeting. Utilization is tracked by practice, each with its own target set by its staffing mix. " + REVIEW),
     "9.1.2": dict(owner="CEO with Next Level Now", sor="QuickBooks Online", sup="Excel", notes="CEO owns the annual budget with Next Level Now; monthly leadership reporting comes from QuickBooks Online and spreadsheets. " + REVIEW),
+    "9.5.1": dict(owner="Practice leads (timesheets); XO / Project Controller (billable time)", acct=CH, status="In Review", sor="HaloPSA (timesheets)", sup="Paylocity", notes="Weekly time entry by Managed Services and Digital Transformation operations teams. " + REVIEW),
     "9.6.1": dict(notes="Bill entry and payment-run approval for QuickBooks Online are not set yet. " + REVIEW),
     "9.2.5": dict(notes="Approver and dollar threshold for credit memos and SLA credits are not set yet. " + REVIEW),
 }
