@@ -143,10 +143,10 @@
   function socDomain(code) { return D.soc.domains.filter(function (d) { return d.code === code; })[0]; }
 
   function load() {
-    Promise.all(['data/processes.json', 'data/systems.json', 'data/flows.json', 'data/soc2.json'].map(function (u) {
+    Promise.all(['data/processes.json', 'data/systems.json', 'data/flows.json', 'data/soc2.json', 'data/dataflows.json'].map(function (u) {
       return fetch(u).then(function (r) { if (!r.ok) throw new Error(u); return r.json(); });
     })).then(function (res) {
-      D.procs = res[0]; D.systems = res[1]; D.flows = res[2].flows; D.controls = res[2].controls; D.soc = res[3];
+      D.procs = res[0]; D.systems = res[1]; D.flows = res[2].flows; D.controls = res[2].controls; D.soc = res[3]; D.df = res[4];
       D.socBy = {}; D.soc.controls.forEach(function (c) { c.processes.forEach(function (k) { (D.socBy[k] = D.socBy[k] || []).push(c); }); });
       D.procs.forEach(function (p) {
         D.byId[p.id] = p;
@@ -178,6 +178,7 @@
     if (h === 'taxonomy') { setNav('taxonomy'); return renderTree(); }
     if (h === 'flows') { setNav('flows'); return renderFlows(); }
     if (h === 'systems') { setNav('systems'); return renderSystems(); }
+    if (h === 'dataflow') { setNav('dataflow'); return renderDataflow(); }
     if (h === 'controls' || h.indexOf('controls/') === 0) { setNav('controls'); return renderControls(h.split('/')[1]); }
     if (h === 'review') { setNav('review'); return renderReview(); }
     if (h === 'glossary' || h.indexOf('glossary/') === 0) { setNav('glossary'); return renderGlossary(h.split('/')[1]); }
@@ -232,7 +233,7 @@
         row('Find a process', 'Type in the search box at the top of any page. It matches process names, owners, systems and controls. To browse instead, use the ' + link('library', 'Library') + ', a filterable table, or the ' + link('taxonomy', 'Taxonomy') + ', the full tree of processes. To see every process your job takes part in, pick your role in the Library\'s Role filter.') +
         row('Read a flow', link('flows', 'Process flows') + ' lists the processes documented so far. Each flow has one row per role, and the work runs left to right. Select any step to see who does it, in which system, and under which control. Flows open fitted to your screen; use + and − (or Ctrl and the mouse wheel) to zoom in.') +
         row('See what\'s still open', link('review', 'Review') + ' collects the ' + nFlags + ' decisions waiting for a process owner to confirm. Each flow also lists its open questions at the bottom of the page.') +
-        row('Check systems and controls', link('systems', 'Systems') + ' shows which system is the record for what from 1/1/2027. ' + link('controls', 'Controls') + ' lists the key controls and the step each one sits on.') +
+        row('Check systems and controls', link('systems', 'Systems') + ' shows which system is the record for what from 1/1/2027, and ' + link('dataflow', 'Data flows') + ' shows how data moves between them. ' + link('controls', 'Controls') + ' lists the key controls and the step each one sits on.') +
         row('Look up a term', 'The ' + link('glossary', 'Glossary') + ' explains roles like XO and EO and terms like PCF ID. Words with a dotted underline anywhere on the site show their definition when you point at them.') +
       '</section>' +
 
@@ -712,6 +713,75 @@
               '<td class="soc-procs">' + c.processes.map(procLink).join('') + '</td></tr>';
           }).join('') + '</tbody></table></div></details>';
       }).join('') + '</section>';
+  }
+
+  /* ---------- Data flows ---------- */
+  function renderDataflow() {
+    var df = D.df, PX = 230, PY = 120, BW = 184, BH = 66, PAD = 24;
+    var W = 4 * PX + BW + PAD * 2, H = 3 * PY + BH + PAD * 2;
+    var pos = {};
+    df.nodes.forEach(function (n) { pos[n.id] = { n: n, x: PAD + BW / 2 + n.col * PX, y: PAD + BH / 2 + n.row * PY }; });
+    var clip = function (a, b) {
+      var dx = b.x - a.x, dy = b.y - a.y, k = Math.min(dx ? (BW / 2 + 4) / Math.abs(dx) : 1e9, dy ? (BH / 2 + 4) / Math.abs(dy) : 1e9);
+      return [a.x + dx * k, a.y + dy * k];
+    };
+    var pairs = {}, order = [];
+    df.flows.forEach(function (f) {
+      var key = [f.from, f.to].sort().join('|');
+      if (!pairs[key]) { pairs[key] = { a: f.from, b: f.to, fwd: false, back: false, ids: [], how: f.how }; order.push(key); }
+      var p = pairs[key];
+      if (f.from === p.a || f.both) p.fwd = true;
+      if (f.from === p.b || f.both) p.back = true;
+      p.ids.push(f.id);
+    });
+    var style = function (how) { return /planned/i.test(how) ? 'planned' : /manual|self-service/i.test(how) ? 'manual' : 'auto'; };
+    var svg = '<svg class="dfd" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Data flow diagram: how data moves between Sparkhound systems, centred on HaloPSA">' +
+      '<defs><marker id="dfa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1L9 5L1 9z" fill="#2c3a4f"/></marker></defs>';
+    order.forEach(function (key) {
+      var p = pairs[key], A = pos[p.a], B = pos[p.b], s1 = clip(A, B), s2 = clip(B, A), st = style(p.how);
+      svg += '<g class="dfe" data-n="' + p.a + ' ' + p.b + '"><line x1="' + s1[0] + '" y1="' + s1[1] + '" x2="' + s2[0] + '" y2="' + s2[1] + '" class="dfl ' + st + '"' +
+        (p.fwd ? ' marker-end="url(#dfa)"' : '') + (p.back ? ' marker-start="url(#dfa)"' : '') + '/>';
+      var mx = (s1[0] + s2[0]) / 2, my = (s1[1] + s2[1]) / 2, lab = p.ids.join(' · '), bw = 14 + lab.length * 6.6;
+      svg += '<rect x="' + (mx - bw / 2) + '" y="' + (my - 10) + '" width="' + bw + '" height="20" rx="10" class="dfb"/><text x="' + mx + '" y="' + (my + 4) + '" class="dfbt">' + lab + '</text></g>';
+    });
+    df.nodes.forEach(function (n) {
+      var q = pos[n.id];
+      svg += '<g class="dfn' + (n.core ? ' core' : '') + (n.external ? ' ext' : '') + '" data-id="' + n.id + '" tabindex="0" role="button" aria-label="' + esc(n.name) + ': show its data flows">' +
+        '<rect x="' + (q.x - BW / 2) + '" y="' + (q.y - BH / 2) + '" width="' + BW + '" height="' + BH + '" rx="8"/>' +
+        '<text x="' + q.x + '" y="' + (q.y - 4) + '" class="dfnt">' + esc(n.name) + '</text>' +
+        '<text x="' + q.x + '" y="' + (q.y + 14) + '" class="dfns">' + esc(n.role) + '</text></g>';
+    });
+    svg += '</svg>';
+    var name = function (id) { return pos[id].n.name; };
+    var procLinks = function (ks) { return ks.map(function (k) { return D.byId[k] ? '<a href="' + hashFor(k) + '">' + esc(k) + '</a>' : esc(k); }).join(', '); };
+    view.innerHTML = '<div><h1>Data flows</h1><p class="sub">How data moves between Sparkhound\'s systems for 1/1/2027. HaloPSA sits at the centre: it holds clients, tickets, projects, time, quotes and invoices, and most integrations feed it. Select a system to see only its flows.</p></div>' +
+      '<section class="card"><div class="dfwrap">' + svg + '</div>' +
+      '<div class="legend dflegend"><span><svg width="34" height="10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" class="dfl auto"/></svg>Automatic integration</span>' +
+      '<span><svg width="34" height="10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" class="dfl manual"/></svg>Manual or self-service</span>' +
+      '<span><svg width="34" height="10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" class="dfl planned"/></svg>Planned</span>' +
+      '<span><svg width="34" height="14" aria-hidden="true"><rect x="1" y="1" width="32" height="12" rx="3" fill="#fff" stroke="#8a97a6" stroke-dasharray="4 3"/></svg>Outside Sparkhound</span>' +
+      '<span>Numbers match the table. Arrows show the direction data moves.</span></div></section>' +
+      '<section class="card tablewrap"><div class="sec" style="padding-bottom:6px;display:flex;align-items:center;gap:12px;flex-wrap:wrap"><h2 style="margin:0" id="dfTitle">All data flows</h2><button class="btn" id="dfAll" type="button" hidden>Show all</button></div>' +
+      '<table><thead><tr><th>#</th><th>From → to</th><th>Data</th><th>How</th><th>When</th><th>Processes</th></tr></thead><tbody>' +
+      df.flows.map(function (f) {
+        return '<tr data-n="' + f.from + ' ' + f.to + '"><td class="mono">' + f.id + '</td><td style="white-space:nowrap"><strong>' + esc(name(f.from)) + '</strong> ' + (f.both ? '↔' : '→') + ' <strong>' + esc(name(f.to)) + '</strong></td>' +
+          '<td style="max-width:46ch">' + esc(f.data) + '</td><td>' + esc(f.how) + '</td><td>' + esc(f.when) + '</td><td>' + procLinks(f.processes) + '</td></tr>';
+      }).join('') + '</tbody></table></section>' +
+      '<section class="card sec"><h2>Not yet mapped</h2><ul class="dfun">' + df.unmapped.map(function (u) { return '<li>' + esc(u) + '</li>'; }).join('') + '</ul></section>';
+    var sel = null;
+    var apply = function () {
+      Array.prototype.forEach.call(view.querySelectorAll('.dfe'), function (g) { g.classList.toggle('dim', !!sel && g.getAttribute('data-n').split(' ').indexOf(sel) < 0); });
+      Array.prototype.forEach.call(view.querySelectorAll('.dfn'), function (g) { g.classList.toggle('on', g.getAttribute('data-id') === sel); });
+      Array.prototype.forEach.call(view.querySelectorAll('tbody tr'), function (r) { r.hidden = !!sel && r.getAttribute('data-n').split(' ').indexOf(sel) < 0; });
+      document.getElementById('dfTitle').textContent = sel ? 'Data flows for ' + name(sel) : 'All data flows';
+      document.getElementById('dfAll').hidden = !sel;
+    };
+    Array.prototype.forEach.call(view.querySelectorAll('.dfn'), function (g) {
+      var go = function () { var id = g.getAttribute('data-id'); sel = sel === id ? null : id; apply(); };
+      g.addEventListener('click', go);
+      g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    });
+    document.getElementById('dfAll').addEventListener('click', function () { sel = null; apply(); });
   }
 
   function renderGlossary(key) {

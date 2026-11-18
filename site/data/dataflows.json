@@ -1,0 +1,278 @@
+{
+ "nodes": [
+  {
+   "id": "hubspot",
+   "name": "HubSpot",
+   "role": "Marketing, leads, deals",
+   "col": 0,
+   "row": 0
+  },
+  {
+   "id": "esign",
+   "name": "E-Signature Platform",
+   "role": "SOW and agreement signing",
+   "col": 1,
+   "row": 0
+  },
+  {
+   "id": "clients",
+   "name": "Clients and end users",
+   "role": "Email, portal, Pax8 portal",
+   "col": 2,
+   "row": 0,
+   "external": true
+  },
+  {
+   "id": "pax8",
+   "name": "Pax8",
+   "role": "Microsoft licensing",
+   "col": 3,
+   "row": 0
+  },
+  {
+   "id": "avalara",
+   "name": "Avalara",
+   "role": "Sales tax",
+   "col": 4,
+   "row": 0
+  },
+  {
+   "id": "clienthalo",
+   "name": "Client's Halo",
+   "role": "Enterprise client IT",
+   "col": 0,
+   "row": 1.5,
+   "external": true
+  },
+  {
+   "id": "halo",
+   "name": "HaloPSA",
+   "role": "Clients, tickets, projects, billing",
+   "col": 2,
+   "row": 1.5,
+   "core": true
+  },
+  {
+   "id": "qbo",
+   "name": "QuickBooks Online",
+   "role": "Financial system",
+   "col": 4,
+   "row": 1.5
+  },
+  {
+   "id": "dialpad",
+   "name": "Dialpad",
+   "role": "Phone",
+   "col": 0,
+   "row": 3
+  },
+  {
+   "id": "rmm",
+   "name": "NinjaOne (RMM)",
+   "role": "Endpoints, alerts, patching",
+   "col": 2,
+   "row": 3
+  },
+  {
+   "id": "paylocity",
+   "name": "Paylocity",
+   "role": "HRIS, payroll, expenses",
+   "col": 3,
+   "row": 3
+  },
+  {
+   "id": "bank",
+   "name": "Bank",
+   "role": "Bank feed",
+   "col": 4,
+   "row": 3,
+   "external": true
+  }
+ ],
+ "flows": [
+  {
+   "id": 1,
+   "from": "hubspot",
+   "to": "halo",
+   "both": true,
+   "data": "Deals and opportunities: a deal at Proposal becomes a Halo opportunity; Closed Won and stage changes flow back to HubSpot.",
+   "how": "Integration",
+   "when": "On deal stage change",
+   "processes": [
+    "3.5.3",
+    "3.5.4"
+   ]
+  },
+  {
+   "id": 2,
+   "from": "halo",
+   "to": "esign",
+   "both": true,
+   "data": "Quote and SOW out for signature (Partner first, then client); signed status back.",
+   "how": "Integration",
+   "when": "Per quote",
+   "processes": [
+    "3.5.3"
+   ]
+  },
+  {
+   "id": 3,
+   "from": "clients",
+   "to": "halo",
+   "data": "Support requests by email and the Halo client portal become tickets.",
+   "how": "Integration",
+   "when": "Real time",
+   "processes": [
+    "6.2.2"
+   ]
+  },
+  {
+   "id": 4,
+   "from": "clients",
+   "to": "pax8",
+   "data": "Self-service Microsoft license changes in the client's Pax8 portal.",
+   "how": "Client self-service",
+   "when": "Any time",
+   "processes": [
+    "5.3.3.S1"
+   ]
+  },
+  {
+   "id": 5,
+   "from": "pax8",
+   "to": "halo",
+   "data": "License quantities and amounts update the recurring license lines.",
+   "how": "Integration",
+   "when": "Monthly, before the invoice run",
+   "processes": [
+    "5.3.3.S1",
+    "9.2.2.S1",
+    "9.2.2"
+   ]
+  },
+  {
+   "id": 6,
+   "from": "halo",
+   "to": "avalara",
+   "both": true,
+   "data": "Quote and invoice lines out; estimated tax on quotes and final sales tax on invoices back.",
+   "how": "Integration",
+   "when": "Per quote and invoice",
+   "processes": [
+    "3.5.3",
+    "9.2.2"
+   ]
+  },
+  {
+   "id": 7,
+   "from": "halo",
+   "to": "qbo",
+   "data": "Invoices synced after the invoice run.",
+   "how": "Integration",
+   "when": "Each invoice run",
+   "processes": [
+    "9.2.2",
+    "9.3.2.S1"
+   ]
+  },
+  {
+   "id": 8,
+   "from": "qbo",
+   "to": "halo",
+   "data": "Paid status written back to the Halo invoice.",
+   "how": "Integration",
+   "when": "When payment is applied",
+   "processes": [
+    "9.2.3"
+   ]
+  },
+  {
+   "id": 9,
+   "from": "qbo",
+   "to": "avalara",
+   "both": true,
+   "data": "Invoiced sales for filing; tax filed and remitted.",
+   "how": "Integration",
+   "when": "Per filing period",
+   "processes": [
+    "9.2.2",
+    "9.9.2"
+   ]
+  },
+  {
+   "id": 10,
+   "from": "bank",
+   "to": "qbo",
+   "data": "ACH and check deposits matched to invoices; bank and card transactions for reconciliation.",
+   "how": "Bank feed",
+   "when": "Daily",
+   "processes": [
+    "9.2.3",
+    "9.3.2.S1"
+   ]
+  },
+  {
+   "id": 11,
+   "from": "paylocity",
+   "to": "qbo",
+   "data": "Payroll and expense journals posted.",
+   "how": "Manual (Next Level Now)",
+   "when": "Each payroll; month end",
+   "processes": [
+    "9.3.2.S1"
+   ]
+  },
+  {
+   "id": 12,
+   "from": "paylocity",
+   "to": "halo",
+   "data": "Approved billable expenses for invoicing.",
+   "how": "Planned integration",
+   "when": "Weekly",
+   "processes": [
+    "5.4",
+    "9.2.2"
+   ]
+  },
+  {
+   "id": 13,
+   "from": "rmm",
+   "to": "halo",
+   "data": "Monitoring alerts create tickets automatically.",
+   "how": "Integration",
+   "when": "Real time",
+   "processes": [
+    "6.2.2"
+   ]
+  },
+  {
+   "id": 14,
+   "from": "dialpad",
+   "to": "halo",
+   "data": "Calls logged as tickets.",
+   "how": "Integration",
+   "when": "Real time",
+   "processes": [
+    "6.2.2"
+   ]
+  },
+  {
+   "id": 15,
+   "from": "halo",
+   "to": "clienthalo",
+   "both": true,
+   "data": "Escalations to the client's own IT and their updates, through existing integration runbooks (never edit these runbooks).",
+   "how": "Integration",
+   "when": "Per escalation",
+   "processes": [
+    "6.2.2"
+   ]
+  }
+ ],
+ "unmapped": [
+  "Hudu: client documentation and credentials are entered by the technical team during onboarding; is Hudu integrated with Halo?",
+  "Arctic Wolf and CrowdStrike: security alerts are handled under the incident response process; do they create Halo tickets?",
+  "Microsoft 365 / Entra ID: sign-in for these systems; which apps use Entra single sign-on?",
+  "Time entry: hourly staff enter hours in both Paylocity and Halo by hand; there is no integration between them."
+ ]
+}
