@@ -211,6 +211,17 @@
    "system": "HaloPSA",
    "description": "Approved time entries are locked in Halo; a change requires the approver to reopen the entry, so billed and reported hours cannot be altered silently.",
    "evidence": "Halo timesheet approval and edit history"
+  },
+  {
+   "id": "KC-REC-01",
+   "name": "Seat counts from the client's access review",
+   "process": "9.2.2.S1",
+   "step": "9.2.2.S1",
+   "type": "Preventive",
+   "owner": "XO",
+   "system": "HaloPSA",
+   "description": "Per-user quantities on recurring agreements change only at the quarterly QBR, using the user count the client confirmed in its user access review.",
+   "evidence": "Client-confirmed quarterly user access review; Halo agreement change history"
   }
  ],
  "flows": {
@@ -2486,6 +2497,199 @@
      "lane": 2,
      "col": 6,
      "title": "End: to invoicing (9.2.2) and utilization",
+     "link": "9.2.2"
+    }
+   ]
+  },
+  "9.2.2.S1": {
+   "title": "Set up and maintain recurring agreements",
+   "span": "Handoff accepted → quarterly true-up",
+   "summary": "Managed services agreements bill monthly in advance from Halo. Microsoft license lines change monthly through the Pax8 sync; managed seats and services change only at the quarterly QBR, from the client's user access review, and that rate holds for the next three months.",
+   "lanes": [
+    {
+     "name": "XO",
+     "sub": "Owns the agreement"
+    },
+    {
+     "name": "Client",
+     "sub": ""
+    },
+    {
+     "name": "Systems",
+     "sub": "Halo, Pax8"
+    }
+   ],
+   "upstream": [
+    "3.5.4"
+   ],
+   "downstream": [
+    "9.2.2"
+   ],
+   "questions": [
+    "Confirm that Halo creates the recurring agreement and invoice automatically from the accepted quote."
+   ],
+   "steps": [
+    {
+     "id": "a1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: XO accepts the handoff (3.5.4)",
+     "link": "3.5.4",
+     "next": [
+      {
+       "to": "a2",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "a2",
+     "type": "process",
+     "lane": 2,
+     "col": 1,
+     "title": "Agreement and recurring invoice created",
+     "note": "From the accepted quote",
+     "system": "Halo",
+     "who": "Automated",
+     "assumed": true,
+     "detail": "Halo is believed to create the recurring agreement and invoice automatically when the quote is accepted; to be confirmed.",
+     "next": [
+      {
+       "to": "a3",
+       "from": "right",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "a3",
+     "type": "process",
+     "lane": 0,
+     "col": 2,
+     "title": "Check the agreement against the SOW",
+     "system": "Halo",
+     "who": "XO",
+     "assumed": true,
+     "detail": "The XO checks services, quantities and prices on the new agreement match the signed SOW.",
+     "next": [
+      {
+       "to": "a4",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "a4",
+     "type": "process",
+     "lane": 2,
+     "col": 3,
+     "title": "Bill monthly in advance",
+     "apqc": "9.2.2",
+     "note": "Feeds the monthly invoice run",
+     "system": "Halo",
+     "who": "Automated",
+     "link": "9.2.2",
+     "detail": "Each month the recurring invoice bills that month's managed services in advance through the 9.2.2 invoice run.",
+     "next": [
+      {
+       "to": "a6",
+       "from": "right",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "a5",
+     "type": "process",
+     "lane": 2,
+     "col": 3,
+     "title": "License lines updated from Pax8",
+     "row": 1,
+     "note": "Monthly; self-service or Tier 2",
+     "system": "Pax8 → Halo",
+     "who": "Integration",
+     "link": "5.3.3.S1",
+     "detail": "Microsoft license changes, made by the client in Pax8 or by Tier 2 from a Halo ticket, sync to the license lines automatically and hit the next monthly invoice.",
+     "next": [
+      {
+       "to": "a4",
+       "from": "top",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "a6",
+     "type": "process",
+     "lane": 0,
+     "col": 4,
+     "title": "Hold the quarterly QBR",
+     "apqc": "3.5.2",
+     "note": "Includes user access review",
+     "who": "XO",
+     "link": "3.5.2.S1",
+     "detail": "Each quarter the XO meets the client for a business review that includes the user access review.",
+     "next": [
+      {
+       "to": "a7",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "a7",
+     "type": "process",
+     "lane": 1,
+     "col": 5,
+     "title": "Confirm users in the access review",
+     "who": "Client",
+     "detail": "The client confirms its active users as part of the quarterly user access review; that count sets the per-user quantity.",
+     "next": [
+      {
+       "to": "a8",
+       "from": "right",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "a8",
+     "type": "process",
+     "lane": 0,
+     "col": 6,
+     "title": "Update seats and services",
+     "note": "Rate holds for 3 months",
+     "system": "Halo",
+     "who": "XO",
+     "control": "KC-REC-01",
+     "controlNote": "counts from access review",
+     "detail": "The XO updates per-user quantities from the confirmed user count, plus any services added or dropped, which also wait for the QBR. The client pays that rate for the next three months.",
+     "next": [
+      {
+       "to": "a9",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "a9",
+     "type": "end",
+     "lane": 2,
+     "col": 7,
+     "title": "End: next quarter billed at the new rate (9.2.2)",
      "link": "9.2.2"
     }
    ]
