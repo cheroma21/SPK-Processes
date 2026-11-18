@@ -43,6 +43,7 @@
       ['pri', 'Priority', 'The order processes get documented in: 1 - Now, 2 - Next, 3 - Later.'],
       ['soc2', 'SOC 2 control', "A control from Sparkhound's SOC 2 control matrix, with an ID like CM-CC6.2-01, mapped to the processes it supports. The code after CM- is the Trust Services Criterion it addresses."],
       ['tsc', 'Trust Services Criteria', 'The AICPA criteria SOC 2 is audited against: Security (CC1 to CC9), plus Availability (A1), Processing Integrity (PI1), Confidentiality (C1) and Privacy (P1 to P8).'],
+      ['added', 'Sparkhound addition', 'A process Sparkhound runs that the APQC framework does not break out, added from a Sparkhound policy. Its number ends in S1, S2 and so on under the nearest APQC parent, for example 4.2.3.S1.'],
       ['links', 'Linked processes', 'What feeds a process (upstream) and what it hands off to (downstream), so work can be followed from lead to cash.']
     ]],
     ['The framework', [
@@ -154,7 +155,7 @@
         if (par) (D.kids[par] = D.kids[par] || []).push(p.id);
         var kc = controlsFor(p.id).map(function (c) { return c.id + ' ' + c.name; }).join(' ');
         var sc2 = (D.socBy[p.id] || []).map(function (c) { return c.id + ' ' + c.tsc + ' ' + c.objective; }).join(' ');
-        p.hay = [p.id, p.name, p.owner, p.acct, p.sor, p.sup, p.fn, p.bu, p.ctl, p.kpi, p.notes, kc, sc2].join(' ').toLowerCase();
+        p.hay = [p.id, p.name, p.owner, p.acct, p.sor, p.sup, p.fn, p.bu, p.ctl, p.kpi, p.notes, kc, sc2, (p.pol || []).join(' '), p.added ? 'sparkhound addition' : ''].join(' ').toLowerCase();
       });
       buildRoles();
       document.getElementById('flowCount').textContent = Object.keys(D.flows).length;
@@ -332,7 +333,7 @@
       shown.map(function (p) {
         var kc = controlsFor(p.id).length, s2 = socFor(p.id).length, fl = D.flows[p.id];
         return '<tr' + (fl ? ' class="hl"' : '') + '><td class="mono" style="color:var(--muted)">' + esc(p.id) + '</td>' +
-          '<td style="padding-left:' + (12 + (p.lvl - 1) * 20) + 'px;' + (p.lvl === 1 ? 'font-weight:600' : '') + '"><a href="' + hashFor(p.id) + '">' + esc(p.name) + '</a></td>' +
+          '<td style="padding-left:' + (12 + (p.lvl - 1) * 20) + 'px;' + (p.lvl === 1 ? 'font-weight:600' : '') + '"><a href="' + hashFor(p.id) + '">' + esc(p.name) + '</a>' + (p.added ? ' <span class="chip add">Sparkhound</span>' : '') + '</td>' +
           '<td><span class="lvl">L' + p.lvl + '</span></td><td>' + esc(p.owner) + '</td><td style="color:var(--ink2)">' + esc(p.fn) + '</td>' +
           '<td style="color:var(--ink2)">' + esc(p.sor) + '</td><td style="text-align:center">' + (kc || '') + '</td><td style="text-align:center">' + (s2 || '') + '</td>' +
           '<td>' + (fl ? '<a href="' + hashFor(p.id) + '">View</a>' : '') + '</td><td>' + pill(p.status) + '</td></tr>';
@@ -391,7 +392,7 @@
         '<span class="lvl" style="flex:none">L' + p.lvl + '</span><span class="mono" style="min-width:60px;color:var(--muted)">' + esc(id) + '</span>' +
         '<a href="' + hashFor(id) + '" style="' + (depth === 0 ? 'font-weight:600' : '') + '">' + name + '</a>' +
         (kids.length && !open ? '<span class="muted" style="font-size:12px">' + kids.length + '</span>' : '') +
-        (D.flows[id] ? ' <span class="chip sor" style="margin:0">Flow</span>' : '') +
+        (D.flows[id] ? ' <span class="chip sor" style="margin:0">Flow</span>' : '') + (p.added ? ' <span class="chip add" style="margin:0">Sparkhound</span>' : '') +
         '<span style="margin-left:auto">' + (p.status && p.status !== 'Not Started' ? pill(p.status) : '') + '</span></div>');
       if (open) kids.forEach(function (k) { walk(k, depth + 1); });
     }
@@ -430,7 +431,7 @@
       '<section class="card" aria-label="Process fields"><div class="grid">' +
         f(term('level', 'Level'), 'L' + p.lvl) + f('Parent process', par ? '<a href="' + hashFor(par.id) + '">' + esc(par.id + ' ' + par.name) + '</a>' : '—', 1) +
         f(term('owner', 'Process owner'), p.owner ? esc(p.owner) : '<span class="muted">Not assigned</span>', 1) + f(term('acct', 'Accountable leader'), p.acct ? esc(p.acct) : '<span class="muted">Not assigned</span>', 1) +
-        f(term('fn', 'EOS function'), p.fn) + f(term('bu', 'Business unit'), p.bu) + f(term('relevance', 'Relevance'), p.rel) + f(term('pri', 'Priority'), p.pri) + f('APQC metrics', p.metrics ? p.metrics + ' benchmarks' : '—') +
+        f(term('fn', 'EOS function'), p.fn) + f(term('bu', 'Business unit'), p.bu) + f(term('relevance', 'Relevance'), p.rel) + f(term('pri', 'Priority'), p.pri) + f('APQC metrics', p.metrics ? p.metrics + ' benchmarks' : '—') + f(term('added', 'Source'), p.added ? 'Sparkhound addition (not in APQC)' : 'APQC PCF v8.0', 1) + (p.pol ? f('Governing policy', p.pol.join('; ')) : '') +
       '</div></section>' +
       (p.desc ? '<section class="card sec"><div class="fl">APQC description</div><p style="margin:4px 0 0;font-size:14px;line-height:1.55">' + esc(p.desc) + '</p>' + (p.notes ? '<div class="fl" style="margin-top:12px">Sparkhound notes</div><p style="margin:4px 0 0;font-size:14px;line-height:1.55">' + esc(p.notes) + '</p>' : '') + '</section>' : '');
 

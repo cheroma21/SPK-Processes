@@ -400,7 +400,8 @@
    "design": "Inspect escalation procedures and notification matrices",
    "operating": "Sample security events during period; verify escalation followed defined procedures",
    "processes": [
-    "8.3.3"
+    "8.3.3",
+    "6.2.2.S1"
    ]
   },
   {
@@ -427,7 +428,8 @@
    "operating": "Verify external communications occurred as required during period (incident notifications, status reports)",
    "processes": [
     "8.3.3",
-    "12.3.2"
+    "12.3.2",
+    "6.2.2.S1"
    ]
   },
   {
@@ -975,7 +977,8 @@
    "design": "Inspect encryption configurations; verify TLS versions; scan for deprecated protocols",
    "operating": "Verify encryption maintained during period; inspect certificate renewals; review scan results",
    "processes": [
-    "8.3.5"
+    "8.3.5",
+    "8.3.5.S4"
    ]
   },
   {
@@ -1029,7 +1032,9 @@
    "operating": "Verify all scheduled scans completed during period; inspect remediation timelines for findings",
    "processes": [
     "8.3.3",
-    "8.3.6"
+    "8.3.6",
+    "8.3.5.S1",
+    "8.3.5.S3"
    ]
   },
   {
@@ -1053,7 +1058,8 @@
    "design": "Inspect configuration baselines and hardening standards",
    "operating": "Compare current configurations to baselines during period; inspect drift detection/remediation logs",
    "processes": [
-    "8.7.7"
+    "8.7.7",
+    "8.6.3.S4"
    ]
   },
   {
@@ -1133,7 +1139,8 @@
    "operating": "Sample security events during period; verify correct classification against criteria",
    "processes": [
     "8.7.5.9",
-    "6.2.2"
+    "6.2.2",
+    "8.3.8.6.S1"
    ]
   },
   {
@@ -1159,7 +1166,10 @@
    "operating": "Review all incidents during period; verify IRP followed; inspect post-incident reports",
    "processes": [
     "11.3",
-    "8.3.3"
+    "8.3.3",
+    "8.3.8.6.S2",
+    "8.3.8.6.S4",
+    "8.3.8.6.S7"
    ]
   },
   {
@@ -1184,7 +1194,8 @@
    "design": "Inspect most recent IR test documentation and lessons learned",
    "operating": "Verify IR testing conducted during period; inspect lessons learned and IRP updates",
    "processes": [
-    "11.4.3"
+    "11.4.3",
+    "8.3.8.6.S8"
    ]
   },
   {
@@ -1211,7 +1222,9 @@
    "operating": "Review incident recoveries during period; verify procedures followed and RTO/RPO met",
    "processes": [
     "8.3.7",
-    "11.3"
+    "11.3",
+    "8.3.8.6.S4",
+    "8.7.6.8.S3"
    ]
   },
   {
@@ -1237,7 +1250,10 @@
    "design": "Inspect change management policy and procedures; review recent change tickets",
    "operating": "Sample changes during period; verify all steps followed (request, approval, testing, implementation, verification)",
    "processes": [
-    "8.6.3"
+    "8.6.3",
+    "8.6.3.S1",
+    "8.6.3.S4",
+    "8.6.3.S5"
    ]
   },
   {
@@ -1288,7 +1304,8 @@
    "design": "Inspect emergency change procedures and approval requirements",
    "operating": "Review all emergency changes during period; verify retrospective documentation and approval",
    "processes": [
-    "8.6.3"
+    "8.6.3",
+    "8.6.3.S3"
    ]
   },
   {
@@ -1313,7 +1330,9 @@
    "operating": "Verify BCP tested during period; inspect test results and remediation of identified gaps",
    "processes": [
     "11.4.2",
-    "8.3.4"
+    "8.3.4",
+    "11.4.2.S1",
+    "11.4.4.S1"
    ]
   },
   {
@@ -1338,7 +1357,9 @@
    "design": "Inspect backup configuration, schedules, and retention settings",
    "operating": "Verify backups completed successfully during period; inspect quarterly restoration test results",
    "processes": [
-    "8.3.7"
+    "8.3.7",
+    "8.7.6.8.S1",
+    "8.7.6.8.S2"
    ]
   },
   {
@@ -1366,7 +1387,12 @@
    "operating": "Sample critical vendors; verify risk assessments, SOC report reviews, and contract terms during period",
    "processes": [
     "4.2.3.2",
-    "4.2.5"
+    "4.2.5",
+    "4.2.3.S1",
+    "4.2.3.S2",
+    "4.2.5.S1",
+    "4.2.5.S2",
+    "4.2.5.S4"
    ]
   },
   {
@@ -1393,7 +1419,8 @@
    "operating": "Verify all subservice SOC reports reviewed during period; inspect gap analysis for each",
    "processes": [
     "4.2.5.1",
-    "4.2.3.2"
+    "4.2.3.2",
+    "4.2.5.S2"
    ]
   },
   {
@@ -1470,7 +1497,8 @@
    "design": "Inspect DR architecture, failover mechanisms, and RTO/RPO alignment",
    "operating": "Verify DR infrastructure maintained during period; review failover events and response times",
    "processes": [
-    "8.3.7"
+    "8.3.7",
+    "8.7.6.8.S3"
    ]
   },
   {
@@ -1521,7 +1549,9 @@
    "operating": "Verify DR testing conducted during period; inspect test results and plan updates",
    "processes": [
     "11.4.3",
-    "8.3.7"
+    "8.3.7",
+    "11.4.3.S1",
+    "8.7.6.8.S2"
    ]
   },
   {
@@ -1705,7 +1735,8 @@
    "design": "Inspect encryption configurations, DLP rules, and access restrictions for confidential data",
    "operating": "Verify protections maintained during period; review DLP alerts; test encryption coverage",
    "processes": [
-    "8.3.5"
+    "8.3.5",
+    "8.3.5.S4"
    ]
   },
   {
@@ -1911,7 +1942,8 @@
    "operating": "Verify all third parties with PII access have current DPAs; sample for compliance",
    "processes": [
     "12.4.9",
-    "4.2.3.3"
+    "4.2.3.3",
+    "4.2.3.S3"
    ]
   },
   {
@@ -1936,7 +1968,8 @@
    "design": "Verify breach notification clauses in third-party agreements",
    "operating": "Sample agreements executed during period; verify notification provisions present",
    "processes": [
-    "12.4.9"
+    "12.4.9",
+    "4.2.3.S3"
    ]
   },
   {
@@ -2067,7 +2100,9 @@
    "operating": "Review any breaches during period; verify notification procedures followed",
    "processes": [
     "6.2.5",
-    "11.2.2"
+    "11.2.2",
+    "8.3.8.6.S5",
+    "8.3.8.6.S6"
    ]
   },
   {

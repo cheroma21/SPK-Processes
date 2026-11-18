@@ -58,6 +58,123 @@ for p in procs:
     if p["id"] in over:
         p.update(over[p["id"]])
 
+# Policies (Trust Center summaries, 11/17/2026). POL names each policy; POLICY_OWNERS sets owners
+# and the governing policy on existing APQC processes; EXTRA adds Sparkhound-specific processes
+# the policies require but APQC does not break out. EXTRA ids carry an "S" (e.g. 4.2.3.S1) and sit
+# under the closest APQC parent. Never insert rows into the workbook's category tabs for these.
+POL = {
+    "bn": "Breach Notification Policy", "bc": "Business Continuity and Disaster Recovery Plan",
+    "cm": "Change Management Policy", "en": "Encryption Policy", "es": "Escalation and Notification Procedures",
+    "ir": "Incident Response Management Policy", "dr": "Data Recovery Policy", "vm": "Vendor Management Policy",
+    "vu": "Vulnerability Management Policy",
+}
+POLICY_OWNERS = {
+    "8.3.5":   dict(owner="Centralized Services", pol=["en", "vu"]),
+    "8.3.8.6": dict(owner="Managed Services (incident response lead)", pol=["ir", "bn"]),
+    "8.6.3":   dict(owner="Internal Change Board / Client Change Board", pol=["cm"]),
+    "8.7.6.8": dict(owner="Director of Managed Services; DR Coordinator", pol=["dr", "bc"]),
+    "11.4":    dict(owner="Executive Sponsor; DR Coordinator", pol=["bc"]),
+    "4.2.3":   dict(owner="IT leadership", pol=["vm"]),
+    "4.2.5":   dict(owner="IT leadership", pol=["vm"]),
+    "6.2.2":   dict(pol=["es"]),
+}
+EXTRA = [
+    # Client service escalations
+    dict(id="6.2.2.S1", name="Escalate client service issues by severity", pol=["es"], owner="Customer Success Manager (Tier 1)", sor="HaloPSA",
+         desc="Classify and log the issue, acknowledge the client within the severity target (Critical 30 minutes, High 1 business hour, Medium 1 business day, Low 2 business days), send status updates on the severity cadence, and raise unresolved escalations to the next tier: Customer Success Manager, then the Director of Managed Services or Digital Transformation, then the Partner, then the Managing Director."),
+    dict(id="6.2.2.S2", name="Attest to escalation roles", pol=["es"], owner="Customer Success Director", sor="",
+         desc="Everyone in the escalation chain attests to the procedure on taking the role and at least annually."),
+    # Security incident response and breach notification
+    dict(id="8.3.8.6.S1", name="Report and triage suspected security incidents", pol=["ir"], owner="Incident response lead", sor="HaloPSA", sup="Arctic Wolf, CrowdStrike",
+         desc="Anyone who suspects an incident reports it immediately, without investigating first, through the 24/7 monitored channel. The report is triaged, given a severity, and evidence preservation starts before containment."),
+    dict(id="8.3.8.6.S2", name="Contain the incident and preserve evidence", pol=["ir"], owner="Incident response lead", sor="",
+         desc="Isolate affected systems and preserve logs, forensic images and system state under chain of custody."),
+    dict(id="8.3.8.6.S3", name="Notify the cyber liability carrier before eradication", pol=["ir"], owner="Incident response lead", sor="",
+         desc="Mandatory checkpoint: the carrier is notified, and carrier-approved forensic and legal resources engaged, before any eradication work changes evidence or system state."),
+    dict(id="8.3.8.6.S4", name="Eradicate the threat and recover systems", pol=["ir"], owner="Response engineers", sor="",
+         desc="Remove the threat, close the exploited weakness, restore systems, and monitor closely for recurrence."),
+    dict(id="8.3.8.6.S5", name="Determine breach notification obligations", pol=["bn", "ir"], owner="Legal counsel with Compliance", sor="",
+         desc="Legal counsel and compliance decide whether a breach must be notified, to whom, and on what timeline, from the data involved, the applicable law (state law, HIPAA, GDPR, DFARS) and client contracts."),
+    dict(id="8.3.8.6.S6", name="Notify affected clients, individuals and regulators", pol=["bn", "ir"], owner="Executive leadership; Compliance", sor="",
+         desc="Notify without undue delay once a breach is confirmed, within the client agreement and statutory timelines, with a single coordinated account when a vendor is involved, and give clients the facts they need for their own obligations."),
+    dict(id="8.3.8.6.S7", name="Conduct post-incident reviews", pol=["ir"], owner="Incident response lead", sor="",
+         desc="After every incident: document root cause, assign and track corrective actions, update procedures. Incident records are kept at least six years."),
+    dict(id="8.3.8.6.S8", name="Exercise the incident response program", pol=["ir"], owner="Incident response lead", sor="",
+         desc="Run a tabletop exercise at least annually and verify the escalation contact directory quarterly."),
+    # Vulnerability management and encryption
+    dict(id="8.3.5.S1", name="Scan for and prioritize vulnerabilities", pol=["vu"], owner="Centralized Services", sor="Arctic Wolf", sup="CrowdStrike, NinjaOne",
+         desc="Scan internal and internet-facing assets continuously and rate findings by CVSS, weighted for internet exposure and active exploits."),
+    dict(id="8.3.5.S2", name="Deploy patches", pol=["vu"], owner="Centralized Services", sor="RMM", sup="",
+         desc="Patch operating systems and third-party applications monthly through NinjaOne in maintenance windows, piloting first where feasible; patch critical and actively exploited vulnerabilities out of cycle as soon as a validated patch exists."),
+    dict(id="8.3.5.S3", name="Track remediation against targets and approve exceptions", pol=["vu"], owner="Centralized Services", sor="",
+         desc="Track remediation against the targets (Critical within days, 24 to 48 hours if exploited or internet-facing; High 30 days; Medium 90 days; Low routine) and approve time-bound exceptions with compensating controls."),
+    dict(id="8.3.5.S4", name="Enforce encryption standards", pol=["en"], owner="Centralized Services", sor="RMM", sup="M365 / Entra ID",
+         desc="AES-256 on every laptop and desktop before issue, MDM with encryption on mobile devices, TLS 1.2+ in transit, AES-256 at rest for sensitive data and backups; exceptions need documented approval and a compensating control."),
+    dict(id="8.3.5.S5", name="Respond to lost or stolen devices", pol=["en"], owner="Centralized Services", sor="HaloPSA",
+         desc="A lost or stolen device is reported and acted on within 24 hours."),
+    # Change management
+    dict(id="8.6.3.S1", name="Submit and review change requests at the Change Board", pol=["cm"], owner="Requestor; Internal or Client Change Board", sor="HaloPSA (change mgmt)",
+         desc="Normal changes need a complete change request (type, people, dates, description, justification, impact, test, back-out and communication plans) reviewed by the Internal Change Board (Sparkhound systems) or Client Change Board (client production) and approved by majority vote with quorum."),
+    dict(id="8.6.3.S2", name="Maintain pre-approved standard changes", pol=["cm"], owner="Internal and Client Change Boards", sor="HaloPSA (change mgmt)",
+         desc="The Boards approve the procedures for low-risk, repeatable standard changes, which are then logged without an individual vote."),
+    dict(id="8.6.3.S3", name="Approve and ratify emergency changes", pol=["cm"], owner="Change Board voting member", sor="HaloPSA (change mgmt)",
+         desc="One voting member signs off an emergency change; elevated access is time-limited and logged; the full Board ratifies within two business days."),
+    dict(id="8.6.3.S4", name="Validate implemented changes and roll back failures", pol=["cm"], owner="Requestor / implementer", sor="HaloPSA (change mgmt)",
+         desc="Confirm the change worked and introduced no vulnerability or outage; follow the back-out plan if it did; update baselines when a change becomes a standard."),
+    dict(id="8.6.3.S5", name="Review change logs quarterly", pol=["cm"], owner="Change Management Policy owner", sor="HaloPSA (change mgmt)",
+         desc="Quarterly review of change records for completeness and adherence; records kept at least one year, longer where a client contract requires."),
+    # Data recovery and business continuity
+    dict(id="8.7.6.8.S1", name="Monitor backup jobs and investigate failures", pol=["dr", "bc"], owner="Technical Recovery Lead", sor="",
+         desc="Independent, encrypted, immutable backups of Sparkhound SaaS data run on a 24-hour cycle; failed jobs are investigated within one business day. Retention is 90 days point-in-time plus 12 monthly archives."),
+    dict(id="8.7.6.8.S2", name="Test restores quarterly", pol=["dr", "bc"], owner="DR Coordinator", sor="",
+         desc="Restore a sample of mailboxes, files, sites and service management records to a test location each quarter and record completeness and restore time."),
+    dict(id="8.7.6.8.S3", name="Restore systems in recovery-tier order", pol=["dr", "bc"], owner="Technical Recovery Lead", sor="",
+         desc="Restore Tier 0 (identity, email, service management; RTO 4h) first, then Tier 1 (finance, documents, RMM; 24h), Tier 2 (CRM, e-signature, marketing; 72h) and Tier 3 (120h), validating integrity before return to use."),
+    dict(id="11.4.2.S1", name="Conduct business impact analysis and set recovery tiers", pol=["bc"], owner="DR Coordinator with department leaders", sor="SharePoint",
+         desc="Department leaders' BIA sets each system's recovery tier and each critical function's maximum tolerable downtime and alternate processing; reviewed at least annually."),
+    dict(id="11.4.4.S1", name="Declare a disaster and activate the response team", pol=["bc"], owner="Executive Sponsor; Incident Commander", sor="",
+         desc="Assess a reported event within 30 minutes, declare against defined criteria, notify all employees within one hour and affected clients within four hours, with external statements approved by the Executive Sponsor."),
+    dict(id="11.4.4.S2", name="Account for personnel after a facility or regional event", pol=["bc"], owner="People and HR Lead", sor="Paylocity",
+         desc="HR runs a personnel accountability check within four hours of a facility or regional event such as a hurricane."),
+    dict(id="11.4.3.S1", name="Run the continuity test calendar", pol=["bc", "dr"], owner="DR Coordinator", sor="",
+         desc="Annual tabletop, emergency access test, unannounced communication tree test (90% acknowledge within two hours) and runbook walkthrough for each critical system; results and corrective actions retained."),
+    dict(id="11.4.4.S3", name="Hold post-event reviews", pol=["bc"], owner="DR Coordinator", sor="",
+         desc="Formal review within ten business days of stand-down, with corrective actions owned, dated and tracked to closure."),
+    # Vendor management
+    dict(id="4.2.3.S1", name="Assign vendor risk tiers", pol=["vm"], owner="IT leadership", sor="",
+         desc="Tier every vendor Critical, High, Medium or Low by its access to systems and data and how critical its service is; an untiered vendor is treated as Critical."),
+    dict(id="4.2.3.S2", name="Perform tier-based vendor due diligence", pol=["vm"], owner="IT leadership; Finance; Legal", sor="",
+         desc="Critical and High: audit report (SOC 2 / ISO 27001), security questionnaire, breach history, financial condition, data types, fourth parties, IR/BC/DR documents, legal history. Medium: abbreviated review. No access before diligence is complete."),
+    dict(id="4.2.3.S3", name="Include security and notification terms in vendor contracts", pol=["vm"], owner="Legal", sor="E-Signature Platform",
+         desc="Critical and High contracts cover SLAs, data protection, audit rights, breach notification, subcontractor responsibility, indemnification and continuity."),
+    dict(id="4.2.5.S1", name="Maintain the vendor inventory", pol=["vm"], owner="IT leadership", sor="",
+         desc="Every vendor carries a risk tier, a named internal owner and a last-assessed date."),
+    dict(id="4.2.5.S2", name="Reassess vendors by tier", pol=["vm"], owner="Vendor's internal owner", sor="",
+         desc="Critical and High at least annually or at renewal; Medium every two years or on scope change; includes fourth-party dependencies and monitoring for incidents, financial or ownership change."),
+    dict(id="4.2.5.S3", name="Maintain vendor SLAs, escalation contacts and exit strategies", pol=["bc", "dr"], owner="IT leadership", sor="",
+         desc="For mission-critical and business-critical platforms: SLAs, support tiers, escalation contacts and status pages verified annually, with a documented exit strategy (export format, migration path, alternate vendor)."),
+    dict(id="4.2.5.S4", name="Offboard vendors", pol=["vm"], owner="Vendor's internal owner", sor="",
+         desc="Revoke and verify removal of all vendor access; obtain return or documented destruction of data; retain the completion record."),
+    dict(id="4.2.5.S5", name="Approve and track vendor policy exceptions", pol=["vm"], owner="Management (by risk tier)", sor="",
+         desc="Document the exception, accept residual risk at the right level, set a review date, and review exceptions annually."),
+]
+byid = {p["id"]: p for p in procs}
+for k, v in POLICY_OWNERS.items():
+    byid[k].update(v)
+for e in EXTRA:
+    par = e["id"].rsplit(".", 1)[0]
+    pp = byid[par]
+    row = dict(pcf=None, lvl=pp["lvl"] + 1, cat=pp["cat"], rel="Core", scope="Yes", fn=pp["fn"], bu=pp["bu"], sup="", ctl="SOC 2",
+               pri="1 - Now", acct="", status="Not Started", mat="", kpi="", notes="", metrics=0, added=True)
+    row.update(e)
+    # insert after the parent's last descendant (including extras already placed)
+    i = max(n for n, p in enumerate(procs) if p["id"] == par or p["id"].startswith(par + "."))
+    procs.insert(i + 1, row)
+    byid[row["id"]] = row
+for p in procs:
+    if "pol" in p:
+        p["pol"] = [POL[x] for x in p["pol"]]
+
 with open(os.path.join(outdir, "processes.json"), "w") as f:
     f.write("[\n" + ",\n".join(json.dumps(p, ensure_ascii=False) for p in procs) + "\n]\n")
 

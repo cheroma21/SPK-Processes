@@ -1590,7 +1590,7 @@
   "9.2.3": {
    "title": "Process accounts receivable (AR)",
    "span": "Invoice issued → cash applied",
-   "summary": "Clients pay by ACH or check; payments are matched from the QuickBooks Online bank feed, applied and reconciled, and the Next Level Now controller reviews AR aging monthly with the XOs. Invoices still unpaid after their due date go to collections. Whether paid status syncs back to Halo is still open.",
+   "summary": "Clients pay by ACH or check; payments are matched from the QuickBooks Online bank feed, applied and reconciled, and paid status syncs back to Halo. The Next Level Now controller reviews AR aging monthly with the XOs. Invoices still unpaid after their due date go to collections.",
    "lanes": [
     {
      "name": "AR",
@@ -1611,9 +1611,7 @@
    "downstream": [
     "9.2.4"
    ],
-   "questions": [
-    "Does paid status sync from QuickBooks Online back to Halo, or does it live only in QuickBooks Online?"
-   ],
+   "questions": [],
    "steps": [
     {
      "id": "c1",
@@ -1697,7 +1695,6 @@
      "title": "Paid status to Halo",
      "system": "QBO → Halo",
      "who": "Integration",
-     "assumed": true,
      "next": [
       {
        "to": "c6",
@@ -1705,7 +1702,8 @@
        "toSide": "bottom"
       }
      ],
-     "detail": "Not yet confirmed whether the Halo–QuickBooks Online integration writes paid status back to Halo."
+     "detail": "The Halo–QuickBooks Online integration writes paid status back to Halo, so XOs see payment status on the client in Halo.",
+     "note": "Integration writes paid status to Halo"
     },
     {
      "id": "c6",

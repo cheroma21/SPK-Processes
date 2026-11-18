@@ -224,3 +224,4 @@ a.chip.soc:hover{background:#cde9ef}
 .soctest dd{margin:0;color:var(--ink2)}
 .soc-procs a{display:block;font-size:13.5px;margin-bottom:4px}
 .soctable tr.hit td{background:#fff7e0}
+.chip.add{background:#ecf5e0;color:#2f5a10;font-weight:600}

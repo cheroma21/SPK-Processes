@@ -58,6 +58,23 @@ PROC = {
     "CM-P8.1-01": ["8.3.5"],
 }
 
+# Links to the Sparkhound-specific processes added from the policies (EXTRA in build_data.py).
+POLICY_PROC = {
+    "CM-CC2.2-02": ["6.2.2.S1"], "CM-CC2.3-01": ["6.2.2.S1"],
+    "CM-CC6.7-01": ["8.3.5.S4"], "CM-C1.1-02": ["8.3.5.S4"],
+    "CM-CC7.1-01": ["8.3.5.S1", "8.3.5.S3"], "CM-CC7.1-02": ["8.6.3.S4"],
+    "CM-CC7.3-01": ["8.3.8.6.S1"], "CM-CC7.4-01": ["8.3.8.6.S2", "8.3.8.6.S4", "8.3.8.6.S7"],
+    "CM-CC7.4-02": ["8.3.8.6.S8"], "CM-CC7.5-01": ["8.3.8.6.S4", "8.7.6.8.S3"],
+    "CM-P6.3-01": ["8.3.8.6.S5", "8.3.8.6.S6"],
+    "CM-CC8.1-01": ["8.6.3.S1", "8.6.3.S4", "8.6.3.S5"], "CM-CC8.1-03": ["8.6.3.S3"],
+    "CM-CC9.1-01": ["11.4.2.S1", "11.4.4.S1"], "CM-CC9.1-02": ["8.7.6.8.S1", "8.7.6.8.S2"],
+    "CM-A1.2-01": ["8.7.6.8.S3"], "CM-A1.3-01": ["11.4.3.S1", "8.7.6.8.S2"],
+    "CM-CC9.2-01": ["4.2.3.S1", "4.2.3.S2", "4.2.5.S1", "4.2.5.S2", "4.2.5.S4"], "CM-CC9.2-02": ["4.2.5.S2"],
+    "CM-P4.2-01": ["4.2.3.S3"], "CM-P4.3-01": ["4.2.3.S3"],
+}
+for k, v in POLICY_PROC.items():
+    PROC[k] = PROC.get(k, []) + [x for x in v if x not in PROC.get(k, [])]
+
 TYPES = {"Prev": "Preventive", "Det": "Detective", "Corr": "Corrective"}
 
 def domain_of(tsc):
