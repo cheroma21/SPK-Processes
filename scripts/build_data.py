@@ -72,16 +72,16 @@ POLICY_OWNERS = {
     "8.3.5":   dict(owner="Centralized Services", pol=["en", "vu"]),
     "8.3.8.6": dict(owner="Managed Services (incident response lead)", pol=["ir", "bn"]),
     "8.6.3":   dict(owner="Internal Change Board / Client Change Board", pol=["cm"]),
-    "8.7.6.8": dict(owner="Director of Managed Services; DR Coordinator", pol=["dr", "bc"]),
-    "11.4":    dict(owner="Executive Sponsor; DR Coordinator", pol=["bc"]),
+    "8.7.6.8": dict(owner="Director of Managed Services (DR Coordinator)", pol=["dr", "bc"]),
+    "11.4":    dict(owner="Managing Partner, Operations (Executive Sponsor); Director of Managed Services (DR Coordinator)", pol=["bc"]),
     "4.2.3":   dict(owner="IT leadership", pol=["vm"]),
     "4.2.5":   dict(owner="IT leadership", pol=["vm"]),
     "6.2.2":   dict(pol=["es"]),
 }
 EXTRA = [
     # Client service escalations
-    dict(id="6.2.2.S1", name="Escalate client service issues by severity", pol=["es"], owner="Customer Success Manager (Tier 1)", sor="HaloPSA",
-         desc="Classify and log the issue, acknowledge the client within the severity target (Critical 30 minutes, High 1 business hour, Medium 1 business day, Low 2 business days), send status updates on the severity cadence, and raise unresolved escalations to the next tier: Customer Success Manager, then the Director of Managed Services or Digital Transformation, then the Partner, then the Managing Director."),
+    dict(id="6.2.2.S1", name="Escalate client service issues by severity", pol=["es"], owner="XO / Customer Success Manager (Tier 1)", sor="HaloPSA",
+         desc="Classify and log the issue, acknowledge the client within the severity target (Critical 30 minutes, High 1 business hour, Medium 1 business day, Low 2 business days), send status updates on the severity cadence, and raise unresolved escalations to the next tier: the XO (called Customer Success Manager in the policy), then the Director of Managed Services or Digital Transformation, then the Partner, then the Managing Partner over Operations (the policy's Managing Director)."),
     dict(id="6.2.2.S2", name="Attest to escalation roles", pol=["es"], owner="Customer Success Director", sor="",
          desc="Everyone in the escalation chain attests to the procedure on taking the role and at least annually."),
     # Security incident response and breach notification
@@ -124,21 +124,22 @@ EXTRA = [
     dict(id="8.6.3.S5", name="Review change logs quarterly", pol=["cm"], owner="Change Management Policy owner", sor="HaloPSA (change mgmt)",
          desc="Quarterly review of change records for completeness and adherence; records kept at least one year, longer where a client contract requires."),
     # Data recovery and business continuity
-    dict(id="8.7.6.8.S1", name="Monitor backup jobs and investigate failures", pol=["dr", "bc"], owner="Technical Recovery Lead", sor="",
-         desc="Independent, encrypted, immutable backups of Sparkhound SaaS data run on a 24-hour cycle; failed jobs are investigated within one business day. Retention is 90 days point-in-time plus 12 monthly archives."),
-    dict(id="8.7.6.8.S2", name="Test restores quarterly", pol=["dr", "bc"], owner="DR Coordinator", sor="",
+    dict(id="8.7.6.8.S1", name="Monitor backup jobs and investigate failures", pol=["dr", "bc"], owner="Centralized Services (Technical Recovery Lead)", sor="",
+         desc="Independent, encrypted, immutable backups of Sparkhound SaaS data run on a 24-hour cycle; failed jobs are investigated within one business day. Retention is 90 days point-in-time plus 12 monthly archives.",
+         notes="Decision 11/18/2026: backups run every 24 hours for all tiers (24-hour RPO), per the Data Recovery Policy. The BC/DR plan's 1-hour Tier 0 RPO needs updating to match."),
+    dict(id="8.7.6.8.S2", name="Test restores quarterly", pol=["dr", "bc"], owner="Director of Managed Services (DR Coordinator)", sor="",
          desc="Restore a sample of mailboxes, files, sites and service management records to a test location each quarter and record completeness and restore time."),
-    dict(id="8.7.6.8.S3", name="Restore systems in recovery-tier order", pol=["dr", "bc"], owner="Technical Recovery Lead", sor="",
-         desc="Restore Tier 0 (identity, email, service management; RTO 4h) first, then Tier 1 (finance, documents, RMM; 24h), Tier 2 (CRM, e-signature, marketing; 72h) and Tier 3 (120h), validating integrity before return to use."),
-    dict(id="11.4.2.S1", name="Conduct business impact analysis and set recovery tiers", pol=["bc"], owner="DR Coordinator with department leaders", sor="SharePoint",
+    dict(id="8.7.6.8.S3", name="Restore systems in recovery-tier order", pol=["dr", "bc"], owner="Centralized Services (Technical Recovery Lead)", sor="",
+         desc="Restore Tier 0 (identity, email, service management; RTO 4h) first, then Tier 1 (finance, documents, RMM; 24h), Tier 2 (CRM, e-signature, marketing; 72h) and Tier 3 (120h), validating integrity before return to use. Recovery point is 24 hours for every tier."),
+    dict(id="11.4.2.S1", name="Conduct business impact analysis and set recovery tiers", pol=["bc"], owner="Director of Managed Services (DR Coordinator) with department leaders", sor="SharePoint",
          desc="Department leaders' BIA sets each system's recovery tier and each critical function's maximum tolerable downtime and alternate processing; reviewed at least annually."),
-    dict(id="11.4.4.S1", name="Declare a disaster and activate the response team", pol=["bc"], owner="Executive Sponsor; Incident Commander", sor="",
+    dict(id="11.4.4.S1", name="Declare a disaster and activate the response team", pol=["bc"], owner="Managing Partner, Operations (Executive Sponsor); Incident Commander", sor="",
          desc="Assess a reported event within 30 minutes, declare against defined criteria, notify all employees within one hour and affected clients within four hours, with external statements approved by the Executive Sponsor."),
     dict(id="11.4.4.S2", name="Account for personnel after a facility or regional event", pol=["bc"], owner="People and HR Lead", sor="Paylocity",
          desc="HR runs a personnel accountability check within four hours of a facility or regional event such as a hurricane."),
-    dict(id="11.4.3.S1", name="Run the continuity test calendar", pol=["bc", "dr"], owner="DR Coordinator", sor="",
+    dict(id="11.4.3.S1", name="Run the continuity test calendar", pol=["bc", "dr"], owner="Director of Managed Services (DR Coordinator)", sor="",
          desc="Annual tabletop, emergency access test, unannounced communication tree test (90% acknowledge within two hours) and runbook walkthrough for each critical system; results and corrective actions retained."),
-    dict(id="11.4.4.S3", name="Hold post-event reviews", pol=["bc"], owner="DR Coordinator", sor="",
+    dict(id="11.4.4.S3", name="Hold post-event reviews", pol=["bc"], owner="Director of Managed Services (DR Coordinator)", sor="",
          desc="Formal review within ten business days of stand-down, with corrective actions owned, dated and tracked to closure."),
     # Vendor management
     dict(id="4.2.3.S1", name="Assign vendor risk tiers", pol=["vm"], owner="IT leadership", sor="",
@@ -158,13 +159,49 @@ EXTRA = [
     dict(id="4.2.5.S5", name="Approve and track vendor policy exceptions", pol=["vm"], owner="Management (by risk tier)", sor="",
          desc="Document the exception, accept residual risk at the right level, set a review date, and review exceptions annually."),
 ]
+
+# Process review answers (11/18/2026): owners on APQC processes and Sparkhound processes APQC lacks.
+REVIEW = "From the Sales, Operations and Finance process review (11/18/2026)."
+REVIEW_OVER = {
+    "3.4.1": dict(owner="Sales & Marketing leader", acct=DH, notes="Weekly pipeline review and forecast in HubSpot. " + REVIEW),
+    "5.2":   dict(owner="Practice leads", acct=CH, notes="Practice leads book resources in Halo; conflicts are resolved at the weekly Monday capacity meeting. Utilization is tracked by practice, each with its own target set by its staffing mix. " + REVIEW),
+    "9.1.2": dict(owner="CEO with Next Level Now", sor="QuickBooks Online", sup="Excel", notes="CEO owns the annual budget with Next Level Now; monthly leadership reporting comes from QuickBooks Online and spreadsheets. " + REVIEW),
+    "9.6.1": dict(notes="Bill entry and payment-run approval for QuickBooks Online are not set yet. " + REVIEW),
+    "9.2.5": dict(notes="Approver and dollar threshold for credit memos and SLA credits are not set yet. " + REVIEW),
+}
+for k, v in REVIEW_OVER.items():
+    next(p for p in procs if p["id"] == k).update(v)
+EXTRA += [
+    dict(id="3.3.3.S1", name="Approve quote pricing and discounts", owner="Service line owners (price and floor); Partner; Managing Partner, Operations", acct=CH, sor="HaloPSA (items / price book)", notes=REVIEW,
+         desc="Operations sets each item's street price and floor in the Halo price book. The Partner may discount freely between street price and floor; a discount below the floor needs Managing Partner, Operations approval before the quote goes out."),
+    dict(id="3.5.2.S1", name="Hold client account reviews by tier", owner="XO", acct=CH, sor="HaloPSA", notes=REVIEW + " Tiers and review frequencies to define.",
+         desc="The XO holds regular account reviews with each client, at a frequency set by the client's tier."),
+    dict(id="3.5.2.S2", name="Manage contract renewals", owner="XO", acct=CH, sor="HaloPSA", notes=REVIEW,
+         desc="Managed services agreements auto-renew. The XO owns each renewal and reviews the agreement 90 days before the term ends to re-price or renegotiate."),
+    dict(id="5.3.3.S1", name="Process license subscription changes", owner="Managed Technology Tier 2", acct=CH, sor="Pax8", sup="HaloPSA", notes=REVIEW,
+         desc="Clients change Microsoft licenses either self-service in their Pax8 portal, which pushes the change to Halo automatically, or by a Halo ticket that Tier 2 processes in Pax8."),
+    dict(id="4.2.4.S1", name="Procure hardware and software for clients", owner="XO / Partner", acct=CH, sor="HaloPSA", sup="QuickBooks Online", notes=REVIEW,
+         desc="Quote the item in Halo, order it from a distributor, receive and deliver it, then bill it through Halo."),
+    dict(id="5.4.1.S1", name="Onboard new managed services clients", owner="XO", acct=CH, sor="HaloPSA (projects)", sup="Hudu, RMM", notes=REVIEW,
+         desc="The XO runs Sparkhound's defined onboarding project plan for each new managed services client: discovery, documentation in Hudu, agent deployment and the rest of the plan through go-live."),
+    dict(id="5.4.2.S1", name="Review project budget and burn weekly", owner="XO with practice lead", acct=CH, sor="HaloPSA (projects)", notes=REVIEW,
+         desc="Each week the XO and practice lead review hours against budget in Halo, separately from the client status report."),
+    dict(id="5.4.3.S1", name="Offboard departing clients", owner="XO", acct=CH, sor="HaloPSA (projects)", sup="Hudu, RMM", notes=REVIEW,
+         desc="The XO runs an offboarding project: remove agents and Sparkhound access, hand over Hudu documentation and credentials, and send the final invoice."),
+    dict(id="9.2.2.S1", name="Set up and maintain recurring agreements", owner="To confirm", acct="Finance seat (to confirm)", sor="HaloPSA", sup="Pax8, QuickBooks Online", notes=REVIEW + " Owner and steps to confirm.",
+         desc="Create each managed client's recurring agreement and invoice in Halo and keep it current as services and Pax8 license quantities change."),
+    dict(id="9.3.2.S1", name="Close the month", owner="Next Level Now", acct="Finance seat (to confirm)", sor="QuickBooks Online", notes=REVIEW + " Close-by day to set. Revenue is recognized as invoiced (no deferral).",
+         desc="Next Level Now closes the books in QuickBooks Online; the CEO and the Managing Partner over Operations review before the close is finalized."),
+    dict(id="9.2.1.S1", name="Set up new clients and payment terms", owner="To confirm", acct="Finance seat (to confirm)", sor="HaloPSA", sup="QuickBooks Online", notes=REVIEW + " Credit and terms policy to be revised.",
+         desc="Today every client is on Net 30 with no credit check; Sparkhound plans to change this. Halo owns the client record and QuickBooks Online follows it."),
+]
 byid = {p["id"]: p for p in procs}
 for k, v in POLICY_OWNERS.items():
     byid[k].update(v)
 for e in EXTRA:
     par = e["id"].rsplit(".", 1)[0]
     pp = byid[par]
-    row = dict(pcf=None, lvl=pp["lvl"] + 1, cat=pp["cat"], rel="Core", scope="Yes", fn=pp["fn"], bu=pp["bu"], sup="", ctl="SOC 2",
+    row = dict(pcf=None, lvl=pp["lvl"] + 1, cat=pp["cat"], rel="Core", scope="Yes", fn=pp["fn"], bu=pp["bu"], sup="", ctl="SOC 2" if "pol" in e else pp["ctl"],
                pri="1 - Now", acct="", status="Not Started", mat="", kpi="", notes="", metrics=0, added=True)
     row.update(e)
     # insert after the parent's last descendant (including extras already placed)

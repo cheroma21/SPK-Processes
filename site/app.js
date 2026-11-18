@@ -27,7 +27,7 @@
     ['People and roles', [
       ['partner', 'Partner', 'The Sparkhound deal owner: the partner-level seller who owns the opportunity. Not a channel partner.'],
       ['alliance', 'Alliance/Channel', 'Outside firms Sparkhound sells with or through, such as Microsoft and Pax8.'],
-      ['xo', 'XO (Experience Owner)', "The client's relationship owner, by default the Project Controller. Approves billable time and invoices. The Managing Partner over Operations assigns XOs."],
+      ['xo', 'XO (Experience Owner)', "The client's relationship owner, by default the Project Controller; the policies call this role Customer Success Manager. Approves billable time and invoices, runs client onboarding, offboarding, account reviews and renewals. The Managing Partner over Operations assigns XOs."],
       ['pc', 'Project Controller', "Controls a project's budget, time and billing. By default this is the client's XO."],
       ['eo', 'EO (Executive Owner)', "The Sparkhound executive accountable for a client account. Engages the client's executives when an invoice is 60+ days past due."],
       ['mt', 'Managed Technology', 'The practice that supports managed, co-managed, NOC and endpoint management clients: a dispatcher, Tier 1 to 3 and Centralized Services engineers.'],
@@ -92,7 +92,7 @@
   var ROLES = [
     ['partner', 'Partner (deal owner)', /(?<!Managing )\bPartner\b/],
     ['sm', 'Sales & Marketing (Marketing, BDR, SDR)', /Marketing|\bBDR\b|\bSDR\b/],
-    ['xo', 'Experience Owner (XO) / Project Controller', /\bXO\b|Experience Owner|Project Controller/],
+    ['xo', 'Experience Owner (XO) / Project Controller', /\bXO\b|Experience Owner|Project Controller|Customer Success Manager/],
     ['eo', 'Executive Owner (EO)', /\bEO\b|Executive Owner/],
     ['slo', 'Service line owner', /Service line owner/i],
     ['pl', 'Practice lead / delivery resources', /Practice lead|\bdelivery\b/i],
