@@ -267,6 +267,39 @@
    "description": "A quote priced below the price-book floor cannot be sent until the Managing Partner over Operations approves it.",
    "evidence": "Halo quote approval history",
    "flag": "Quotes priced below the floor are held in Halo until the Managing Partner over Operations approves them."
+  },
+  {
+   "id": "KC-AP-01",
+   "name": "Vendor bank details verified by call-back",
+   "process": "9.6.1",
+   "step": "9.6.1",
+   "type": "Preventive",
+   "owner": "Next Level Now",
+   "system": "QuickBooks Online",
+   "description": "New vendor bank details, and any change to them, are confirmed by calling a known vendor contact before they are used.",
+   "evidence": "Call-back log on the vendor record"
+  },
+  {
+   "id": "KC-AP-02",
+   "name": "CEO releases the payment run",
+   "process": "9.6.1",
+   "step": "9.6.1",
+   "type": "Preventive",
+   "owner": "CEO",
+   "system": "QuickBooks Online",
+   "description": "Each weekly payment run of budget-owner-approved bills is approved and released by the CEO.",
+   "evidence": "Approved payment run per week"
+  },
+  {
+   "id": "KC-AP-03",
+   "name": "Pass-through costs reconciled to billings",
+   "process": "9.6.1",
+   "step": "9.6.1",
+   "type": "Detective",
+   "owner": "Next Level Now",
+   "system": "QuickBooks Online, HaloPSA",
+   "description": "Each month, Pax8 and distributor costs are reconciled to the matching Halo invoice lines so no pass-through cost goes unbilled.",
+   "evidence": "Monthly pass-through reconciliation"
   }
  ],
  "flows": {
@@ -3520,6 +3553,217 @@
      "col": 5,
      "title": "End: quote continues (3.5.3)",
      "link": "3.5.3"
+    }
+   ]
+  },
+  "9.6.1": {
+   "title": "Process accounts payable",
+   "span": "Vendor sends a bill → paid and reconciled",
+   "summary": "Vendors send bills to the AP inbox and Next Level Now enters them in QuickBooks Online. New vendors and bank-detail changes are verified by a call-back first. The budget owner approves each bill, Next Level Now prepares a weekly payment run that the CEO approves and releases, and pass-through costs (Pax8, distributor hardware) are reconciled to Halo billings each month.",
+   "lanes": [
+    {
+     "name": "Vendor",
+     "sub": ""
+    },
+    {
+     "name": "Next Level Now",
+     "sub": "Outsourced accounting"
+    },
+    {
+     "name": "Budget owner",
+     "sub": "Whoever bought it, or their leader"
+    },
+    {
+     "name": "CEO",
+     "sub": "Releases payments"
+    },
+    {
+     "name": "Systems",
+     "sub": "QuickBooks Online, Halo"
+    }
+   ],
+   "upstream": [
+    "4.2.4.S1",
+    "5.3.3.S1"
+   ],
+   "downstream": [
+    "9.3.2.S1"
+   ],
+   "questions": [],
+   "steps": [
+    {
+     "id": "p1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: vendor sends a bill",
+     "next": [
+      {
+       "to": "p2",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "p2",
+     "type": "process",
+     "lane": 1,
+     "col": 1,
+     "title": "Receive in the AP inbox and enter the bill",
+     "apqc": "9.6.1",
+     "system": "QuickBooks Online",
+     "who": "Next Level Now",
+     "next": [
+      {
+       "to": "p3",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "p3",
+     "type": "decision",
+     "lane": 1,
+     "col": 2,
+     "title": "New vendor or changed bank details?",
+     "next": [
+      {
+       "to": "p5",
+       "from": "right",
+       "toSide": "top",
+       "label": "No"
+      },
+      {
+       "to": "p4",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "Yes"
+      }
+     ]
+    },
+    {
+     "id": "p4",
+     "type": "process",
+     "lane": 1,
+     "col": 2,
+     "title": "Verify by call-back to a known contact",
+     "row": 1,
+     "who": "Next Level Now",
+     "control": "KC-AP-01",
+     "controlNote": "call-back verified",
+     "detail": "Before a new vendor's bank details are set up, or any change is used, Next Level Now calls a known contact at the vendor to confirm them.",
+     "next": [
+      {
+       "to": "p5",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "p5",
+     "type": "process",
+     "lane": 2,
+     "col": 3,
+     "title": "Approve the bill",
+     "system": "QuickBooks Online",
+     "who": "Budget owner",
+     "next": [
+      {
+       "to": "p6",
+       "from": "right",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "p6",
+     "type": "process",
+     "lane": 1,
+     "col": 4,
+     "title": "Prepare the weekly payment run",
+     "apqc": "9.6.1",
+     "note": "Weekly",
+     "system": "QuickBooks Online",
+     "who": "Next Level Now",
+     "next": [
+      {
+       "to": "p7",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "p7",
+     "type": "process",
+     "lane": 3,
+     "col": 5,
+     "title": "Approve and release the payment run",
+     "who": "CEO",
+     "control": "KC-AP-02",
+     "controlNote": "CEO releases",
+     "next": [
+      {
+       "to": "p8",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "p8",
+     "type": "process",
+     "lane": 4,
+     "col": 6,
+     "title": "Bills paid",
+     "system": "QuickBooks Online",
+     "who": "Automated",
+     "next": [
+      {
+       "to": "p9",
+       "from": "right",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "p9",
+     "type": "process",
+     "lane": 1,
+     "col": 7,
+     "title": "Reconcile pass-through costs",
+     "note": "Monthly, to Halo billings",
+     "system": "QuickBooks Online, Halo",
+     "who": "Next Level Now",
+     "control": "KC-AP-03",
+     "controlNote": "matched to billings",
+     "detail": "Each month, Pax8 license and distributor hardware costs are reconciled to what was billed in Halo, catching costs that were never billed.",
+     "next": [
+      {
+       "to": "p10",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "p10",
+     "type": "end",
+     "lane": 1,
+     "col": 8,
+     "title": "End: to month-end close (9.3.2.S1)",
+     "link": "9.3.2.S1"
     }
    ]
   }
