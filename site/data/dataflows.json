@@ -4,20 +4,13 @@
    "id": "hubspot",
    "name": "HubSpot",
    "role": "Marketing, leads, deals",
-   "col": 0,
-   "row": 0
-  },
-  {
-   "id": "esign",
-   "name": "E-Signature Platform",
-   "role": "SOW and agreement signing",
    "col": 1,
    "row": 0
   },
   {
    "id": "clients",
    "name": "Clients and end users",
-   "role": "Email, portal, Pax8 portal",
+   "role": "Email, client portal",
    "col": 2,
    "row": 0,
    "external": true
@@ -25,7 +18,7 @@
   {
    "id": "pax8",
    "name": "Pax8",
-   "role": "Microsoft licensing",
+   "role": "Cloud licensing",
    "col": 3,
    "row": 0
   },
@@ -37,8 +30,8 @@
    "row": 0
   },
   {
-   "id": "clienthalo",
-   "name": "Client's Halo",
+   "id": "clientitsm",
+   "name": "Client ITSM",
    "role": "Enterprise client IT",
    "col": 0,
    "row": 1.5,
@@ -60,10 +53,10 @@
    "row": 1.5
   },
   {
-   "id": "dialpad",
-   "name": "Dialpad",
-   "role": "Phone",
-   "col": 0,
+   "id": "ado",
+   "name": "Azure DevOps",
+   "role": "Digital Transformation work",
+   "col": 1,
    "row": 3
   },
   {
@@ -82,7 +75,7 @@
   },
   {
    "id": "bank",
-   "name": "Bank",
+   "name": "First Horizon Bank",
    "role": "Bank feed",
    "col": 4,
    "row": 3,
@@ -95,28 +88,17 @@
    "from": "hubspot",
    "to": "halo",
    "both": true,
-   "data": "Deals and opportunities: a deal at Proposal becomes a Halo opportunity; Closed Won and stage changes flow back to HubSpot.",
+   "data": "A new HubSpot deal creates a matching Halo opportunity (the first deal stage equals the first opportunity stage). Stage changes stay in sync, and amounts are pushed back to HubSpot.",
    "how": "Integration",
-   "when": "On deal stage change",
+   "when": "On deal creation and stage change",
    "processes": [
+    "3.5.1",
     "3.5.3",
     "3.5.4"
    ]
   },
   {
    "id": 2,
-   "from": "halo",
-   "to": "esign",
-   "both": true,
-   "data": "Quote and SOW out for signature (Partner first, then client); signed status back.",
-   "how": "Integration",
-   "when": "Per quote",
-   "processes": [
-    "3.5.3"
-   ]
-  },
-  {
-   "id": 3,
    "from": "clients",
    "to": "halo",
    "data": "Support requests by email and the Halo client portal become tickets.",
@@ -127,10 +109,10 @@
    ]
   },
   {
-   "id": 4,
+   "id": 3,
    "from": "clients",
    "to": "pax8",
-   "data": "Self-service Microsoft license changes in the client's Pax8 portal.",
+   "data": "Clients change their cloud licenses themselves in the Pax8 self-service portal.",
    "how": "Client self-service",
    "when": "Any time",
    "processes": [
@@ -138,10 +120,10 @@
    ]
   },
   {
-   "id": 5,
+   "id": 4,
    "from": "pax8",
    "to": "halo",
-   "data": "License quantities and amounts update the recurring license lines.",
+   "data": "Cloud license quantities and amounts update the recurring license lines.",
    "how": "Integration",
    "when": "Monthly, before the invoice run",
    "processes": [
@@ -151,7 +133,7 @@
    ]
   },
   {
-   "id": 6,
+   "id": 5,
    "from": "halo",
    "to": "avalara",
    "both": true,
@@ -164,30 +146,32 @@
    ]
   },
   {
-   "id": 7,
+   "id": 6,
    "from": "halo",
    "to": "qbo",
-   "data": "Invoices synced after the invoice run.",
+   "data": "Customers, products (items), suppliers, invoices, credit notes, purchase orders, bills and payments. Invoice lines map to QuickBooks items (a default product catches unmapped lines) and can carry classes.",
    "how": "Integration",
-   "when": "Each invoice run",
+   "when": "When a record changes in Halo",
    "processes": [
     "9.2.2",
+    "9.6.1",
     "9.3.2.S1"
    ]
   },
   {
-   "id": 8,
+   "id": 7,
    "from": "qbo",
    "to": "halo",
-   "data": "Paid status written back to the Halo invoice.",
+   "data": "Paid status written back to Halo invoices; payment terms set invoice due dates; existing customers and items imported once to link records.",
    "how": "Integration",
-   "when": "When payment is applied",
+   "when": "When payment is applied; at setup for imports",
    "processes": [
-    "9.2.3"
+    "9.2.3",
+    "9.2.2"
    ]
   },
   {
-   "id": 9,
+   "id": 8,
    "from": "qbo",
    "to": "avalara",
    "both": true,
@@ -200,33 +184,34 @@
    ]
   },
   {
-   "id": 10,
+   "id": 9,
    "from": "bank",
    "to": "qbo",
-   "data": "ACH and check deposits matched to invoices; bank and card transactions for reconciliation.",
+   "data": "Account and card transactions (date, payee or description, amount, check number) download into QuickBooks Online banking, where ACH and check deposits are matched to invoices and accounts reconciled. Connected through First Horizon's Direct Connect bank feed, or a Web Connect (.qbo) file upload as the fallback.",
    "how": "Bank feed",
-   "when": "Daily",
+   "when": "Nightly",
    "processes": [
     "9.2.3",
     "9.3.2.S1"
    ]
   },
   {
-   "id": 11,
+   "id": 10,
    "from": "paylocity",
    "to": "qbo",
-   "data": "Payroll and expense journals posted.",
-   "how": "Manual (Next Level Now)",
-   "when": "Each payroll; month end",
+   "data": "Payroll journals and expenses posted.",
+   "how": "Integration",
+   "when": "Each payroll",
    "processes": [
-    "9.3.2.S1"
+    "9.3.2.S1",
+    "9.5.2"
    ]
   },
   {
-   "id": 12,
+   "id": 11,
    "from": "paylocity",
    "to": "halo",
-   "data": "Approved billable expenses for invoicing.",
+   "data": "Approved client-facing expenses, for invoicing.",
    "how": "Planned integration",
    "when": "Weekly",
    "processes": [
@@ -235,7 +220,7 @@
    ]
   },
   {
-   "id": 13,
+   "id": 12,
    "from": "rmm",
    "to": "halo",
    "data": "Monitoring alerts create tickets automatically.",
@@ -246,26 +231,28 @@
    ]
   },
   {
-   "id": 14,
-   "from": "dialpad",
-   "to": "halo",
-   "data": "Calls logged as tickets.",
+   "id": 13,
+   "from": "halo",
+   "to": "clientitsm",
+   "both": true,
+   "data": "Escalations to the client's own IT and their updates, through integrations with the client's ITSM platform (never edit the existing runbooks).",
    "how": "Integration",
-   "when": "Real time",
+   "when": "Per escalation",
    "processes": [
     "6.2.2"
    ]
   },
   {
-   "id": 15,
+   "id": 14,
    "from": "halo",
-   "to": "clienthalo",
+   "to": "ado",
    "both": true,
-   "data": "Escalations to the client's own IT and their updates, through existing integration runbooks (never edit these runbooks).",
-   "how": "Integration",
-   "when": "Per escalation",
+   "data": "Digital Transformation professional services work managed in Azure DevOps, synced with Halo projects.",
+   "how": "Planned integration (native)",
+   "when": "Real time",
    "processes": [
-    "6.2.2"
+    "5.4",
+    "5.2"
    ]
   }
  ],
@@ -273,6 +260,22 @@
   "Hudu: client documentation and credentials are entered by the technical team during onboarding; is Hudu integrated with Halo?",
   "Arctic Wolf and CrowdStrike: security alerts are handled under the incident response process; do they create Halo tickets?",
   "Microsoft 365 / Entra ID: sign-in for these systems; which apps use Entra single sign-on?",
+  "First Horizon Bank: which connection is in use, the Direct Connect bank feed or Web Connect file uploads?",
+  "Phone: Dialpad calls are not integrated with Halo; the service desk logs call tickets by hand.",
   "Time entry: hourly staff enter hours in both Paylocity and Halo by hand; there is no integration between them."
+ ],
+ "sources": [
+  {
+   "label": "Halo: QuickBooks Online integration guide",
+   "url": "https://www.usehalo.com/guides/1234"
+  },
+  {
+   "label": "First Horizon: QuickBooks and digital banking",
+   "url": "https://www.firsthorizon.com/business/small-business-solutions/digital-banking-services/quickbooks"
+  },
+  {
+   "label": "First Horizon: QuickBooks Web Connect user guide",
+   "url": "https://www.firsthorizon.com/-/media/Files/Small-Business/QuickBooks-Web-Connect-User-Guide.pdf"
+  }
  ]
 }

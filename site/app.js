@@ -767,7 +767,8 @@
         return '<tr data-n="' + f.from + ' ' + f.to + '"><td class="mono">' + f.id + '</td><td style="white-space:nowrap"><strong>' + esc(name(f.from)) + '</strong> ' + (f.both ? '↔' : '→') + ' <strong>' + esc(name(f.to)) + '</strong></td>' +
           '<td style="max-width:46ch">' + esc(f.data) + '</td><td>' + esc(f.how) + '</td><td>' + esc(f.when) + '</td><td>' + procLinks(f.processes) + '</td></tr>';
       }).join('') + '</tbody></table></section>' +
-      '<section class="card sec"><h2>Not yet mapped</h2><ul class="dfun">' + df.unmapped.map(function (u) { return '<li>' + esc(u) + '</li>'; }).join('') + '</ul></section>';
+      '<section class="card sec"><h2>Not yet mapped</h2><ul class="dfun">' + df.unmapped.map(function (u) { return '<li>' + esc(u) + '</li>'; }).join('') + '</ul>' +
+      (df.sources ? '<p class="muted" style="margin:14px 0 0">Sources: ' + df.sources.map(function (x) { return '<a href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.label) + '</a>'; }).join('; ') + '</p>' : '') + '</section>';
     var sel = null;
     var apply = function () {
       Array.prototype.forEach.call(view.querySelectorAll('.dfe'), function (g) { g.classList.toggle('dim', !!sel && g.getAttribute('data-n').split(' ').indexOf(sel) < 0); });

@@ -1144,7 +1144,7 @@
     },
     {
      "name": "Systems",
-     "sub": "Halo, NinjaOne, Dialpad"
+     "sub": "Halo, NinjaOne"
     },
     {
      "name": "Managed Technology",
@@ -1196,9 +1196,9 @@
      "col": 1,
      "title": "Ticket created",
      "note": "Email, portal, phone or NinjaOne alert",
-     "system": "Halo, NinjaOne, Dialpad",
+     "system": "Halo, NinjaOne",
      "who": "Automated",
-     "detail": "Email, the Halo client portal and Dialpad calls create Halo tickets; NinjaOne RMM alerts create tickets automatically.",
+     "detail": "Email and the Halo client portal create Halo tickets automatically, and NinjaOne RMM alerts create tickets automatically. Phone calls (Dialpad) are logged as tickets by the service desk; there is no Dialpad integration.",
      "next": [
       {
        "to": "m3a",
@@ -1425,10 +1425,10 @@
      "lane": 6,
      "col": 5,
      "title": "Escalate to client IT",
-     "note": "Often into the client's Halo",
-     "system": "Halo (integration to client Halo)",
+     "note": "Into the client's ITSM",
+     "system": "Halo (integration to client ITSM)",
      "who": "Client's IT team",
-     "detail": "The Service Desk practice has no Tier 2/3: escalations go to the client's own resources, often through the existing integration with the client's Halo. Do not change those integration runbooks.",
+     "detail": "The Service Desk practice has no Tier 2/3: escalations go to the client's own resources through the existing integration with the client's ITSM platform. Do not change those integration runbooks.",
      "next": [
       {
        "to": "s5",
@@ -3035,7 +3035,7 @@
   "9.3.2.S1": {
    "title": "Close the month",
    "span": "Month ends → period locked",
-   "summary": "Next Level Now closes the books in QuickBooks Online by business day 5: invoices and payroll are posted, bank and card accounts reconciled, bills and accruals entered. The CEO and the Managing Partner over Operations review the P&L and balance sheet before the close is final, and the period is then locked. Revenue is recognized as invoiced.",
+   "summary": "Next Level Now closes the books in QuickBooks Online by business day 5: invoices and payroll sync in, bank and card accounts reconciled, bills and accruals entered. The CEO and the Managing Partner over Operations review the P&L and balance sheet before the close is final, and the period is then locked. Revenue is recognized as invoiced.",
    "lanes": [
     {
      "name": "Next Level Now",
@@ -3098,7 +3098,7 @@
      "col": 2,
      "title": "Payroll and expenses posted",
      "system": "Paylocity → QuickBooks Online",
-     "who": "Next Level Now",
+     "who": "Integration",
      "next": [
       {
        "to": "m4",
