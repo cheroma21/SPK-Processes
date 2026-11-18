@@ -4,16 +4,8 @@
    "id": "hubspot",
    "name": "HubSpot",
    "role": "Marketing, leads, deals",
-   "col": 1,
-   "row": 0
-  },
-  {
-   "id": "clients",
-   "name": "Clients and end users",
-   "role": "Email, client portal",
-   "col": 2,
-   "row": 0,
-   "external": true
+   "col": 0,
+   "row": 1.5
   },
   {
    "id": "pax8",
@@ -33,8 +25,8 @@
    "id": "clientitsm",
    "name": "Client ITSM",
    "role": "Enterprise client IT",
-   "col": 0,
-   "row": 1.5,
+   "col": 1,
+   "row": 0,
    "external": true
   },
   {
@@ -88,7 +80,7 @@
    "from": "hubspot",
    "to": "halo",
    "both": true,
-   "data": "A new HubSpot deal creates a matching Halo opportunity (the first deal stage equals the first opportunity stage). Stage changes stay in sync, and amounts are pushed back to HubSpot.",
+   "data": "Opportunities start at Discovery: a new HubSpot deal creates the matching Halo opportunity (HubSpot's first stage equals Halo's first stage), or the opportunity is created directly in Halo. Stage changes stay in sync, and amounts are pushed back to HubSpot.",
    "how": "Integration",
    "when": "On deal creation and stage change",
    "processes": [
@@ -99,28 +91,6 @@
   },
   {
    "id": 2,
-   "from": "clients",
-   "to": "halo",
-   "data": "Support requests by email and the Halo client portal become tickets.",
-   "how": "Integration",
-   "when": "Real time",
-   "processes": [
-    "6.2.2"
-   ]
-  },
-  {
-   "id": 3,
-   "from": "clients",
-   "to": "pax8",
-   "data": "Clients change their cloud licenses themselves in the Pax8 self-service portal.",
-   "how": "Client self-service",
-   "when": "Any time",
-   "processes": [
-    "5.3.3.S1"
-   ]
-  },
-  {
-   "id": 4,
    "from": "pax8",
    "to": "halo",
    "data": "Cloud license quantities and amounts update the recurring license lines.",
@@ -133,7 +103,7 @@
    ]
   },
   {
-   "id": 5,
+   "id": 3,
    "from": "halo",
    "to": "avalara",
    "both": true,
@@ -146,7 +116,7 @@
    ]
   },
   {
-   "id": 6,
+   "id": 4,
    "from": "halo",
    "to": "qbo",
    "data": "Customers, products (items), suppliers, invoices, credit notes, purchase orders, bills and payments. Invoice lines map to QuickBooks items (a default product catches unmapped lines) and can carry classes.",
@@ -159,7 +129,7 @@
    ]
   },
   {
-   "id": 7,
+   "id": 5,
    "from": "qbo",
    "to": "halo",
    "data": "Paid status written back to Halo invoices; payment terms set invoice due dates; existing customers and items imported once to link records.",
@@ -171,7 +141,7 @@
    ]
   },
   {
-   "id": 8,
+   "id": 6,
    "from": "qbo",
    "to": "avalara",
    "both": true,
@@ -184,7 +154,7 @@
    ]
   },
   {
-   "id": 9,
+   "id": 7,
    "from": "bank",
    "to": "qbo",
    "data": "Account and card transactions (date, payee or description, amount, check number) download into QuickBooks Online banking, where ACH and check deposits are matched to invoices and accounts reconciled. Connected through First Horizon's Direct Connect bank feed, or a Web Connect (.qbo) file upload as the fallback.",
@@ -196,7 +166,7 @@
    ]
   },
   {
-   "id": 10,
+   "id": 8,
    "from": "paylocity",
    "to": "qbo",
    "data": "Payroll journals and expenses posted.",
@@ -208,7 +178,7 @@
    ]
   },
   {
-   "id": 11,
+   "id": 9,
    "from": "paylocity",
    "to": "halo",
    "data": "Approved client-facing expenses, for invoicing.",
@@ -220,7 +190,7 @@
    ]
   },
   {
-   "id": 12,
+   "id": 10,
    "from": "rmm",
    "to": "halo",
    "data": "Monitoring alerts create tickets automatically.",
@@ -231,7 +201,7 @@
    ]
   },
   {
-   "id": 13,
+   "id": 11,
    "from": "halo",
    "to": "clientitsm",
    "both": true,
@@ -243,7 +213,7 @@
    ]
   },
   {
-   "id": 14,
+   "id": 12,
    "from": "halo",
    "to": "ado",
    "both": true,

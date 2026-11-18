@@ -306,7 +306,7 @@
   "3.5.1": {
    "title": "Manage leads and opportunities",
    "span": "Lead → Discovery",
-   "summary": "Everything runs in HubSpot; a tier-1 hand-raiser skips the BDR qualification call.",
+   "summary": "Leads are qualified in HubSpot; a tier-1 hand-raiser skips the BDR qualification call. Booking discovery creates the HubSpot deal at Discovery, its first stage, which also creates the matching Halo opportunity.",
    "lanes": [
     {
      "name": "Sales & Marketing",
@@ -315,6 +315,10 @@
     {
      "name": "Partner",
      "sub": "Deal owner (BDR supports Discovery)"
+    },
+    {
+     "name": "Systems",
+     "sub": "HubSpot, Halo"
     }
    ],
    "upstream": [],
@@ -435,14 +439,30 @@
      "note": "Creates deal at Discovery",
      "system": "HubSpot",
      "who": "BDR",
-     "detail": "Booking the discovery meeting creates the deal record at the Discovery stage.",
+     "detail": "Booking the discovery meeting creates the deal record at the Discovery stage, the first stage in HubSpot.",
      "next": [
       {
        "to": "s8",
        "from": "right",
        "toSide": "top"
+      },
+      {
+       "to": "sx",
+       "from": "bottom",
+       "toSide": "top"
       }
      ]
+    },
+    {
+     "id": "sx",
+     "type": "process",
+     "lane": 2,
+     "col": 5,
+     "title": "Halo opportunity created",
+     "note": "First stage matches Discovery",
+     "system": "HubSpot → Halo",
+     "who": "Integration",
+     "detail": "Creating the HubSpot deal creates the matching Halo opportunity at its first stage, which equals Discovery. Opportunities can also be created directly in Halo. From then on stage changes stay in sync and amounts are pushed back to HubSpot."
     },
     {
      "id": "s8",
@@ -573,8 +593,8 @@
      "type": "process",
      "lane": 2,
      "col": 1,
-     "title": "Opportunity created",
-     "note": "Halo opp synced to HubSpot deal",
+     "title": "Opportunity moves to Proposal",
+     "note": "Stage synced; amounts back to HubSpot",
      "system": "HubSpot ↔ Halo",
      "who": "Integration",
      "next": [
@@ -583,7 +603,8 @@
        "from": "right",
        "toSide": "bottom"
       }
-     ]
+     ],
+     "detail": "The Halo opportunity already exists from Discovery, created with the HubSpot deal or directly in Halo. The move to Proposal syncs between HubSpot and Halo, and quote amounts are pushed back to HubSpot."
     },
     {
      "id": "t3",
