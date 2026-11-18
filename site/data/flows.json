@@ -244,6 +244,17 @@
    "system": "QuickBooks Online",
    "description": "After approval, Next Level Now sets the password-protected closing date in QuickBooks Online so closed months cannot change without it.",
    "evidence": "QuickBooks Online closing date settings and audit log"
+  },
+  {
+   "id": "KC-REN-01",
+   "name": "Renewal price changes approved",
+   "process": "3.5.2.S2",
+   "step": "3.5.2.S2",
+   "type": "Preventive",
+   "owner": "Managing Partner, Operations",
+   "system": "HaloPSA",
+   "description": "Any renewal price increase, within the contract's annual cap, is approved by the Managing Partner over Operations before the XO tells the client.",
+   "evidence": "Approval recorded on the Halo renewal ticket; written client notice"
   }
  ],
  "flows": {
@@ -3159,6 +3170,202 @@
      "lane": 2,
      "col": 8,
      "title": "End: month closed"
+    }
+   ]
+  },
+  "3.5.2.S2": {
+   "title": "Manage contract renewals",
+   "span": "90 days before term end → renewed or offboarding",
+   "summary": "Managed services agreements auto-renew. Ninety days before term end a Halo ticket prompts the XO to review the agreement and propose the year's increase within the contract's annual cap; the Managing Partner over Operations approves it, and the XO tells the client the increase or that there is none. A client who gives notice is escalated for retention before offboarding.",
+   "lanes": [
+    {
+     "name": "Systems",
+     "sub": "Halo"
+    },
+    {
+     "name": "XO",
+     "sub": "Owns the renewal"
+    },
+    {
+     "name": "Leadership",
+     "sub": "Partner; Managing Partner, Operations"
+    },
+    {
+     "name": "Client",
+     "sub": ""
+    }
+   ],
+   "upstream": [
+    "9.2.2.S1",
+    "3.5.2.S1"
+   ],
+   "downstream": [
+    "9.2.2.S1",
+    "5.4.3.S1"
+   ],
+   "questions": [],
+   "steps": [
+    {
+     "id": "n1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: 90 days before term end",
+     "next": [
+      {
+       "to": "n2",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "n2",
+     "type": "process",
+     "lane": 0,
+     "col": 1,
+     "title": "Renewal ticket to the XO",
+     "note": "New; to set up in Halo",
+     "system": "Halo",
+     "who": "Automated",
+     "detail": "No reminder exists today. Halo will raise a renewal ticket to the XO 90 days before the agreement end date.",
+     "next": [
+      {
+       "to": "n3",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "n3",
+     "type": "process",
+     "lane": 1,
+     "col": 2,
+     "title": "Review the agreement and propose the year's increase",
+     "note": "Within the contract's annual cap",
+     "system": "Halo",
+     "who": "XO",
+     "detail": "Current contracts allow a price increase each year up to a set percentage. The XO reviews the agreement and proposes this year's increase, or none.",
+     "next": [
+      {
+       "to": "n4",
+       "from": "bottom",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "n4",
+     "type": "process",
+     "lane": 2,
+     "col": 3,
+     "title": "Approve the increase or no change",
+     "who": "Managing Partner, Operations",
+     "control": "KC-REN-01",
+     "controlNote": "MP Ops approves",
+     "detail": "The Managing Partner over Operations decides any renewal price change case by case.",
+     "next": [
+      {
+       "to": "n5",
+       "from": "top",
+       "toSide": "left"
+      }
+     ]
+    },
+    {
+     "id": "n5",
+     "type": "process",
+     "lane": 1,
+     "col": 4,
+     "title": "Tell the client this year's increase",
+     "note": "Or that there is none",
+     "who": "XO",
+     "detail": "Each year the XO tells the client in writing what the increase is, or that there is no increase.",
+     "next": [
+      {
+       "to": "n6",
+       "from": "bottom",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "n6",
+     "type": "decision",
+     "lane": 3,
+     "col": 5,
+     "title": "Client gives notice not to renew?",
+     "next": [
+      {
+       "to": "n9",
+       "from": "right",
+       "toSide": "bottom",
+       "label": "No"
+      },
+      {
+       "to": "n7",
+       "from": "top",
+       "toSide": "left",
+       "label": "Yes"
+      }
+     ]
+    },
+    {
+     "id": "n7",
+     "type": "process",
+     "lane": 2,
+     "col": 7,
+     "title": "Try to retain the client",
+     "who": "XO with Partner / Managing Partner, Operations",
+     "next": [
+      {
+       "to": "n8",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "n8",
+     "type": "decision",
+     "lane": 2,
+     "col": 8,
+     "title": "Client stays?",
+     "next": [
+      {
+       "to": "n9",
+       "from": "top",
+       "toSide": "right",
+       "label": "Yes"
+      },
+      {
+       "to": "n10",
+       "from": "right",
+       "toSide": "left",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "n9",
+     "type": "end",
+     "lane": 0,
+     "col": 6,
+     "title": "End: agreement renews (9.2.2.S1)",
+     "link": "9.2.2.S1"
+    },
+    {
+     "id": "n10",
+     "type": "end",
+     "lane": 2,
+     "col": 9,
+     "title": "End: to offboarding (5.4.3.S1)",
+     "link": "5.4.3.S1"
     }
    ]
   }

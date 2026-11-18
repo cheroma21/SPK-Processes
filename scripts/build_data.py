@@ -177,7 +177,7 @@ EXTRA += [
          desc="Operations sets each item's street price and floor in the Halo price book. The Partner may discount freely between street price and floor; a discount below the floor needs Managing Partner, Operations approval before the quote goes out."),
     dict(id="3.5.2.S1", name="Hold client account reviews by tier", owner="XO", acct=CH, sor="HaloPSA", notes=REVIEW + " Tiers and review frequencies to define.",
          desc="The XO holds regular account reviews with each client, at a frequency set by the client's tier. Managed services clients have a quarterly QBR that includes the user access review, which sets the next quarter's seat counts."),
-    dict(id="3.5.2.S2", name="Manage contract renewals", owner="XO", acct=CH, sor="HaloPSA", notes=REVIEW,
+    dict(id="3.5.2.S2", name="Manage contract renewals", owner="XO", acct=CH, status="In Review", sor="HaloPSA", notes=REVIEW,
          desc="Managed services agreements auto-renew. The XO owns each renewal and reviews the agreement 90 days before the term ends to re-price or renegotiate."),
     dict(id="5.3.3.S1", name="Process license subscription changes", owner="Managed Technology Tier 2", acct=CH, sor="Pax8", sup="HaloPSA", notes=REVIEW,
          desc="Clients change Microsoft licenses either self-service in their Pax8 portal, which pushes the change to Halo automatically, or by a Halo ticket that Tier 2 processes in Pax8."),
