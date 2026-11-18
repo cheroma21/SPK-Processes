@@ -647,7 +647,7 @@
   /* ---------- Flows, systems, controls ---------- */
   function renderFlows() {
     var keys = Object.keys(D.flows);
-    var groups = [['Sales', ['3.5.1', '3.5.3', '3.5.4']], ['Operations', ['5.4', '6.2.2']], ['Finance', ['9.2.2', '9.2.3', '9.2.4']]];
+    var groups = [['Sales', ['3.5.1', '3.5.3', '3.5.4']], ['Operations', ['5.2', '5.4', '6.2.2']], ['Finance', ['9.2.2', '9.2.3', '9.2.4']]];
     var card = function (k) {
         var fl = D.flows[k], p = D.byId[k], kc = controlsFor(k).length;
         return '<a class="card flowcard" href="' + hashFor(k) + '"><span class="mono" style="color:var(--muted)">' + esc(k) + '</span><strong style="font-size:16px">' + esc(p.name) + '</strong><span class="muted">' + esc(fl.summary) + '</span>' +

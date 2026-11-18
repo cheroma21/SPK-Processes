@@ -857,7 +857,8 @@
     }
    ],
    "upstream": [
-    "3.5.4"
+    "3.5.4",
+    "5.2"
    ],
    "downstream": [
     "9.2.2"
@@ -2003,6 +2004,257 @@
      "col": 8,
      "title": "End: written off",
      "row": 2
+    }
+   ]
+  },
+  "5.2": {
+   "title": "Manage service delivery resources",
+   "span": "Deal reaches Proposal → people assigned in Halo",
+   "summary": "Project staffing: practice leads review pipeline demand at the weekly Monday capacity meeting chaired by the Managing Partner over Operations, borrow across practices before using a subcontractor, and assign named people to Halo tasks once the XO accepts the handoff. Service desk staffing is planned separately (6.2.1).",
+   "lanes": [
+    {
+     "name": "Partner",
+     "sub": "Deal owner"
+    },
+    {
+     "name": "Monday capacity meeting",
+     "sub": "Practice leads, chaired by Managing Partner, Operations"
+    },
+    {
+     "name": "Practice lead",
+     "sub": "Staffs the practice's projects"
+    },
+    {
+     "name": "XO",
+     "sub": "Experience Owner"
+    },
+    {
+     "name": "IT leadership",
+     "sub": "Vendor risk owner"
+    }
+   ],
+   "upstream": [
+    "3.5.3",
+    "3.5.4"
+   ],
+   "downstream": [
+    "5.4"
+   ],
+   "questions": [],
+   "steps": [
+    {
+     "id": "r1",
+     "type": "start",
+     "lane": 0,
+     "col": 0,
+     "title": "Start: deal reaches Proposal (3.5.3)",
+     "link": "3.5.3",
+     "next": [
+      {
+       "to": "r2",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "r2",
+     "type": "process",
+     "lane": 1,
+     "col": 1,
+     "title": "Review pipeline and capacity",
+     "apqc": "5.2.1",
+     "note": "Weekly; 4-week view",
+     "system": "HubSpot, Halo",
+     "who": "Practice leads; Managing Partner, Operations",
+     "assumed": true,
+     "detail": "Each Monday the practice leads and the Managing Partner over Operations review deals at Proposal and current bookings. The planning horizon is not defined yet; four weeks is the likely standard.",
+     "next": [
+      {
+       "to": "r3",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "r3",
+     "type": "decision",
+     "lane": 1,
+     "col": 2,
+     "title": "Practice can staff it?",
+     "next": [
+      {
+       "to": "r6",
+       "from": "right",
+       "toSide": "left",
+       "label": "Yes"
+      },
+      {
+       "to": "r4",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "r4",
+     "type": "process",
+     "lane": 1,
+     "col": 2,
+     "title": "Borrow from another practice",
+     "row": 1,
+     "apqc": "5.2.2",
+     "note": "Agreed at the meeting",
+     "who": "Practice leads",
+     "detail": "Before going outside, the meeting agrees a loan of people or skills from another practice.",
+     "next": [
+      {
+       "to": "r5",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "r5",
+     "type": "decision",
+     "lane": 1,
+     "col": 3,
+     "title": "Covered?",
+     "row": 1,
+     "next": [
+      {
+       "to": "r6",
+       "from": "top",
+       "toSide": "left",
+       "label": "Yes"
+      },
+      {
+       "to": "r7",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "r7",
+     "type": "process",
+     "lane": 2,
+     "col": 3,
+     "title": "Engage a subcontractor",
+     "apqc": "5.2.2",
+     "note": "Practice lead approves",
+     "who": "Practice lead",
+     "detail": "The practice lead decides on a subcontractor within the project budget.",
+     "next": [
+      {
+       "to": "r8",
+       "from": "bottom",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "r8",
+     "type": "process",
+     "lane": 4,
+     "col": 3,
+     "title": "Tier and vet before any access",
+     "note": "Vendor Management Policy",
+     "who": "IT leadership",
+     "link": "4.2.3.S2",
+     "detail": "Per the Vendor Management Policy, the subcontractor is risk-tiered and through due diligence before getting any access to Sparkhound or client systems.",
+     "next": [
+      {
+       "to": "r6",
+       "from": "right",
+       "toSide": "bottom",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "r6",
+     "type": "process",
+     "lane": 1,
+     "col": 4,
+     "title": "Pencil in the team",
+     "apqc": "5.2.2",
+     "note": "Noted; not booked in Halo yet",
+     "who": "Practice leads",
+     "detail": "The planned team is noted at the meeting. Nothing is booked in Halo until the deal is won.",
+     "next": [
+      {
+       "to": "r9",
+       "from": "right",
+       "toSide": "top",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "r9",
+     "type": "decision",
+     "lane": 3,
+     "col": 5,
+     "title": "Deal won and handoff accepted?",
+     "next": [
+      {
+       "to": "r11",
+       "from": "right",
+       "toSide": "bottom",
+       "label": "Yes"
+      },
+      {
+       "to": "r10",
+       "from": "bottom",
+       "toSide": "top",
+       "label": "No"
+      }
+     ]
+    },
+    {
+     "id": "r10",
+     "type": "end",
+     "lane": 3,
+     "col": 5,
+     "title": "End: plan released",
+     "row": 1
+    },
+    {
+     "id": "r11",
+     "type": "process",
+     "lane": 2,
+     "col": 6,
+     "title": "Assign named people to Halo tasks",
+     "apqc": "5.2.3",
+     "note": "Hours and dates; PTO checked by hand",
+     "system": "Halo, Paylocity",
+     "who": "Practice lead",
+     "detail": "Once the XO accepts the handoff (3.5.4), the practice lead assigns named people to the Halo project tasks with hours and dates. PTO is approved in Paylocity and taken into account by hand.",
+     "next": [
+      {
+       "to": "r12",
+       "from": "right",
+       "toSide": "left",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "id": "r12",
+     "type": "end",
+     "lane": 2,
+     "col": 7,
+     "title": "End: staffed; delivery starts (5.4)",
+     "link": "5.4"
     }
    ]
   }
