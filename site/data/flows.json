@@ -462,7 +462,7 @@
      "note": "First stage matches Discovery",
      "system": "HubSpot → Halo",
      "who": "Integration",
-     "detail": "Creating the HubSpot deal creates the matching Halo opportunity at its first stage, which equals Discovery. Opportunities can also be created directly in Halo. From then on stage changes stay in sync and amounts are pushed back to HubSpot."
+     "detail": "Creating the HubSpot deal creates the matching Halo opportunity at its first stage, which equals Discovery. Opportunities can also be created in Halo, mostly quick quotes for existing clients, and those are pushed into HubSpot. From then on stage changes stay in sync and amounts are pushed back to HubSpot."
     },
     {
      "id": "s8",
@@ -604,7 +604,7 @@
        "toSide": "bottom"
       }
      ],
-     "detail": "The Halo opportunity already exists from Discovery, created with the HubSpot deal or directly in Halo. The move to Proposal syncs between HubSpot and Halo, and quote amounts are pushed back to HubSpot."
+     "detail": "The Halo opportunity already exists from Discovery, created with the HubSpot deal or in Halo (mostly quick quotes for existing clients, pushed into HubSpot). The move to Proposal syncs between HubSpot and Halo, and quote amounts are pushed back to HubSpot."
     },
     {
      "id": "t3",

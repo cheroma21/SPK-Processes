@@ -717,8 +717,9 @@
 
   /* ---------- Data flows ---------- */
   function renderDataflow() {
-    var df = D.df, PX = 230, PY = 120, BW = 184, BH = 66, PAD = 24;
-    var W = 4 * PX + BW + PAD * 2, H = 3 * PY + BH + PAD * 2;
+    var df = D.df, PX = 250, PY = 150, BW = 190, BH = 66, PAD = 24;
+    var maxC = Math.max.apply(null, df.nodes.map(function (n) { return n.col; })), maxR = Math.max.apply(null, df.nodes.map(function (n) { return n.row; }));
+    var W = maxC * PX + BW + PAD * 2, H = maxR * PY + BH + PAD * 2;
     var pos = {};
     df.nodes.forEach(function (n) { pos[n.id] = { n: n, x: PAD + BW / 2 + n.col * PX, y: PAD + BH / 2 + n.row * PY }; });
     var clip = function (a, b) {

@@ -5,27 +5,27 @@
    "name": "HubSpot",
    "role": "Marketing, leads, deals",
    "col": 0,
-   "row": 1.5
+   "row": 1
   },
   {
    "id": "pax8",
    "name": "Pax8",
    "role": "Cloud licensing",
-   "col": 3,
+   "col": 1,
    "row": 0
   },
   {
    "id": "avalara",
    "name": "Avalara",
    "role": "Sales tax",
-   "col": 4,
+   "col": 2,
    "row": 0
   },
   {
    "id": "clientitsm",
    "name": "Client ITSM",
    "role": "Enterprise client IT",
-   "col": 1,
+   "col": 0,
    "row": 0,
    "external": true
   },
@@ -33,44 +33,44 @@
    "id": "halo",
    "name": "HaloPSA",
    "role": "Clients, tickets, projects, billing",
-   "col": 2,
-   "row": 1.5,
+   "col": 1,
+   "row": 1,
    "core": true
   },
   {
    "id": "qbo",
    "name": "QuickBooks Online",
    "role": "Financial system",
-   "col": 4,
-   "row": 1.5
+   "col": 3,
+   "row": 1
   },
   {
    "id": "ado",
    "name": "Azure DevOps",
    "role": "Digital Transformation work",
-   "col": 1,
-   "row": 3
+   "col": 0,
+   "row": 2
   },
   {
    "id": "rmm",
    "name": "NinjaOne (RMM)",
    "role": "Endpoints, alerts, patching",
-   "col": 2,
-   "row": 3
+   "col": 1,
+   "row": 2
   },
   {
    "id": "paylocity",
    "name": "Paylocity",
    "role": "HRIS, payroll, expenses",
-   "col": 3,
-   "row": 3
+   "col": 2,
+   "row": 2
   },
   {
    "id": "bank",
    "name": "First Horizon Bank",
    "role": "Bank feed",
-   "col": 4,
-   "row": 3,
+   "col": 3,
+   "row": 2,
    "external": true
   }
  ],
@@ -80,7 +80,7 @@
    "from": "hubspot",
    "to": "halo",
    "both": true,
-   "data": "Opportunities start at Discovery: a new HubSpot deal creates the matching Halo opportunity (HubSpot's first stage equals Halo's first stage), or the opportunity is created directly in Halo. Stage changes stay in sync, and amounts are pushed back to HubSpot.",
+   "data": "Opportunities start at Discovery and sync both ways: a new HubSpot deal creates the matching Halo opportunity (HubSpot's first stage equals Halo's first stage), and an opportunity created in Halo, mostly a quick quote for an existing client, is pushed into HubSpot. Stage changes stay in sync, and amounts are pushed back to HubSpot.",
    "how": "Integration",
    "when": "On deal creation and stage change",
    "processes": [

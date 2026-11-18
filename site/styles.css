@@ -228,7 +228,7 @@ a.chip.soc:hover{background:#cde9ef}
 
 /* data flow diagram */
 .dfwrap{padding:12px 16px 4px;overflow-x:auto}
-.dfd{display:block;width:100%;min-width:760px;height:auto}
+.dfd{display:block;width:100%;max-width:1040px;min-width:760px;height:auto;margin:0 auto}
 .dfl{stroke:#2c3a4f;stroke-width:1.6;fill:none}
 .dfl.manual{stroke-dasharray:2 4;stroke-linecap:round}
 .dfl.planned{stroke-dasharray:7 5}
