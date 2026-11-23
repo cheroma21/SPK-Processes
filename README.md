@@ -38,6 +38,24 @@ A filterable table of every process. Filter by level, EOS function, system, stat
 ### Taxonomy
 The full APQC tree, category by category, for browsing rather than searching.
 
+The framework has 13 top-level categories:
+
+| # | Category | What's in it |
+|---|---|---|
+| 1.0 | Develop Vision and Strategy | Setting Sparkhound's long-term direction, business strategy, strategic initiatives and business model. |
+| 2.0 | Develop and Manage Products and Services | Defining, designing and managing the service offerings Sparkhound takes to market. |
+| 3.0 | Market and Sell Products and Services | Marketing strategy and pricing, leads and opportunities, proposals and quotes, sales orders and account management. |
+| 4.0 | Manage Supply Chain for Physical Products | Mostly out of scope for a services firm; Sparkhound uses its procurement and vendor management processes (4.2). |
+| 5.0 | Deliver Services | Planning delivery resources and delivering client work, from onboarding and project execution to completion. |
+| 6.0 | Manage Customer Service | Handling client service requests, problems and complaints, escalations, and measuring client satisfaction. |
+| 7.0 | Develop and Manage Human Resources | Recruiting, onboarding, training, performance, compensation, employee relations and offboarding. |
+| 8.0 | Manage Information Technology (IT) | IT strategy, security and risk, change management, information management, and running IT services and infrastructure. |
+| 9.0 | Manage Financial Resources | Budgeting, invoicing, accounts receivable and collections, payroll, accounts payable, the month-end close, treasury, internal controls and tax. |
+| 10.0 | Acquire, Construct, and Manage Assets | Acquiring, maintaining and retiring company assets such as equipment and facilities. |
+| 11.0 | Manage Enterprise Risk, Compliance, Remediation, and Resiliency | Enterprise risk, compliance programs such as SOC 2, remediation, and business continuity and disaster recovery. |
+| 12.0 | Manage External Relationships | Relationships with investors, the board, government and industry bodies, legal and ethical matters, and public relations. |
+| 13.0 | Develop and Manage Business Capabilities | Managing business processes, projects and portfolios, quality, organizational change, knowledge, content and analytics. |
+
 ![Taxonomy](docs/screenshots/taxonomy.png)
 
 ### Process flows
