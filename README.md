@@ -19,13 +19,7 @@ The Process Library is Sparkhound's internal website for how the business runs. 
 
 Processes are numbered by the **APQC Process Classification Framework (PCF) Cross-Industry v8.0**, a standard catalog of business processes. Levels go from category (1.0 Develop Vision and Strategy … 13.0 Develop and Manage Business Capabilities) down to activities, for example **9.2.2 Invoice customer**. Processes that APQC doesn't break out, such as onboarding a managed services client, are added under the nearest APQC parent with an `.S1`, `.S2`… suffix and a **Sparkhound** tag.
 
-The documented flows are grouped into three areas:
-
-| Area | Flows |
-|---|---|
-| **Sales** | Leads and opportunities, quote pricing approval, proposals and quotes, sales orders, contract renewals |
-| **Operations** | Resource management, client onboarding, service delivery, service desk |
-| **Finance** | Time reporting, invoicing, recurring agreements, accounts receivable, collections, accounts payable, month-end close |
+The library is meant to cover every Sparkhound process over time. Documentation started with the core processes for selling, delivering and billing work, and more are added as they are written up and reviewed with their owners.
 
 Each process has a **status**: Not Started, Draft, **In Review** (a flow exists and is being confirmed with its owner), Published or Needs Update.
 
@@ -47,7 +41,7 @@ The full APQC tree, category by category, for browsing rather than searching.
 ![Taxonomy](docs/screenshots/taxonomy.png)
 
 ### Process flows
-The documented processes, grouped into Sales, Operations and Finance, in the order work moves through the business.
+Every process that has a documented flow, with a link to each.
 
 ![Process flows](docs/screenshots/flows.png)
 
